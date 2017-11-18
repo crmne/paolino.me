@@ -2,17 +2,20 @@
 layout: page
 title: About
 permalink: /about/
+tags: about
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+# Hi there, I'm Carmine Paolino.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+![Me]({{ "/images/me.jpeg" | absolute_url }})
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+I'm a Data Scientist, DJ, and climber.
 
+By day I use Machine Learning to provide users of [OLX](http://www.olx.com/)'s apps a better experience; by night I play electronic music as [Ground Method](https://soundcloud.com/groundmethod) to make people dance, and dance myself. ;)
 
-[jekyll-organization]: https://github.com/jekyll
+This website is the home of my research, code, and my music. I'm especially interested in Machine Learning, Deep Learning, Recommender Systems, and Music Information Retrieval.
+
+I wrote a [book chapter](https://link.springer.com/chapter/10.1007%2F978-1-4614-9242-9_6) on distributed social network analysis.
+
+Sometimes I take [pictures](https://www.instagram.com/crmne/) while travelling.
+
