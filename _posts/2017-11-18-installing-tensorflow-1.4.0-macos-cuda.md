@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      Installing TensorFlow 1.4.0 for macOS with CUDA support
+title:      Installing TensorFlow 1.4.0 on macOS with CUDA support
 date:       2017-11-18 20:30:00
 summary:    Google dropped GPU support on macOS since TensorFlow 1.2. Here's how to get it back on the latest versions of TensorFlow, CUDA, cuDNN and macOS.
 categories: tutorial tensorflow machine-learning deep-learning gpu
