@@ -11,7 +11,7 @@ tags: about
 
 I'm a Data Scientist, DJ, and climber.
 
-By day I use Machine Learning to provide users of [OLX](http://www.olx.com/)'s apps a better experience; by night I play electronic music as [Ground Method](https://soundcloud.com/groundmethod) to make people dance, and dance myself. ;)
+By day I use Machine Learning to provide users of [OLX](http://www.olx.com/)'s apps better search results and a more relevant experience; by night I play electronic music as [Ground Method](https://soundcloud.com/groundmethod) to make people dance, and dance myself. ;)
 
 This website is the home of my research, code, and my music. I'm especially interested in Machine Learning, Deep Learning, Recommender Systems, and Music Information Retrieval.
 
