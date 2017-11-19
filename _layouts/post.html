@@ -38,6 +38,12 @@ layout: default
   <script src="https://txtpen.com/embed.js?site={{txtpen.txtpen_sitename}}" />
 {% endif %}
 
+{% if site.txtpen_hn and page.hackernews %}
+  <div style="margin-top: 20px">
+  <txtpen-hn-comment> </txtpen-hn-comment>
+  </div>
+{% endif %}
+
 {% if site.disqus_shortname %}
   <div id="disqus_thread"></div>
   <script type="text/javascript">

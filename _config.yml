@@ -44,6 +44,7 @@ disqus_shortname:
 # txtpen post comments
 # (leave blank to disable txtpen)
 txtpen_sitename:
+txtpen_hn: true
 
 # Facebook Comments plugin
 # (leave blank to disable Facebook Comments, otherwise set it to true)

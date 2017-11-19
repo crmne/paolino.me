@@ -39,16 +39,16 @@
     <!-- MathJax -->
     {% if site.enable_mathjax %}
     <script type="text/javascript" async
-        src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+            src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
     {% endif %}
 
     <!-- Verifications -->
     {% if site.google_verification %}
-      <meta name="google-site-verification" content="{{ site.google_verification }}" />
+    <meta name="google-site-verification" content="{{ site.google_verification }}" />
     {% endif %}
     {% if site.bing_verification %}
-      <meta name="msvalidate.01" content="{{ site.bing_verification }}" />
+    <meta name="msvalidate.01" content="{{ site.bing_verification }}" />
     {% endif %}
 
     <!-- Open Graph -->
@@ -66,14 +66,20 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     {% if site.twitter_username %}
-        <meta name="twitter:site" content="@{{ site.twitter_username }}" />
-        <meta name="twitter:creator" content="@{{ site.twitter_username }}" />
+    <meta name="twitter:site" content="@{{ site.twitter_username }}" />
+    <meta name="twitter:creator" content="@{{ site.twitter_username }}" />
     {% endif %}
     <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
     <meta name="twitter:description" content="{% if page.summary %}{{ page.summary }}{% else %}{{ site.description }}{% endif %}" />
     <meta name="twitter:url" content="{{ site.url }}{{ page.url }}" />
     {% if site.post_preview_image %}
     <meta name="twitter:image" content="{{ site.url }}/images/me.jpeg" />
+    {% endif %}
+
+    {% if site.txtpen_hn and page.hackernews %}
+    <meta property="hacker-news" content="{{ page.hackernews }}">
+    <link rel="preload" href="/hn.min.js" as="script">
+    <link href="/hn.min.css" rel="stylesheet">
     {% endif %}
 
     <!-- Icons -->
