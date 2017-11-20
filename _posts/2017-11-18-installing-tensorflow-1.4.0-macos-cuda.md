@@ -82,6 +82,7 @@ In a moment you'll configure TensorFlow by running the `configure` script (natur
 * Your CUDA GPU Compute Capability, which you can check [here](https://developer.nvidia.com/cuda-gpus). For example, a GTX 1070 has Compute Capability 6.1
 * The location of the python3 executable, by running `which python3`. You can copy this value to the clipboard by running `which python3 | pbcopy`
 * The CUDA and cuDNN versions you have, e.g. 9.0 and 7, respectively
+* The gcc that should be used by nvcc as the host compiler should be `/usr/bin/gcc`. See footnote[^2].
 
 Now you are ready to answer `configure`'s questions yourself. Here's an example run:
 
@@ -149,5 +150,5 @@ Hello, TensorFlow!
 ```
 
 [^1]: macOS High Sierra was released Sept. 25 2017, a few months later than TensorFlow 1.2, June 15 2017
-[^2]: we'll need it for libgomp
+[^2]: gcc-7 is only needed since libgomp is missing from a standard macOS install
 [^3]: Note that you can switch back to the latest Xcode with: ```sudo xcode-select -s /Applications/Xcode.app```
