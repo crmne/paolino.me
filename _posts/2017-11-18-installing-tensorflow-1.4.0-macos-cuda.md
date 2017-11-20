@@ -109,7 +109,7 @@ If everything went well, you can finally install TensorFlow in the following way
 
 ```bash
 bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
-pip3 install /tmp/tensorflow_pkg/tensorflow-1.4.0-*.whl
+pip3 install -U /tmp/tensorflow_pkg/tensorflow-1.4.0-*.whl
 ```
 
 ## Validate your installation
