@@ -108,4 +108,10 @@
        ga('send', 'pageview');
     </script>
     {% endif %}
+
+    {% if site.piwik_tracker_domain and site.piwik_tracker_url and site.piwik_site_id %}
+    <script type="text/javascript">
+       var _paq=_paq||[];_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u="//{{ site.piwik_tracker_domain }}/";_paq.push(['setTrackerUrl',u+'{{ site.piwik_tracker_url }}']);_paq.push(['setSiteId','{{ site.piwik_site_id }}']);var d=document,g=d.createElement('script'),s=d.getElementsByTagName('script')[0];g.type='text/javascript';g.async=true;g.defer=true;g.src=u+'piwik.js';s.parentNode.insertBefore(g,s)})();
+    </script>
+    {% endif %}
 </head>
