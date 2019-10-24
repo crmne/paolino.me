@@ -7,7 +7,7 @@ tags: about
 
 # Hi there, I'm Carmine Paolino.
 
-![Me]({{ "/images/me.jpeg" | absolute_url }})
+![Me]({{ "/images/me.jpg" | absolute_url }})
 
 I'm a Senior Data Scientist, DJ, and photographer.
 
