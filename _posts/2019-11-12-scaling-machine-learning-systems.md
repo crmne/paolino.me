@@ -8,7 +8,7 @@ summary:    >-
     Did you design your machine learning system to survive the onslaught of visitors from your latest Reddit and Hacker News post? Or the influx of users shopping during Black Friday? Are you ready for a world filled with flakey networks, invalid data, and impatient users?
 
     In this talk you'll learn how to design and architect your machine learning systems for the harsh realities it will face. We will show you how we tackled these problems in a real, complex machine learning system at OLX and scaled it to serve up to billions of predictions per day, using software engineering principles while debunking the myth that Python code cannot scale.
-categories: talk slides machine-learning software-engineering machine-learning-engineering
+tags: [Talk, Machine Learning, Engineering]
 ---
 
 Whether it's a linear regressor or a system of connected deep learning models, getting your models ready is half the battle.

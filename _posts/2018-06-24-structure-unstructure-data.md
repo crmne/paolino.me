@@ -3,7 +3,7 @@ layout:     post
 title:      Slides of my talk "Structure Unstructured Data"
 date:       2018-06-24 07:00:00
 summary:    From 300k uncategorised images of watches to production models that recognise 58 classes with 90% precision, at scale.
-categories: talk slides how-to deep-learning tensorflow sagemaker
+tags:       [Talk, Machine Learning]
 ---
 
 This is the story of how at [OLX Group](https://www.olx.com/) we went from 300k uncategorised images of watches to production models that recognise 58 classes with 90% precision, at scale.
