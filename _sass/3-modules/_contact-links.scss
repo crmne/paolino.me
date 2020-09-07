@@ -1,0 +1,25 @@
+/* Contact Links */
+.contact {
+  text-align: center;
+  .contact__item {
+    display: inline-block;
+    margin: 0 3px;
+  }
+
+  .contact__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    line-height: 1;
+    border-radius: 50%;
+    color: $white;
+    background-color: $dark;
+    &:hover {
+      color: $dark;
+      background-color: $brand-color;
+    }
+  }
+}

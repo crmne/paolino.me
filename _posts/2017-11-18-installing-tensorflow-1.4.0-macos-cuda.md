@@ -65,9 +65,7 @@ sudo cp -rv cuda/* /usr/local/cuda/
 
 Since dropping support for macOS, TensorFlow consequently dropped support for [clang](http://clang.llvm.org/), macOS default compiler and the one included in Xcode.
 
-With the first patch we can restore compatibility, while with the second we will use [libgomp](https://gcc.gnu.org/onlinedocs/libgomp/) from gcc 7. You can download the following patches [here](https://gist.github.com/crmne/474b44eca214e1c8238f52b21d209dcb/archive/master.zip).
-
-{% gist 474b44eca214e1c8238f52b21d209dcb %}
+With the first patch we can restore compatibility, while with the second we will use [libgomp](https://gcc.gnu.org/onlinedocs/libgomp/) from gcc 7. You can download the patches [here](https://gist.github.com/crmne/474b44eca214e1c8238f52b21d209dcb/archive/master.zip).
 
 Extract them in the `tensorflow` folder and patch TensorFlow by issuing the following command:
 
@@ -86,7 +84,75 @@ In a moment you'll configure TensorFlow by running the `configure` script (natur
 
 Now you are ready to answer `configure`'s questions yourself. Here's an example run:
 
-{% gist a22858264d68dd9fe935fc4ee48e0453 %}
+```
+$ ./configure
+You have bazel 0.7.0-homebrew installed.
+Please specify the location of python. [Default is /usr/bin/python]: /usr/local/bin/python3
+
+
+Found possible Python library paths:
+  /usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages
+Please input the desired Python library path to use.  Default is [/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages]
+
+Do you wish to build TensorFlow with Google Cloud Platform support? [Y/n]:
+Google Cloud Platform support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with Hadoop File System support? [Y/n]:
+Hadoop File System support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with Amazon S3 File System support? [Y/n]:
+Amazon S3 File System support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with XLA JIT support? [y/N]:
+No XLA JIT support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with GDR support? [y/N]:
+No GDR support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with VERBS support? [y/N]:
+No VERBS support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with OpenCL support? [y/N]:
+No OpenCL support will be enabled for TensorFlow.
+
+Do you wish to build TensorFlow with CUDA support? [y/N]: y
+CUDA support will be enabled for TensorFlow.
+
+Please specify the CUDA SDK version you want to use, e.g. 7.0. [Leave empty to default to CUDA 8.0]: 9.0
+
+
+Please specify the location where CUDA 9.0 toolkit is installed. Refer to README.md for more details. [Default is /usr/local/cuda]:
+
+
+Please specify the cuDNN version you want to use. [Leave empty to default to cuDNN 6.0]: 7
+
+
+Please specify the location where cuDNN 7 library is installed. Refer to README.md for more details. [Default is /usr/local/cuda]:
+
+
+Please specify a list of comma-separated Cuda compute capabilities you want to build with.
+You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.
+Please note that each additional compute capability significantly increases your build time and binary size. [Default is: 3.5,5.2]6.1
+
+
+Do you want to use clang as CUDA compiler? [y/N]:
+nvcc will be used as CUDA compiler.
+
+Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/bin/gcc]:
+
+
+Do you wish to build TensorFlow with MPI support? [y/N]:
+No MPI support will be enabled for TensorFlow.
+
+Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native]:
+
+
+Add "--config=mkl" to your bazel command to build with MKL support.
+Please note that MKL on MacOS or windows is still not supported.
+If you would like to use a local MKL instead of downloading, please set the environment variable "TF_MKL_ROOT" every time before build.
+Configuration finished
+```
+
 
 ## Compile TensorFlow
 

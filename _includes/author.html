@@ -1,0 +1,28 @@
+{% if site.author %}
+<!-- begin author -->
+<div class="container">
+  <div class="row">
+    <div class="col col-12 col-d-10 push-d-1 col-m-12 push-m-0">
+      <section class="author">
+        <div class="author-inner">
+          <div class="author-content">
+            {% if site.author.image %}
+            <div class="author-avatar">
+              <img src="{{site.baseurl}}{{site.author.image}}" alt="{{site.author.name}}'s Picture" class="author-avatar__img">
+            </div>
+            {% endif %}
+            {% if site.author.name %}
+            <h1 class="author__name">{{site.author.name}}</h1>
+            {% endif %}
+            {% if site.author.description %}
+            <p class="author__desc">{{site.author.description}}</p>
+            {% endif %}
+            {% include contact-links.html %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<!-- end author -->
+{% endif %}

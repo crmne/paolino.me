@@ -1,0 +1,41 @@
+/* Page */
+.page-head {
+  max-width: 600px;
+  margin: 150px auto 30px;
+  text-align: center;
+  @media only screen and (max-width: $mobile) {
+    margin: 120px auto 20px;
+  }
+}
+
+.page-head__title {
+  font-size: 37px;
+  line-height: 47px;
+  margin-bottom: 10px;
+  @media only screen and (max-width: $mobile) {
+    font-size: 24px;
+    line-height: 34px;
+  }
+}
+
+.image-box {
+  background: $light-gray;
+}
+
+.page-image {
+  display: block;
+  margin-bottom: 30px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: $light-gray;
+  &:after {
+    content: "";
+    display: table;
+    padding-top: 75%;
+    @media only screen and (max-width: $desktop) {
+      padding-top: 65%;
+    }
+  }
+}
+

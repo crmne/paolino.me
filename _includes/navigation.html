@@ -1,9 +1,14 @@
-{% assign default_paths = site.pages | map: "path" %}
-{% assign page_paths = site.header_pages | default: default_paths %}
-
-{% for path in page_paths %}
-    {% assign page = site.pages | where: "path", path | first %}
-    {% if page.title %}
-        <a href="{{ page.url }}">{{ page.title }}</a>
-    {% endif %}
-{% endfor %}
+<ul class="nav__list list-reset">
+  <li class="nav__item">
+    <a href="{{ site.baseurl }}/" class="nav__link">Home</a>
+  </li>
+  {% for page in site.pages %}
+    {% unless page.name == 'tags.html' or page.name == '404.html' %}
+      {% if page.title %}
+      <li class="nav__item">
+        <a href="{{ page.url | prepend: site.baseurl }}" class="nav__link">{{ page.title }}</a>
+      </li>
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+</ul>
