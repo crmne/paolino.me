@@ -106,7 +106,7 @@ $(document).ready(function() {
         }, 50);
       }
 
-      $load_posts_button.text('Load Posts ').append('<i class="ion ion-ios-arrow-down"></i>');
+      $load_posts_button.text('Load Posts ').append('<ion-icon name="arrow-down-outline"></ion-icon>');
       pagination_next_page_number++;
 
       if (pagination_next_page_number > pagination_available_pages_number) {

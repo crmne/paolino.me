@@ -10,3 +10,7 @@ Hi, my name is Carmine Paolino. I'm a AI entrepreneur based in Berlin.
 I wrote a [book chapter](https://link.springer.com/chapter/10.1007%2F978-1-4614-9242-9_6) on distributed social network analysis.
 
 Sometimes I take [pictures](https://www.instagram.com/crmne/) while travelling.
+
+Other times I make [music][soundcloud] as [Crimson Lake][soundcloud]
+
+[soundcloud]: https://soundcloud.com/thecrimsonlake

@@ -2,7 +2,7 @@
 # General Site Settings
 title: Carmine Paolino
 logo: # You can add own logo. For example '/images/logo.png'.
-description: My name is Carmine Paolino. I'm an AI entrepreneur based in Berlin. I like being free and enjoying every moment.
+description: My name is Carmine Paolino. I'm an AI entrepreneur based in Berlin. I also make music, take photos, and do improv comedy.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -13,7 +13,7 @@ author:
   name: Carmine Paolino
   image: '/images/me-03.jpg'
   avatar: '/images/me-03.jpg'
-  description: My name is Carmine Paolino. I'm an AI entrepreneur based in Berlin. I like being free and enjoying every moment.
+  description: My name is Carmine Paolino. I'm an AI entrepreneur based in Berlin. I also make music, take photos, and do improv comedy.
 
 
 #-------------------------------
@@ -22,9 +22,11 @@ author:
 # Example of adding a new link to the footer - {icon: "ion-logo-github", link: "https://github.com"}
 # Other icons can be found at https://ionicons.com/v4/
 contact:
-- {name: "Twitter", icon: "ion-logo-twitter", link: "https://twitter.com/paolino"}
-- {name: "GitHub",  icon: "ion-logo-github", link: "https://github.com/crmne"}
-- {name: "LinkedIn", icon: "ion-logo-linkedin", link: "https://www.linkedin.com/in/carminepaolino"}
+- {name: "Twitter", icon: "logo-twitter", link: "https://twitter.com/paolino"}
+- {name: "GitHub",  icon: "logo-github", link: "https://github.com/crmne"}
+- {name: "LinkedIn", icon: "logo-linkedin", link: "https://www.linkedin.com/in/carminepaolino"}
+- {name: "Instagram", icon: "logo-instagram", link: "https://www.instagram.com/crmne/"}
+- {name: "SoundCloud", icon: "logo-soundcloud", link: "https://soundcloud.com/thecrimsonlake"}
 
 
 #-------------------------------

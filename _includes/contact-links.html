@@ -3,7 +3,7 @@
     <ul class="contact__list list-reset">
       {% for contact in site.contact %}
       <li class="contact__item">
-        <a class="contact__link" href="{{contact.link}}" target="_blank" rel="noopener"><i class="ion {{contact.icon}}"></i></a>
+        <a class="contact__link" href="{{contact.link}}" target="_blank" rel="noopener"><ion-icon name="{{contact.icon}}"></ion-icon></a>
       </li>
       {% endfor %}
     </ul>

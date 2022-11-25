@@ -7,7 +7,7 @@
         {% assign postsCovered = site.paginate | plus:offset %}
         {% if postsCovered < postCount %}
         <div class="load-more-section">
-          <button class="load-more-posts button button--primary">Load Posts <i class="ion ion-ios-arrow-down"></i></button>
+          <button class="load-more-posts button button--primary">Load Posts <ion-icon name="arrow-down-outline"></ion-icon></button>
         </div>
         {% endif %}
       </div>
