@@ -2,7 +2,7 @@
 # General Site Settings
 title: Carmine Paolino
 logo: # You can add own logo. For example '/images/logo.png'.
-description: My name is Carmine Paolino. I'm an AI entrepreneur based in Berlin. I also make music, take photos, and do improv comedy.
+description: My name is Carmine Paolino. I'm Co-Founder & CTO of an AI company that reduces food waste. I also make music, take photos, and do improv comedy.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -13,7 +13,7 @@ author:
   name: Carmine Paolino
   image: '/images/me-03.jpg'
   avatar: '/images/me-03.jpg'
-  description: My name is Carmine Paolino. I'm an AI entrepreneur based in Berlin. I also make music, take photos, and do improv comedy.
+  description: My name is Carmine Paolino. I'm Co-Founder & CTO of an AI company that reduces food waste. I also make music, take photos, and do improv comedy.
 
 
 #-------------------------------

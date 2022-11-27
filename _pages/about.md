@@ -5,12 +5,17 @@ permalink: /about/
 image: '/images/me-02.jpg'
 ---
 
-Hi, my name is Carmine Paolino. I'm a AI entrepreneur based in Berlin.
+Hi, my name is Carmine Paolino. I'm Co-Founder & CTO of an [AI company that reduces food waste][freshflow].
 
-I wrote a [book chapter](https://link.springer.com/chapter/10.1007%2F978-1-4614-9242-9_6) on distributed social network analysis.
+I love people, new experiences, technology, and excelling at something hard.
 
-Sometimes I take [pictures](https://www.instagram.com/crmne/) while travelling.
+Sometimes I make [music and DJ as Crimson Lake][soundcloud].
 
-Other times I make [music][soundcloud] as [Crimson Lake][soundcloud]
+Other times I take [pictures][instagram].
 
+Other other times I perform as an [improv comedian][improv].
+
+[instagram]: https://www.instagram.com/crmne/
 [soundcloud]: https://soundcloud.com/thecrimsonlake
+[freshflow]: https://freshflow.ai
+[improv]: https://www.comedycafeberlin.com
