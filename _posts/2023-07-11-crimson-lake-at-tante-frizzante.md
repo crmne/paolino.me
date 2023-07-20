@@ -1,9 +1,8 @@
 ---
 layout:     post
-title:      My Mix at Tante Frizzante Berlin 07-07-2023
+title:      "Live From Tante Frizzante (Berlin): my eclectic musical journey on the 7th of July, 2023"
 date:       2023-07-11 18:00:00
-summary:    >-
-    A mix for a disco/funk/melodic house-loving crowd.
+summary:    A mix for a disco/funk/melodic house-loving crowd.
 tags: [Music, Electronic, Crimson Lake, DJ]
 ---
 
