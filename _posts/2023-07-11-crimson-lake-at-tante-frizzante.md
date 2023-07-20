@@ -11,7 +11,7 @@ I am absolutely thrilled to share my latest live mix from Tante Frizzante (Berli
 
 My set list for the night was a hand-picked selection of tracks that ranged from the timeless classics to the latest chart-toppers. It began with the evocative 'Arms' by Model Man and traversed a sonic landscape that included Jessie Ware's infectious 'Free Yourself', the foot-tapping italo disco beats of 'Disco Siderale' by Peter LC, and the synth-driven euphoria of 'Maelstrom' by Ben Böhmer.
 
-One of the evening's high points was Todd Terje's 'Delorean Dynamite (Disco Mix)', a track that seemed to resonate with the crowd's energy. The set continued to build with tracks like 'Mauro Picasso' by Adana Twinsand 'More Than Human (Antic Remix)' by Luttrell.
+One of the evening's high points was Todd Terje's 'Delorean Dynamite (Disco Mix)', a track that seemed to resonate with the crowd's energy. The set continued to build with tracks like 'Mauro Picasso' by Adana Twins and 'More Than Human (Antic Remix)' by Luttrell.
 
 As the evening matured, the grooves got deeper with a blend of tracks that included Lane 8 & Tinlicker's 'Anthracite', Yotto's 'Just Over', and Damiano Von Erckert's '3pianos'. The climax was a rapturous play of 'Gotta Let You Go' by Dominica that sent everyone into a frenzy.
 
