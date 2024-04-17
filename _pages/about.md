@@ -16,6 +16,6 @@ Other times I take [pictures][instagram].
 Other other times I perform as an [improv comedian][improv].
 
 [instagram]: https://www.instagram.com/crmne/
-[soundcloud]: https://soundcloud.com/thecrimsonlake
+[soundcloud]: https://soundcloud.com/crimsonlakemusic
 [freshflow]: https://freshflow.ai
 [improv]: https://www.comedycafeberlin.com
