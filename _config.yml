@@ -1,8 +1,8 @@
 #-------------------------------
 # General Site Settings
-title: Carmine Paolino
+title: *name
 logo: # You can add own logo. For example '/images/logo.png'.
-description: My name is Carmine Paolino. I'm Co-Founder & CTO of an AI company that reduces food waste. I also make music, take photos, and do improv comedy.
+description: *description
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -10,10 +10,10 @@ url: "https://paolino.me" # the base hostname & protocol for your site, e.g. htt
 #-------------------------------
 # Author Settings
 author:
-  name: Carmine Paolino
+  name: &name Carmine Paolino
   image: '/images/me-03.jpg'
   avatar: '/images/me-03.jpg'
-  description: My name is Carmine Paolino. I'm Co-Founder & CTO of an AI company that reduces food waste. I also make music, take photos, and do improv comedy.
+  description: &description My name is Carmine Paolino. I'm Co-Founder & CTO of an AI company that reduces food waste. I also make music, take photos, and do improv comedy.
 
 
 #-------------------------------
@@ -38,7 +38,7 @@ disqus-identifier: crmne # add your shortname for Disqus Comment. For example mr
 # Newsletter
 mailchimp: false # To enable the mailchimp form, use the value true. To turn off use the value false.
 mailchimp-identifier: # Add your MailChimp form identifier. For example - blogenjoyfreedom.us16.list-manage.com/subscribe/post?u=cd56155d76ddeeb4c0bc4d080&amp;id=7a526cd13e
-mailchimp-description: Subscribe to our newsletter and we’ll send you the emails of latest posts.
+mailchimp-description: Subscribe to my newsletter and I'll send you the emails of latest posts.
 
 
 #-------------------------------
