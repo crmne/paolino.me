@@ -1,8 +1,12 @@
 #-------------------------------
 # General Site Settings
-title: *name
+title: &name Carmine Paolino
 logo: # You can add own logo. For example '/images/logo.png'.
-description: *description
+description: &description
+    I'm the founder of a <a href="https://chatwithwork.com">bootstrapped software company</a>,
+    co-founder & ex-CTO of an <a href="https://freshflow.ai">AI company that reduces food waste</a>.
+    I also <a href="https://crimsonlake.live">make music, DJ</a>, and
+    <a href="https://paolino.photography">take photos</a>.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -10,11 +14,10 @@ url: "https://paolino.me" # the base hostname & protocol for your site, e.g. htt
 #-------------------------------
 # Author Settings
 author:
-  name: &name Carmine Paolino
+  name: *name
   image: '/images/me-03.jpg'
   avatar: '/images/me-03.jpg'
-  description: &description My name is Carmine Paolino. I'm Co-Founder & CTO of an AI company that reduces food waste. I also make music, take photos, and do improv comedy.
-
+  description: *description
 
 #-------------------------------
 # Contact links

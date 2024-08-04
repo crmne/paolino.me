@@ -5,17 +5,16 @@ permalink: /about/
 image: '/images/me-02.jpg'
 ---
 
-Hi, my name is Carmine Paolino. I'm Co-Founder & CTO of an [AI company that reduces food waste][freshflow].
+Hi, my name is Carmine Paolino. I'm the founder of a [bootstrapped software company][newco],
+and co-founder & ex-CTO of an [AI company that reduces food waste][freshflow].
 
 I love people, new experiences, technology, and excelling at something hard.
 
-Sometimes I make [music and DJ as Crimson Lake][soundcloud].
+Sometimes I make [music and DJ as Crimson Lake][crimsonlake].
 
-Other times I take [pictures][instagram].
+Other times I take [pictures][pictures].
 
-Other other times I perform as an [improv comedian][improv].
-
-[instagram]: https://www.instagram.com/crmne/
-[soundcloud]: https://soundcloud.com/crimsonlakemusic
+[pictures]: https://paolino.photography
+[crimsonlake]: https://crimsonlake.live
 [freshflow]: https://freshflow.ai
-[improv]: https://www.comedycafeberlin.com
+[newco]: https://chatwithwork.com

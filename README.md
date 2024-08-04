@@ -1,3 +1,3 @@
-# Carmine's blog
+# My homepage
 
-https://paolino.me
+[Go to it](https://paolino.me)
