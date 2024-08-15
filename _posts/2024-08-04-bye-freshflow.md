@@ -4,9 +4,8 @@ title:      Bye Freshflow
 date:       2024-08-04 09:00:00
 summary:    After an incredible journey of over 3.5 years, I'm announcing my departure from Freshflow, where I've had the privilege of serving as Co-Founder and CTO since its inception.
 tags:       [Career, Startup, Leadership]
+image:      /images/Freshflow_20231207_63206.jpg
 ---
-
-![Freshflow team photo](/images/Freshflow_20231207_63206.jpg)
 
 After an incredible journey of over 3.5 years, I'm announcing my departure from [Freshflow][freshflow], where I've had the privilege of serving as Co-Founder and CTO since its inception
 

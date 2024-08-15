@@ -2,7 +2,7 @@
 layout: page
 title: About
 permalink: /about/
-image: '/images/me-02.jpg'
+image: '/images/me-04.jpg'
 ---
 
 Hi, my name is Carmine Paolino. I'm the founder of a [bootstrapped software company][newco],

@@ -15,8 +15,8 @@ url: "https://paolino.me" # the base hostname & protocol for your site, e.g. htt
 # Author Settings
 author:
   name: *name
-  image: '/images/me-03.jpg'
-  avatar: '/images/me-03.jpg'
+  image: '/images/me-04_small.jpg'
+  avatar: '/images/me-04_small.jpg'
   description: *description
 
 #-------------------------------
