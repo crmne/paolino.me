@@ -12,5 +12,4 @@ group :development do
   # Check for optimizable images
   gem "image_optim", require: false
   gem "image_optim_pack", require: false
-
 end
