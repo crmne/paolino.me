@@ -11,7 +11,7 @@ After an incredible journey of over 3.5 years, I'm announcing my departure from 
 
 I'm immensely proud of what we've achieved at [Freshflow][freshflow]. From shipping our first version in just a few months to building an exceptional team tackling the complex challenge of optimizing fresh produce ordering for supermarkets, it's been a remarkable experience. We're successfully scaling our solution to many stores, demonstrating the real-world impact of our technology.
 
-Some key highlights includeA
+Some key highlights include:
 
 * Creating and nurturing a high-performance tech team
 * Establishing a culture of empathy, trust, and psychological safety
