@@ -30,7 +30,7 @@ contact:
 
 #-------------------------------
 # Comment Section (Disqus)
-disqus-identifier: crmne # add your shortname for Disqus Comment. For example mr-brown
+disqus-identifier: # crmne # add your shortname for Disqus Comment. For example mr-brown
 
 
 #-------------------------------
