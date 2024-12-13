@@ -175,41 +175,69 @@
   font-size: 16px;
   line-height: 26px;
   color: $dark;
-  @media only screen and (max-width: $tablet) {
-    max-width: 100%;
-  }
 }
 
 .subscribe-group-top {
+  position: relative;
   display: flex;
-  align-items: center;
+  align-items: stretch; // This helps align items to full height
+  width: 100%;
 
   .subscribe-email {
-    position: relative;
-    width: 100%;
+    flex: 1; // This makes the input take up available space
     height: 50px;
     padding: 8px 15px;
     font-size: 13px;
-    line-height: 50px;
-    border-radius: 5px;
+    border-radius: 5px 0 0 5px; // Rounded corners only on left side
     color: $dark;
     background-color: $white;
     border: 1px solid $dark;
+    border-right: none; // Remove right border
     outline: 0;
-    -webkit-appearance: none;
     box-sizing: border-box;
     transition: border-color .2s ease-in-out;
-    cursor: text;
+    
     &:focus {
       border-color: darken($brand-color, 25%);
     }
   }
 
   .subscribe-button {
-    margin-left: 10px;
+    margin-left: 0; // Remove margin
+    height: 50px;
+    border-radius: 0 5px 5px 0; // Rounded corners only on right side
+    padding: 0 20px; // Increase padding for better button size
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid $dark;
+    background-color: $dark;
+    color: $white;
+    cursor: pointer;
+    transition: all .3s;
+
+    &:hover {
+      background-color: darken($brand-color, 5%);
+      border-color: darken($brand-color, 5%);
+    }
   }
 }
 
+@media only screen and (max-width: $mobile) {
+  .subscribe-group-top {
+    flex-direction: column;
+    
+    .subscribe-email {
+      border-radius: 5px;
+      border-right: 1px solid $dark;
+      margin-bottom: 10px;
+    }
+    
+    .subscribe-button {
+      width: 100%;
+      border-radius: 5px;
+    }
+  }
+}
 
 /* Footer */
 .footer {

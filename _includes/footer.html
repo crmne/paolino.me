@@ -33,7 +33,8 @@
                 {% for post in site.posts limit:3 %}
                 <div class="recent-posts">
                   {% if post.image %}
-                    <a class="recent-posts__image" href="{{ post.url }}" style="background-image: url({{site.baseurl}}{{post.image}})"></a>
+                  <a class="recent-posts__image" href="{{ post.url }}"
+                    style="background-image: url({{site.baseurl}}{{post.image}})"></a>
                   {% else %}
                   {% endif %}
                   <span class="recent-posts__count">{{ forloop.index }}</span>
@@ -52,23 +53,50 @@
               {% if site.mailchimp %}
               <div class="widget widget-subscribe">
                 <div class="widget__head">
-                  <h4 class="widget__title">Get Interesting News</h4>
+                  <h4 class="widget__title">{{site.newsletter-title}}</h4>
                 </div>
-                <p class="subscribe-subtitle">{{site.mailchimp-description}}</p>
-                <form class="subscribe-form validate" action="{% if site.mailchimp-identifier %}//{{site.mailchimp-identifier}}{% else %}#{% endif %}"
-                  method="POST" id="membedded-subscribe-form" name="membedded-subscribe-form" target="_blank" novalidate>
+                <p class="subscribe-subtitle">{{site.newsletter-description}}</p>
+                <form class="subscribe-form validate"
+                  action="{% if site.mailchimp-identifier %}//{{site.mailchimp-identifier}}{% else %}#{% endif %}"
+                  method="POST" id="membedded-subscribe-form" name="membedded-subscribe-form" target="_blank"
+                  novalidate>
                   <div class="subscribe-group">
                     <div class="subscribe-group-top">
                       <label class="screen-reader-text" for="mce-EMAIL">Email address</label>
-                      <input class="subscribe-email required email" id="mce-EMAIL" type="text" name="EMAIL" placeholder="Email Address">
-                      <button class="subscribe-button button button--primary" id="membedded-subscribe" type="submit" name="subscribe">Subscribe</button>
+                      <input class="subscribe-email required email" id="mce-EMAIL" type="text" name="EMAIL"
+                        placeholder="Email Address">
+                      <button class="subscribe-button button button--primary" id="membedded-subscribe" type="submit"
+                        name="subscribe">Subscribe</button>
                     </div>
                   </div>
                 </form>
               </div>
               {% endif %}
+              {% if site.sendfox %}
+              <div class="col col-4 col-d-6 col-t-12">
+                <div class="widget widget-subscribe">
+                  <div class="widget__head">
+                    <h4 class="widget__title">{{site.newsletter-title}}</h4>
+                  </div>
+                  <p class="subscribe-subtitle">{{site.newsletter-description}}</p>
+                  <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6"
+                    class="subscribe-form sendfox-form" id="1wj8v6" data-async="true" data-recaptcha="true">
+                    <div class="subscribe-group">
+                      <div class="subscribe-group-top">
+                        <label class="screen-reader-text" for="sendfox_form_email">Email</label>
+                        <input class="subscribe-email" id="sendfox_form_email" type="email" name="email"
+                          placeholder="Email Address" required>
+                        <button class="subscribe-button button button--primary" type="submit">Subscribe</button>
+                      </div>
+                    </div>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                      <input type="text" name="a_password" tabindex="-1" value="" autocomplete="off" />
+                    </div>
+                  </form>
+                </div>
+              </div>
+              {% endif %}
             </div>
-
           </div>
         </div>
       </div>
@@ -84,8 +112,9 @@
       <div class="col col-12 col-d-10 push-d-1 col-m-12 push-m-0">
         <div class="footer__inner">
           {% include contact-links.html %}
-          <div class="copyright">{{site.time | date: '%Y'}} &copy; <a href="/">{{site.title}}</a>. Crafted & Designed by <a
-              href="https://jekyllthemes.io/developers/artem-sheludko">Artem Sheludko</a>.</div>
+          <div class="copyright">{{site.time | date: '%Y'}} &copy; <a href="/">{{site.title}}</a>. Crafted & Designed by
+            <a href="https://jekyllthemes.io/developers/artem-sheludko">Artem Sheludko</a>.
+          </div>
         </div>
       </div>
     </div>
