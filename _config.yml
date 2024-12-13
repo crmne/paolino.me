@@ -2,7 +2,7 @@
 # General Site Settings
 title: &name Carmine Paolino
 logo: # You can add own logo. For example '/images/logo.png'.
-description: &description I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://vettr.ai">Vettr</a>, previously co-founded <a href="https://freshflow.ai">Freshflow</a>. When not coding, I <a href="https://crimsonlake.live">make music and DJ</a> or <a href="https://paolino.photography">capture moments</a> through photography.
+description: &description I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://vettr.ai">Vettr</a>, previously co-founded <a href="https://freshflow.ai">Freshflow</a>. Outside tech, I <a href="https://crimsonlake.live">make music</a> and <a href="https://paolino.photography">take photos</a>.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 
