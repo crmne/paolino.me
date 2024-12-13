@@ -12,28 +12,31 @@
   position: relative;
   display: flex;
   justify-content: center;
-  .post-tags__tag {
-    height: 23px;
-    padding: 0 7px;
-    margin: 0 5px 10px 0;
-    font-size: 10px;
-    line-height: 23px;
-    letter-spacing: 1px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    background-color: $brand-color;
-    &:last-child {
-      margin-right: 0;
-    }
-    &:hover {
-      color: $dark;
-      background-color: darken($brand-color, 10%);
-    }
+  flex-wrap: wrap;
+}
 
-    @media only screen and (max-width: $mobile) {
-      height: 20px;
-      line-height: 20px;
-    }
+.post-tags__tag {
+  height: 23px;
+  padding: 0 7px;
+  margin: 0 5px 10px 0;
+  font-size: 10px;
+  line-height: 23px;
+  letter-spacing: 1px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  background-color: $brand-color;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:hover {
+    color: $dark;
+    background-color: darken($brand-color, 10%);
+  }
+
+  @media only screen and (max-width: $mobile) {
+    height: 23px;
+    line-height: 23px;
+    display: inline-block;
   }
 }
 

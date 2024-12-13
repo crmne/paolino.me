@@ -132,8 +132,25 @@ a {
   text-decoration: none;
   color: $link-color;
   transition: $global-transition;
+  box-shadow: 0 -1px 0 0 $brand-color inset;
   &:hover {
-      color: darken($link-color, 15%);
+    color: darken($link-color, 15%);
+    box-shadow: 0 -2px 0 0 $brand-color inset;
+  }
+}
+
+/* Exception for certain links that shouldn't have underlines */
+.logo__link,
+.nav__link,
+.post-tags__tag,
+.article__tag,
+.contact__link,
+.search-results__link,
+.button,
+.footer a {
+  box-shadow: none !important;
+  &:hover {
+    box-shadow: none !important;
   }
 }
 
