@@ -1,4 +1,6 @@
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
@@ -10,7 +12,9 @@ body {
   background-color: $background-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  input, textarea {
+
+  input,
+  textarea {
     border: 1px solid $border-color;
     outline: none;
   }
@@ -89,6 +93,7 @@ blockquote {
     font-size: 16px;
     font-style: normal;
     color: $text-color;
+
     &:before {
       content: '\2014' '\00a0';
     }
@@ -116,6 +121,7 @@ img,
   max-width: 100%;
   height: auto;
   vertical-align: middle;
+
   &+em {
     display: block;
     margin-top: 15px;
@@ -133,6 +139,7 @@ a {
   color: $link-color;
   transition: $global-transition;
   box-shadow: 0 -1px 0 0 $brand-color inset;
+
   &:hover {
     color: darken($link-color, 15%);
     box-shadow: 0 -2px 0 0 $brand-color inset;
@@ -146,9 +153,11 @@ a {
 .article__tag,
 .contact__link,
 .search-results__link,
+.article__image,
 .button,
 .footer a {
   box-shadow: none !important;
+
   &:hover {
     box-shadow: none !important;
   }
@@ -190,6 +199,7 @@ table th {
 table tr {
   background-color: $light-gray;
   transition: all .3s ease;
+
   &:nth-child(even) {
     background-color: transparent;
   }

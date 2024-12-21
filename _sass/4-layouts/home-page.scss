@@ -1,7 +1,7 @@
 /* Article */
 .article {
   &:hover {
-   .article__title a {
+    .article__title a {
       color: $dark;
       box-shadow: 0 -1px 0 0 $white inset, 0 -3px 0 0 $brand-color inset;
     }
@@ -11,7 +11,7 @@
 .article__image {
   position: relative;
   display: inline-block;
-  background-color: $light-gray;
+
   &:hover {
     &:after {
       transition: .4s ease-in-out;
@@ -19,6 +19,7 @@
       visibility: visible;
     }
   }
+
   &:after {
     content: "";
     display: block;
@@ -32,6 +33,10 @@
     opacity: 0;
     visibility: hidden;
   }
+
+  img {
+    border-radius: 8px;
+  }
 }
 
 .article__content {
@@ -44,6 +49,7 @@
   font-size: 22px;
   line-height: 32px;
   transition: all .3s ease-in;
+
   @media only screen and (max-width: $mobile) {
     line-height: 30px;
   }
@@ -74,6 +80,7 @@
   flex-wrap: wrap;
   align-items: center;
   line-height: 1;
+
   .article__tag {
     height: 23px;
     padding: 0 7px;
@@ -84,9 +91,11 @@
     border-radius: 3px;
     text-transform: uppercase;
     background-color: $brand-color;
+
     &:last-child {
       margin-right: 0;
     }
+
     &:hover {
       color: $dark;
       background-color: darken($brand-color, 10%);
@@ -102,6 +111,7 @@
 .article__date {
   font-size: 13px;
   color: $text-color;
+
   &::before {
     content: "";
     position: relative;
@@ -122,6 +132,7 @@
 .article__author {
   display: flex;
   align-items: center;
+
   &-image {
     display: inline-block;
     width: 20px;
@@ -133,9 +144,11 @@
     background-repeat: no-repeat;
     background-color: $dark;
   }
+
   &-link {
     font-size: 14px;
     color: $dark;
+
     &:hover {
       color: $dark;
     }
@@ -145,6 +158,7 @@
 .container__inner {
   &.without-author {
     margin-top: 150px;
+
     @media only screen and (max-width: $mobile) {
       margin-top: 120px;
     }

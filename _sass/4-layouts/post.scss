@@ -3,6 +3,7 @@
   max-width: 600px;
   margin: 150px auto 30px;
   text-align: center;
+
   @media only screen and (max-width: $mobile) {
     margin: 120px auto 20px;
   }
@@ -25,9 +26,11 @@
   border-radius: 3px;
   text-transform: uppercase;
   background-color: $brand-color;
+
   &:last-child {
     margin-right: 0;
   }
+
   &:hover {
     color: $dark;
     background-color: darken($brand-color, 10%);
@@ -44,6 +47,7 @@
   font-size: 37px;
   line-height: 47px;
   margin-bottom: 10px;
+
   @media only screen and (max-width: $mobile) {
     font-size: 24px;
     line-height: 34px;
@@ -60,6 +64,7 @@
 .post__author {
   display: flex;
   align-items: center;
+
   &-image {
     display: inline-block;
     width: 25px;
@@ -71,9 +76,11 @@
     background-repeat: no-repeat;
     background-color: $dark;
   }
+
   &-link {
     font-size: 14px;
     color: $dark;
+
     &:hover {
       color: $dark;
     }
@@ -81,7 +88,7 @@
 }
 
 .image-box {
-  background: $light-gray;
+  background: transparent;
 }
 
 .post-image {
@@ -90,11 +97,13 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: $light-gray;
+  border-radius: 8px;
+
   &:after {
     content: "";
     display: table;
     padding-top: 75%;
+
     @media only screen and (max-width: $desktop) {
       padding-top: 65%;
     }
@@ -122,6 +131,7 @@
   .share__item {
     margin-right: 5px;
     text-align: center;
+
     &:last-child {
       margin-right: 0;
     }
@@ -138,6 +148,7 @@
     border-radius: 3px;
     color: $white;
     background-color: $dark;
+
     &:hover {
       color: $dark;
       background-color: $brand-color;
@@ -159,9 +170,11 @@
     margin-right: 0;
   }
 
-  .prev, .next {
+  .prev,
+  .next {
     width: 100%;
     margin-bottom: 30px;
+
     &:hover {
       .post__nav__title {
         a {
@@ -181,11 +194,13 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
+
       &::before {
         content: "";
         display: table;
         padding-top: 55%;
       }
+
       &:hover {
         &::after {
           transition: .4s ease-in-out;
@@ -216,16 +231,16 @@
     }
 
     .post__nav__prev {
-       i {
+      i {
         margin-right: 2px;
-       }
-     }
+      }
+    }
 
-     .post__nav__next {
-       i {
-         margin-left: 2px;
-       }
-     }
+    .post__nav__next {
+      i {
+        margin-left: 2px;
+      }
+    }
 
     .post__nav__title {
       margin-bottom: 0;
@@ -242,7 +257,8 @@
   @media only screen and (max-width: $tablet) {
     flex-wrap: wrap;
 
-    .prev, .next {
+    .prev,
+    .next {
       width: 100%;
     }
 
