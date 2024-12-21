@@ -17,6 +17,7 @@
       transition: .4s ease-in-out;
       opacity: 1;
       visibility: visible;
+      border-radius: 8px;
     }
   }
 
@@ -32,6 +33,7 @@
     transition: .4s ease-in-out;
     opacity: 0;
     visibility: hidden;
+    border-radius: 8px;
   }
 
   img {

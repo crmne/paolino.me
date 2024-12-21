@@ -190,7 +190,7 @@
       width: 100%;
       min-height: 230px;
       margin-bottom: 10px;
-      border-radius: 3px;
+      border-radius: 8px;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -206,6 +206,7 @@
           transition: .4s ease-in-out;
           opacity: 1;
           visibility: visible;
+          border-radius: 8px;
         }
       }
 
