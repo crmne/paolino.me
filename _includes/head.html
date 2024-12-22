@@ -7,34 +7,40 @@
 
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="{% if page.title %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title | smartify }}{% else %}{{ site.title | smartify }}{% endif %}">
   <meta property="og:description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}">
   <meta property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
-  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:site_name" content="{{ site.title | smartify }}">
   {% if page.image %}
   <meta property="og:image" content="{{ site.url }}{{ page.image }}">
+  {% else %}
+  <meta property="og:image" content="{{ site.url}}{{ site.author.image }}">
   {% endif %}
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@paolino">
-  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta name="twitter:title" content="{% if page.title %}{{ page.title | smartify }}{% else %}{{ site.title | smartify }}{% endif %}">
   <meta name="twitter:description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}">
   {% if page.image %}
   <meta name="twitter:image" content="{{ site.url }}{{ page.image }}">
+  {% else %}
+  <meta name="twitter:image" content="{{ site.url}}{{ site.author.image }}">
   {% endif %}
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
-  <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title | smartify }}" href="{{ '/feed.xml' | relative_url }}">
 
   <link href="https://fonts.googleapis.com/css?family=Lora:700%7CRoboto:400,500" rel="stylesheet">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "{% if page.layout == 'post' %}BlogPosting{% else %}WebSite{% endif %}",
-  "headline": "{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}",
+  "headline": "{% if page.title %}{{ page.title | smartify }}{% else %}{{ site.title | smartify }}{% endif %}",
   "description": "{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}",
   {% if page.image %}
   "image": "{{ site.url }}{{ page.image }}",
+  {% else %}
+  "image": "{{ site.url}}{{ site.author.image }}",
   {% endif %}
   "author": {
     "@type": "Person",

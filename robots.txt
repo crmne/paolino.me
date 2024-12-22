@@ -1,1 +1,2 @@
 Sitemap: https://paolino.me/sitemap.xml
+Disallow: https://paolino.me/thank-you/

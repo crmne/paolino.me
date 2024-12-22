@@ -3,6 +3,7 @@ layout: page
 title: Thank you for subscribing!
 permalink: /thank-you/
 nav: false
+sitemap: false
 ---
 
 Thank you for subscribing to my newsletter! 🎉
