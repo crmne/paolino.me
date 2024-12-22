@@ -13,7 +13,7 @@ For those of you who know this pain firsthand, you understand how isolating and 
 
 Furthermore, the existing apps were inadequate, especially for cluster headaches. So I decided to build a better one myself. That's how the [Cluster Headache Tracker][cht] was born—right there in my hospital bed, between attacks.
 
-# Turning Pain into Purpose
+## Turning Pain into Purpose
 
 This wasn't my first experience turning adversity into innovation. While building [Freshflow][freshflow], a venture-backed AI-powered food waste reduction system, I faced a 1.5-month bout of cluster headaches. Two weeks of that time were spent coding from a hospital bed. Pain didn't stop innovation—it fueled it.
 
@@ -21,7 +21,7 @@ The limitations of a hospital bed sharpened my focus. Each attack reminded me of
 
 The tracker began as a simple tool to log attacks and triggers. Even in its earliest form, it provided something profoundly valuable: the ability to make sense of overwhelming pain. This clarity gave me the strength to keep pushing forward.
 
-# Lessons in Innovation from Adversity
+## Lessons in Innovation from Adversity
 
 Reflecting on the process, several key lessons emerged:
 
@@ -35,7 +35,7 @@ Reflecting on the process, several key lessons emerged:
 
 5. **Resilience Is About Getting Up**: Living with cluster headaches has taught me that setbacks are inevitable. What matters is how you respond—by turning challenges into opportunities for growth and innovation.
 
-# From Personal Need to Collective Impact
+## From Personal Need to Collective Impact
 
 [Cluster Headache Tracker][cht] isn't just a tool—it's a testament to the power of turning personal adversity into meaningful solutions. Creativity and problem-solving aren't confined to moments of crisis. The lessons from this experience are universal: innovation happens when we actively seek solutions to the problems that matter most.
 
@@ -53,7 +53,7 @@ Here's a demo of [Cluster Headache Tracker][cht]:
   </iframe>
 </p>
 
-# An Invitation to Create
+## An Invitation to Create
 
 I invite you to:
 
