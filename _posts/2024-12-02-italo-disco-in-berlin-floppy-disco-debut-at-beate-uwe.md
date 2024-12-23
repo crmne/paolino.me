@@ -2,7 +2,7 @@
 layout: post
 title: "Italo Disco in Berlin: Floppy Disco's debut at Beate Uwe"
 date: 2024-12-02
-summary: "From packed dancefloors to a new residency, Floppy Disco's debut at Beate Uwe marked a special night where Italian disco heritage met Berlin's club culture."
+description: "From packed dancefloors to a new residency, Floppy Disco's debut at Beate Uwe marked a special night where Italian disco heritage met Berlin's club culture."
 tags: [Floppy Disco, Beate Uwe, Italo Disco, House, Berlin, Crimson Lake, DJ, Music]
 image: /images/20241130_floppy_disco_at_beate_uwe.webp
 ---

@@ -43,6 +43,28 @@ layout: default
         <div class="post__content">
           {{ content }}
         </div>
+
+        <div class="widget widget-subscribe">
+          <div class="widget__head">
+            <h4 class="widget__title">{{site.newsletter-title}}</h4>
+          </div>
+          <p class="subscribe-subtitle">If you've enjoyed this article, consider subscribing to my newsletter!</p>
+          <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form"
+            id="1wj8v6" data-async="true" data-recaptcha="true">
+            <div class="subscribe-group">
+              <div class="subscribe-group-top">
+                <label class="screen-reader-text" for="sendfox_form_email">Email</label>
+                <input class="subscribe-email" id="sendfox_form_email" type="email" name="email"
+                  placeholder="Email Address" required>
+                <button class="subscribe-button button button--primary" type="submit">Subscribe</button>
+              </div>
+            </div>
+            <div style="position: absolute; left: -5000px;" aria-hidden="true">
+              <input type="text" name="a_password" tabindex="-1" value="" autocomplete="off" />
+            </div>
+          </form>
+        </div>
+
         <div class="post__share">
           <ul class="share__list list-reset">
             <li class="share__item">
@@ -75,6 +97,7 @@ layout: default
           </ul>
         </div>
       </div>
+
 
       <div class="col col-10 col-d-10 push-d-1 push-1 col-m-12 push-m-0">
         <div class="post__navigation">
@@ -109,4 +132,5 @@ layout: default
     </div>
   </div>
 </article>
+
 <!-- end post -->

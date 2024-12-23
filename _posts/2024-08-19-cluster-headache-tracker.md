@@ -2,7 +2,7 @@
 layout:     post
 title:      "Turning Pain into Purpose: Building Cluster Headache Tracker"
 date:       2024-08-19 09:00:00
-summary:    "How personal adversity and excruciating pain led to an open-source solution for tracking cluster headaches."
+description:    "How personal adversity and excruciating pain led to an open-source solution for tracking cluster headaches."
 tags:       [Cluster Headaches, Open Source, Resilience, Innovation]
 image:      /images/charite_headache_log.jpg
 ---
