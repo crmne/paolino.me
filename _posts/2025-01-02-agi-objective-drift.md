@@ -55,9 +55,9 @@ The race isn't just to create AGI - it's to _understand how its objectives might
 
 ---
 
-Note: This article was written in collaboration with an AI assistant, which feels appropriately meta given the topic. All ideas, analysis, and insights are my own - I just had help making them clearer and more engaging.
+Note: This article was written in collaboration with an AI assistant, which feels appropriately meta given the topic 😉. All ideas, analysis, and insights are my own - I just had help making them clearer and more engaging.
 
-This practical experience with AI extends to my work: I'm currently building [chatwithwork.com][cww], a tool that gives companies' internal knowledge the power of AI, and [vettr.ai][vettr], which is revolutionizing startup screening for VCs through AI-powered interviews. Previously, I worked on [freshflow.ai][fresh], where we developed AI systems to optimize fresh produce ordering in supermarkets.
+Want to see these ideas in action? I'm building [chatwithwork.com][cww], bringing the power of AI to companies' knowledge bases, and [vettr.ai][vettr], using AI for smarter startup screening. Previously at [freshflow.ai][fresh], we used AI to optimize supermarket produce ordering. Each project explores a different aspect of how AI systems can be genuinely helpful today, while raising fascinating questions about their evolution.
 
 [cww]: https://chatwithwork.com
 [vettr]: https://vettr.ai
