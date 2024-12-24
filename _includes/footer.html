@@ -73,27 +73,25 @@
               </div>
               {% endif %}
               {% if site.sendfox %}
-              <div class="col col-4 col-d-6 col-t-12">
-                <div class="widget widget-subscribe">
-                  <div class="widget__head">
-                    <h4 class="widget__title">{{site.newsletter-title}}</h4>
-                  </div>
-                  <p class="subscribe-subtitle">{{site.newsletter-description}}</p>
-                  <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6"
-                    class="subscribe-form sendfox-form" id="1wj8v6" data-async="true" data-recaptcha="true">
-                    <div class="subscribe-group">
-                      <div class="subscribe-group-top">
-                        <label class="screen-reader-text" for="sendfox_form_email">Email</label>
-                        <input class="subscribe-email" id="sendfox_form_email" type="email" name="email"
-                          placeholder="Email Address" required>
-                        <button class="subscribe-button button button--primary" type="submit">Subscribe</button>
-                      </div>
-                    </div>
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                      <input type="text" name="a_password" tabindex="-1" value="" autocomplete="off" />
-                    </div>
-                  </form>
+              <div class="widget widget-subscribe">
+                <div class="widget__head">
+                  <h4 class="widget__title">{{site.newsletter-title}}</h4>
                 </div>
+                <p class="subscribe-subtitle">{{site.newsletter-description}}</p>
+                <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form"
+                  id="1wj8v6" data-async="true" data-recaptcha="true">
+                  <div class="subscribe-group">
+                    <div class="subscribe-group-top">
+                      <label class="screen-reader-text" for="sendfox_form_email">Email</label>
+                      <input class="subscribe-email" id="sendfox_form_email" type="email" name="email"
+                        placeholder="Email Address" required>
+                      <button class="subscribe-button button button--primary" type="submit">Subscribe</button>
+                    </div>
+                  </div>
+                  <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="a_password" tabindex="-1" value="" autocomplete="off" />
+                  </div>
+                </form>
               </div>
               {% endif %}
             </div>
@@ -111,9 +109,25 @@
     <div class="row">
       <div class="col col-12 col-d-10 push-d-1 col-m-12 push-m-0">
         <div class="footer__inner">
-          {% include contact-links.html %}
-          <div class="copyright">{{site.time | date: '%Y'}} &copy; <a href="/">{{site.title}}</a>
+          <div class="footer__links">
+            <div class="footer__column">
+              <div class="footer__heading">Social</div>
+              {% include contact-links.html %}
+            </div>
+
+            {% if site.projects %}
+            <div class="footer__column">
+              <div class="footer__heading">Projects</div>
+              <div class="projects__list">
+                {% for project in site.projects %}
+                <a href="{{ project.link }}" target="_blank">{{ project.name }}</a>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
           </div>
+
+          <div class="copyright">{{site.time | date: '%Y'}} &copy; <a href="/">{{site.title}}</a></div>
         </div>
       </div>
     </div>

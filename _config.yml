@@ -27,6 +27,12 @@ contact:
 - {name: "Instagram", icon: "logo-instagram", link: "https://www.instagram.com/crmne/"}
 - {name: "SoundCloud", icon: "logo-soundcloud", link: "https://soundcloud.com/crimsonlakemusic"}
 
+# Footer Projects List
+projects:
+- {name: "Chat with Work", link: "https://chatwithwork.com"}
+- {name: "Vettr", link: "https://vettr.ai"}
+- {name: "Cluster Headache Tracker", link: "https://clusterheadachetracker.com"}
+- {name: "Floppy Disco", link: "https://floppydisco.live"}
 
 #-------------------------------
 # Comment Section (Disqus)

@@ -196,7 +196,7 @@
     outline: 0;
     box-sizing: border-box;
     transition: border-color .2s ease-in-out;
-    
+
     &:focus {
       border-color: darken($brand-color, 25%);
     }
@@ -225,13 +225,13 @@
 @media only screen and (max-width: $mobile) {
   .subscribe-group-top {
     flex-direction: column;
-    
+
     .subscribe-email {
       border-radius: 5px;
       border-right: 1px solid $dark;
       margin-bottom: 10px;
     }
-    
+
     .subscribe-button {
       width: 100%;
       border-radius: 5px;
@@ -244,8 +244,51 @@
   position: relative;
   margin-top: 40px;
   background-color: $dark;
+
   .footer__inner {
     padding: 50px 0 40px;
+  }
+
+  .footer__links {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-bottom: 30px;
+
+    @media only screen and (max-width: $mobile) {
+      flex-direction: column;
+      gap: 40px;
+      text-align: center;
+    }
+  }
+
+  .footer__column {
+    min-width: 140px;
+  }
+
+  .footer__heading {
+    margin-bottom: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $white;
+  }
+
+  .projects__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    a {
+      font-size: 14px;
+      color: $gray;
+      transition: all .25s;
+
+      &:hover {
+        color: $brand-color;
+      }
+    }
   }
 }
 
@@ -255,6 +298,7 @@
   font-size: 13px;
   text-align: center;
   color: $gray;
+
   a {
     color: $white;
     &:hover {
