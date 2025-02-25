@@ -7,7 +7,7 @@ image: '/images/me-04.jpg'
 
 Hi, I'm Carmine Paolino. My journey with technology started early – at age 5, I wrote my first scripts to automate launching my favorite games. That moment of making a computer do exactly what I wanted felt like magic, and it sparked a lifelong fascination with technology.
 
-These days, I'm building two AI tools I'm passionate about: [Chat with Work][chatwithwork], which helps teams unlock the knowledge buried in their workplace documents, and [Vettr][vettr], which is reimagining how VCs and founders connect. Previously, I co-founded [Freshflow][freshflow], where we used AI to help supermarkets reduce food waste.
+These days, I'm building AI tools I'm passionate about: [Chat with Work][chatwithwork], which helps teams unlock the knowledge buried in their workplace documents. I also co-founded [Freshflow][freshflow], where we used AI to help supermarkets reduce food waste.
 
 My path in technology has been driven by curiosity. From becoming Vice President and Technical Officer of the Italian [Gentoo Linux][gentoo] community in my teens, to studying computer science at the [University of Bologna][unibo] where my work on [large-scale social network analysis][lana] was published by [Springer][springer]. This led me to AI at the [Free University of Amsterdam][vu], where I had the chance to work with an alumnus of Geoffrey Hinton on combining deep learning with my love for music.
 
