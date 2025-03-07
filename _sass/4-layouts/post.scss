@@ -89,15 +89,17 @@
 
 .image-box {
   background: transparent;
+  display: flex;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .post-image {
-  display: block;
   margin-bottom: 30px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   border-radius: 8px;
+  max-height:512px;
+  max-width:800px;
 
   &:after {
     content: "";
