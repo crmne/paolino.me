@@ -87,3 +87,9 @@
 .screen-reader-text {
 	@include screen-reader();
 }
+
+@media print {
+  .hidden-print {
+    display: none !important;
+  }
+}
