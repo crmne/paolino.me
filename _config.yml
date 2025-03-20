@@ -13,7 +13,9 @@ author:
   name: *name
   image: '/images/me-04_small.jpg'
   avatar: '/images/me-04_small.jpg'
+  picture: '/images/me-04_small.jpg'
   description: *description
+  twitter: paolino
 
 #-------------------------------
 # Contact links
@@ -62,6 +64,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll/tagging
+  - jekyll-feed
 
 paginate: 9
 paginate_path: "/page/:num"
