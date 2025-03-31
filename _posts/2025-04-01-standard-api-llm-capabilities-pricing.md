@@ -4,7 +4,7 @@ title: "Introducing a Standard API for LLM Capabilities and Pricing"
 date: 2025-04-01
 description: "Solving the frustration of hunting through documentation to find basic model information."
 tags: [Ruby, AI, LLM, API Standards, OpenAI, Anthropic, Gemini, DeepSeek, Open Source]
-image: /images/standard-llm-capabilities-pricing-api.png
+image: /images/standard-llm-capabilities-pricing-api.jpg
 ---
 
 ## The LLM capability and pricing mess stops here
