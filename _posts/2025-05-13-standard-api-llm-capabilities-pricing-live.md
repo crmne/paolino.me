@@ -4,7 +4,7 @@ title: "The Standard API for LLM Capabilities and Pricing is Now Live"
 date: 2025-05-13
 description: "The API we wished existed is now a reality. No more hunting through docs for model information."
 tags: [Ruby, AI, LLM, API Standards, OpenAI, Anthropic, Gemini, DeepSeek, Open Source, Parsera]
-image: /images/standard-llm-capabilities-pricing-api.jpg
+image: /images/standard-llm-capabilities-pricing-api-live.png
 ---
 
 ## The API We Always Wanted is Finally Here
