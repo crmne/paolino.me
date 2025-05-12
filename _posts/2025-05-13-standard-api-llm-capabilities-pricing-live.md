@@ -13,7 +13,7 @@ Remember that frustration of hunting through documentation to find basic model i
 
 [Check out the model browser](https://llmspecs.parsera.org/) or [dive straight into the API](http://api.parsera.org/v1/llm-specs).
 
-## The Problem We Solved
+## The Problem Parsera Solved
 
 It's 2025, and until now, you still couldn't get basic information about LLM models through their APIs. Want to know the context window? Pricing per token? Whether a model supports function calling? You had to dig through documentation that changes constantly and is formatted differently for each provider.
 
