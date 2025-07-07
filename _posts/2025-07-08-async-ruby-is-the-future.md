@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Async Ruby is the Future (of LLM Communication)"
-date: 2025-07-08
+date: 2025-07-14
 description: "How Ruby's async ecosystem transforms resource-intensive LLM applications into efficient, scalable systems -- without rewriting your codebase."
 tags: [Ruby, Async, LLM, AI, Rails, Concurrency, Performance, Falcon]
 image: /images/async-ruby-llm.png
