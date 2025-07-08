@@ -41,7 +41,7 @@ end
 
 Your 26th user? They're waiting in line. Not because your server is busy, but because all your workers are occupied by jobs waiting for tokens.
 
-### 2. High Resource Usage
+### 2. Resource Multiplication
 
 Each thread needs its own:
 - Database connection (25 threads = 25 connections minimum)
@@ -61,7 +61,7 @@ When you're handling thousands of streaming connections, these microseconds add 
 
 ### 4. Scalability Limits
 
-Try creating 10,000 threads. The overhead becomes crushing. Yet modern AI apps need to handle thousands of concurrent conversations.
+Try creating 10,000 threads. The OS will complain, and the overhead will become crushing. Yet modern AI apps need to handle thousands of concurrent conversations.
 
 These aren't separate issues -- they're all symptoms of the same architectural mismatch. LLM communication is fundamentally different from  traditional background jobs.
 
@@ -236,6 +236,28 @@ end
 ```
 
 No callbacks. No promises. No async/await keywords. Just Ruby code that scales.
+
+### Why RubyLLM Just Works™
+
+Here's the thing that made me smile when I discovered it: [RubyLLM][] gets async performance *for free*. No special RubyLLM-async version needed. No code changes to the library. No configuration. Nothing.
+
+Why? Because RubyLLM uses `Net::HTTP` under the hood. When you wrap RubyLLM calls in an Async block, `Net::HTTP` automatically yields during network I/O, allowing thousands of concurrent LLM conversations to happen on a single thread.
+
+```ruby
+# This is all you need for concurrent LLM calls
+Async do
+  10.times.map do
+    Async do
+      # RubyLLM automatically becomes non-blocking
+      # because Net::HTTP knows how to yield to fibers
+      message = RubyLLM.chat.ask "Explain quantum computing"
+      puts message.content
+    end
+  end.map(&:wait)
+end
+```
+
+This is Ruby at its best. Libraries that follow conventions get superpowers without even trying. It just works because it was built on solid foundations.
 
 ### The Rest of the Ecosystem
 
