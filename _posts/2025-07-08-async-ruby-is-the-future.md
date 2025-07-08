@@ -1,21 +1,21 @@
 ---
 layout: post
 title: "Async Ruby is the Future (of LLM Communication)"
-date: 2025-07-14
+date: 2025-07-08
 description: "How Ruby's async ecosystem transforms resource-intensive LLM applications into efficient, scalable systems -- without rewriting your codebase."
 tags: [Ruby, Async, LLM, AI, Rails, Concurrency, Performance, Falcon]
-image: /images/async-ruby-llm.png
+image: /images/async.webp
 ---
 
-After a decade as an ML engineer immersed in Python's async ecosystem, returning to Ruby felt like stepping back in time. Where was the async revolution? Why was everyone still using threads for everything? SolidQueue, Sidekiq, GoodJob -- all thread-based. Even the newer solutions defaulted to the same concurrency model.
+After a decade as an ML engineer immersed in Python's async ecosystem, returning to Ruby felt like stepping back in time. Where was the async revolution? Why was everyone still using threads for everything? SolidQueue, Sidekiq, GoodJob -- all thread-based. Even newer solutions defaulted to the same concurrency model.
 
 Coming from Python, where the entire community had reorganized around `asyncio`, this seemed bizarre. FastAPI replaced Flask. Every library spawned an async twin. The transformation was total and necessary.
 
-Then I built [RubyLLM](https://github.com/crmne/ruby_llm) and discovered something that changed everything: _LLM communication is async Ruby's killer app_. The unique demands of streaming AI responses -- long-lived connections, token-by-token delivery, thousands of concurrent conversations -- expose exactly why async matters.
+Then, building [RubyLLM][] and [Chat with Work][], I noticed that _LLM communication is async Ruby's killer app_. The unique demands of streaming AI responses -- long-lived connections, token-by-token delivery, thousands of concurrent conversations -- expose exactly why async matters.
 
-But here's the plot twist: once I understood Ruby's approach to async, I realized it's actually *superior* to Python's. While Python forced everyone to rewrite their entire stack, Ruby quietly built something better. Your existing code just works. No syntax changes. No library migrations. Just better performance when you need it.
+Here's when it got exciting: once I understood Ruby's approach to async, I realized it's actually *superior* to Python's. While Python forced everyone to rewrite their entire stack, Ruby quietly built something better. Your existing code just works. No syntax changes. No library migrations. Just better performance when you need it.
 
-The async ecosystem that Samuel Williams and others have been building for years suddenly makes perfect sense. We just needed the right use case to see it.
+The async ecosystem that [Samuel Williams][] and others have been building for years suddenly makes perfect sense. We just needed the right use case to see it.
 
 ## Understanding Concurrency: Threads vs Async
 
@@ -51,9 +51,9 @@ end
 
 Each thread:
 - Gets scheduled by the OS kernel
-- Can be interrupted mid-execution
+- Can be interrupted mid-execution (in Ruby, after 100ms)
 - Blocks individually on I/O operations
-- Requires 8MB of virtual memory for its stack
+- Requires OS resources and kernel data structures
 - Needs its own resources (like database connections)
 
 #### Fibers: Cooperative Concurrency
@@ -66,8 +66,8 @@ Async do
   fibers = 10.times.map do |i|
     Async do
       expensive_calculation(i)  # Runs to completion
-      fetch_from_api(i)        # Yields here, other fibers run
-      process_result(i)        # Continues after I/O completes
+      fetch_from_api(i)         # Yields here, other fibers run
+      process_result(i)         # Continues after I/O completes
     end
   end
 end
@@ -76,12 +76,14 @@ end
 Each fiber:
 - Schedules itself by yielding during I/O
 - Never gets interrupted mid-calculation
-- Uses only 24KB of memory (300x smaller than threads!)
+- Managed entirely in userspace (no kernel involvement)
 - Shares resources through the event loop
 
 ### Ruby's GVL: Why Fibers Make Even More Sense
 
-Ruby's Global VM Lock (GVL) means only one thread can execute Ruby code at a time. This creates an interesting dynamic:
+Ruby's Global VM Lock (GVL) means only one thread can execute Ruby code at a time. Threads are preempted after a 100ms time quantum.
+
+This creates an interesting dynamic:
 
 ```ruby
 # CPU work: Threads don't help much due to GVL
@@ -97,7 +99,7 @@ end
 # Takes 1/4 the time of sequential execution
 ```
 
-But here's the thing: if threads only help with I/O anyway, why pay their overhead?
+But here's the thing: if threads only help with I/O anyway, _why pay their overhead_?
 
 ### The I/O Multiplexing Advantage
 
@@ -130,15 +132,24 @@ The kernel (via `epoll`, `kqueue`, or `io_uring`) can monitor thousands of file 
 
 ### Why Fibers Win: The Complete Picture
 
-Let's recap why fibers are so much more efficient for I/O-heavy workloads:
+Let's look at real benchmark data comparing fibers to threads[^1]:
 
-1. **Tiny Memory Footprint**: 24KB vs 8MB per concurrent operation (300x smaller)
-2. **Efficient Scheduling**: No kernel involvement, no preemption overhead
-3. **I/O Multiplexing**: One thread monitors thousands of I/O operations
-4. **GVL-Friendly**: Since the GVL limits CPU parallelism anyway, cooperative concurrency is ideal
-5. **Resource Sharing**: Database connections, memory pools, etc. are naturally shared
+**Performance Advantages (Ruby 3.4 data)**:
+- **18x faster allocation**: Creating a fiber takes ~4.7μs vs ~84μs for a thread
+- **17x faster context switching**: Fiber switches in ~0.14μs vs ~2.4μs for threads
+- **7.4 million switches/second** with fibers vs 425,000 with threads
 
-The efficiency isn't just theoretical. With threads, your costs scale linearly -- 1000 concurrent operations need 1000 threads (8GB of virtual memory). With fibers, the same load uses one thread and 24MB.
+But the real advantage is **scalability**:
+
+1. **OS Resource Limits**: Creating 10,000 threads can fail on macOS due to system limits, while 10,000 fibers works effortlessly
+2. **Efficient Scheduling**: No kernel involvement means less overhead
+3. **I/O Multiplexing**: One thread monitors thousands of I/O operations via epoll/kqueue
+4. **GVL-Friendly**: Cooperative scheduling works naturally with Ruby's concurrency model
+5. **Resource Sharing**: Database connections and memory pools are naturally shared
+
+While memory usage between fibers and threads is comparable, fibers don't depend on OS resources. You can create vastly more fibers than threads, switch between them faster, and manage them more efficiently while monitoring thousands of connections -- all from userspace.
+
+[^1]: Benchmark data from [Samuel Williams][]' [fiber-vs-thread performance comparison](https://github.com/socketry/performance/tree/main/fiber-vs-thread)
 
 ### Why This Matters for LLM Applications
 
@@ -149,19 +160,19 @@ LLM streaming creates the perfect conditions where all these advantages compound
 3. **Massive concurrency needs**: Modern apps handle thousands of simultaneous chats
 4. **Real-time requirements**: Low latency expectations despite high concurrency
 
-With traditional threading, you hit a wall. Each LLM conversation holds a thread (and its 8MB stack, database connection, etc.) hostage for minutes while doing almost nothing. It's like hiring a full-time employee to watch a phone that rings once an hour.
+With traditional threading, you hit OS limits quickly. Need to handle 10,000 concurrent LLM streams? Good luck creating 10,000 threads -- the OS will likely refuse if not configured correctly. Even if it works, you're paying for expensive context switches millions of times per second.
 
-Fibers flip the equation. One thread efficiently multiplexes thousands of LLM streams, switching between them only when tokens arrive. The same server that chokes on 100 concurrent threads can handle 10,000 concurrent fibers.
+Fibers flip the equation. One thread efficiently multiplexes thousands of LLM streams, switching between them in nanoseconds only when tokens arrive.
 
-## Ruby's Async Ecosystem: The Plot Twist Python Didn't See Coming
+## Ruby's Async Ecosystem
 
-Here's what makes Ruby's async special: while Python fractured its ecosystem with incompatible libraries and forced syntax changes (given the requirement to always use `async`/`await` to benefit from `asyncio`), Ruby took a different path. Samuel Williams, as a Ruby core committer who implemented the Fiber Scheduler interface, understood something fundamental -- async should enhance Ruby, not replace it.
+Here's what makes Ruby's [async][] special: while Python fractured its ecosystem with incompatible libraries and forced syntax changes given the requirement to use `async`/`await` to benefit from `asyncio`, Ruby took a different path. [Samuel Williams][], as a Ruby core committer who implemented the Fiber Scheduler interface, understood something fundamental -- async should enhance Ruby, not replace it.
 
-The result? As long as your underlying libraries are Fiber-aware, you can simply wrap your code in Fibers or Async tasks and it will be magically faster!
+The result? Most Ruby code works with async out of the box. If your code is either synchronous (most libraries) or thread-safe, it'll work seamlessly in an async environment. No special async versions needed!
 
-### The Foundation: The `async` Gem
+### The Foundation: The [async][] Gem
 
-The beauty of Ruby's async lies in its transparency:
+The beauty of Ruby's [async][] lies in its transparency:
 
 ```ruby
 require 'async'
@@ -173,8 +184,7 @@ Async do
   responses = 1000.times.map do |i|
     Async do
       uri = URI("https://api.openai.com/v1/chat/completions")
-      # Net::HTTP is fiber-aware in Ruby 3.0+
-      # It automatically yields during I/O
+      # Net::HTTP automatically yields during I/O
       response = Net::HTTP.post(uri, data.to_json, headers)
       JSON.parse(response.body)
     end
@@ -185,11 +195,20 @@ Async do
 end
 ```
 
-No callbacks. No promises. No `async`/`await` keywords. Just Ruby code that scales.
+No callbacks. No promises. No async/await keywords. Just Ruby code that scales.
 
-## Migrating your Rails app to the Async ecosystem
+### The Rest of the Ecosystem
 
-The remarkable thing about Ruby's async is how little changes. Your business logic remains untouched.
+- **[Falcon][]**: Multi-process, multi-fiber web server built for streaming
+- **[async-job][]**: Background job processing using fibers
+- **[async-cable][]**: ActionCable replacement with fiber-based concurrency
+- **[async-http][]**: Full-featured HTTP client with streaming support
+
+... and many more available from [Socketry](https://github.com/orgs/socketry/repositories)
+
+## Migrating to Async: A Pragmatic Approach
+
+The remarkable thing about Ruby's [async][] is how little changes. Your business logic remains untouched.
 
 ### Step 1: Update Dependencies
 
@@ -239,14 +258,14 @@ No special base classes. No syntax changes. Your Rails app gains async superpowe
 
 ## Real-World Performance
 
-The impact is dramatic. In production LLM applications:
+The impact is dramatic. Based on benchmarks and production experience:
 
-- **Concurrency**: Handle many more concurrent conversations with the same hardware
-- **Memory usage**: Dramatically reduced due to fiber efficiency
-- **Response latency**: Lower and more predictable without thread scheduling overhead
-- **Infrastructure costs**: Significantly reduced server requirements
+- **Allocation Performance**: Fibers are 5-18x faster to create than threads
+- **Context Switching**: Fibers switch 3-17x faster than threads
+- **Scalability**: Handle 10-100x more concurrent operations before hitting system limits
+- **Latency**: More predictable performance without preemptive scheduling overhead
 
-The difference is especially pronounced for LLM workloads where connections are long-lived and mostly idle, waiting for the next token to stream.
+For LLM workloads specifically, where connections are long-lived and mostly idle waiting for tokens, the advantages multiply. A single process using fibers can handle the load that would require multiple servers using threads.
 
 ## When to Choose What
 
@@ -274,6 +293,15 @@ For LLM applications specifically, the choice is becoming clear. The combination
 
 The tools are mature. The performance gains are real. The migration path is smooth.
 
+### Getting Started in 30 Minutes
+
+1. **Add the gems**: `falcon`, `async-job-adapter-active_job`, `async-cable`
+2. **Configure Rails**: Add one line to enable async-cable
+3. **Deploy**: Falcon automatically replaces Puma
+4. **Monitor**: Watch your resource usage plummet
+
+Your existing ActiveJob code continues working. Your ActionCable channels don't change. You just get better performance.
+
 ## A New Chapter for Ruby
 
 After years in Python's async world, I've seen what happens when a language forces a syntax change to access the benefits of async concurrency on its community. Libraries fragment. Codebases split. Developers struggle with new syntax and concepts.
@@ -284,16 +312,27 @@ We're witnessing Ruby's next evolution. Not through breaking changes or ecosyste
 
 LLM applications are that use case. The combination of long-lived connections, streaming responses, and massive concurrency creates the perfect storm where async's benefits become undeniable.
 
-Samuel Williams and the async community have given us incredible tools. Unlike Python, you don't have to rewrite everything to use it.
+[Samuel Williams][] and the [async][] community have given us incredible tools. Unlike Python, you don't have to rewrite everything to use it.
 
-For those building the next generation of AI-powered applications, async Ruby isn't just an option -- it's a competitive advantage. Lower costs, better performance, simpler operations, and you keep your existing codebase.
+For those building the next generation of AI-powered applications, [async][] Ruby isn't just an option -- it's a competitive advantage. Lower costs, better performance, simpler operations, and you keep your existing codebase.
 
-The future is concurrent. The future is streaming. The future is async.
+The future is concurrent. The future is streaming. The future is [async][].
 
 And in Ruby, that future works with the code you already have.
 
 ---
 
-*RubyLLM powers [Chat with Work](https://chatwitwork.com) in production with thousands of concurrent AI conversations. Want elegant AI integration in Ruby? Check out [RubyLLM](https://rubyllm.com).*
+*[RubyLLM][] powers [Chat with Work][] in production with thousands of concurrent AI conversations. Want elegant AI integration in Ruby? Check out [RubyLLM][].*
+
+*Special thanks to [Samuel Williams][] for reviewing this post and providing the [fiber-vs-thread benchmarks](https://github.com/socketry/performance/tree/main/fiber-vs-thread) that substantiate these performance claims.*
 
 **Join the conversation:** I'll be speaking about async Ruby and AI at [EuRuKo 2025](https://2025.euruko.org/), [San Francisco Ruby Conference 2025](https://sfruby.com/), and [RubyConf Thailand 2026](https://rubyconfth.com/). Let's build the future together.
+
+[RubyLLM]: https://rubyllm.com
+[Chat with Work]: https://chatwitwork.com
+[Samuel Williams]: https://github.com/ioquatix
+[async]: https://github.com/socketry/async
+[Falcon]: https://github.com/socketry/falcon
+[async-job]: https://github.com/socketry/async-job
+[async-http]: https://github.com/socketry/async-http
+[async-cable]: https://github.com/socketry/async-cable
