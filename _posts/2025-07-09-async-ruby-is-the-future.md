@@ -205,7 +205,7 @@ Remember those four problems? Here's how async addresses each one:
 
 1. **No More Slot Starvation**: Fibers are created on-demand and destroyed immediately. No fixed worker pools.
 2. **Shared Resources**: One process with a few pooled database connections can handle thousands of conversations.
-3. **Improved Performance**: 20x faster to create, 10x faster to switch, 15x higher throughput.
+3. **Improved Performance**: 20x faster to create, 10x faster to switch, 15x less scheduling overhead (synthetic upper bound).
 4. **Massively Improved Scalability**: 10,000+ concurrent fibers? No problem. The OS doesn't even know they exist.
 
 ## Ruby's Async Ecosystem
