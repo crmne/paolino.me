@@ -53,19 +53,19 @@ For 1000 concurrent conversations, you'd need 1000 threads. Each thread needs it
 ### 3. Performance Overhead
 
 Real benchmarks show[^1]:
-- Creating a thread: ~84μs
-- Thread context switch: ~2.4μs
-- Maximum switches/second: 425,000
+- Creating a thread: ~80μs
+- Thread context switch: ~1.3μs
+- Maximum throughput: ~5,000 requests/second
 
 When you're handling thousands of streaming connections, these microseconds add up to real latency.
 
-### 4. Scalability Limits
+### 4. Scalability Challenges
 
-Try creating 10,000 threads. The OS will complain, and the overhead will become crushing. Yet modern AI apps need to handle thousands of concurrent conversations.
+Try creating 10,000 threads and the OS scheduler starts to struggle. The overhead becomes crushing. Yet modern AI apps need to handle thousands of concurrent conversations.
 
-These aren't separate issues -- they're all symptoms of the same architectural mismatch. LLM communication is fundamentally different from  traditional background jobs.
+These aren't separate issues -- they're all symptoms of the same architectural mismatch. LLM communication is fundamentally different from traditional background jobs.
 
-[^1]: [Samuel Williams][]' [fiber-vs-thread performance comparison](https://github.com/socketry/performance/tree/main/fiber-vs-thread)
+[^1]: [Samuel Williams][]' [fiber-vs-thread performance comparison](https://github.com/socketry/performance/tree/adfd780c6b4842b9534edfa15e383e5dfd4b4137/fiber-vs-thread)
 
 ## Understanding Concurrency: Threads vs Async
 
@@ -185,13 +185,13 @@ The kernel (via `epoll`, `kqueue`, or `io_uring`) can monitor thousands of file 
 Let's look at real benchmark data comparing fibers to threads[^1]:
 
 **Performance Advantages (Ruby 3.4 data)**:
-- **18x faster allocation**: Creating a fiber takes ~4.7μs vs ~84μs for a thread
-- **17x faster context switching**: Fiber switches in ~0.14μs vs ~2.4μs for threads
-- **7.4 million switches/second** with fibers vs 425,000 with threads
+- **20x faster allocation**: Creating a fiber takes ~3μs vs ~80μs for a thread
+- **10x faster context switching**: Fiber switches in ~0.1μs vs ~1.3μs for threads
+- **15x higher throughput**: ~80,000 vs ~5,000 requests/second
 
 But the real advantage is **scalability**:
 
-1. **OS Resource Limits**: Creating 10,000 threads can fail due to system limits, while 10,000 fibers works effortlessly
+1. **Fewer OS Resources**: Fibers are managed in userspace, avoiding kernel overhead
 2. **Efficient Scheduling**: No kernel involvement means less overhead
 3. **I/O Multiplexing**: One thread monitors thousands of I/O operations via `epoll`/`kqueue`/`io_uring`
 4. **GVL-Friendly**: Cooperative scheduling works naturally with Ruby's concurrency model
@@ -205,7 +205,7 @@ Remember those four problems? Here's how async addresses each one:
 
 1. **No More Slot Starvation**: Fibers are created on-demand and destroyed immediately. No fixed worker pools.
 2. **Shared Resources**: One process with a few pooled database connections can handle thousands of conversations.
-3. **Improved Performance**: 18x faster to create, 17x faster to switch. Microseconds become nanoseconds.
+3. **Improved Performance**: 20x faster to create, 10x faster to switch, 15x higher throughput.
 4. **Massively Improved Scalability**: 10,000+ concurrent fibers? No problem. The OS doesn't even know they exist.
 
 ## Ruby's Async Ecosystem
@@ -340,7 +340,7 @@ And in Ruby, that future works with the code you already have.
 
 *[RubyLLM][] powers [Chat with Work][] in production with thousands of concurrent AI conversations using [async][]. Want elegant AI integration in Ruby? Check out [RubyLLM][].*
 
-*Special thanks to [Samuel Williams][] for reviewing this post and providing the [fiber-vs-thread benchmarks](https://github.com/socketry/performance/tree/main/fiber-vs-thread) that substantiate these performance claims.*
+*Special thanks to [Samuel Williams][] for reviewing this post and providing the [fiber-vs-thread benchmarks](https://github.com/socketry/performance/tree/adfd780c6b4842b9534edfa15e383e5dfd4b4137/fiber-vs-thread) that substantiate these performance claims.*
 
 **Join the conversation:** I'll be speaking about async Ruby and AI at [EuRuKo 2025](https://2025.euruko.org/), [San Francisco Ruby Conference 2025](https://sfruby.com/), and [RubyConf Thailand 2026](https://rubyconfth.com/). Let's build the future together.
 
