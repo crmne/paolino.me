@@ -345,7 +345,7 @@ And in Ruby, that future works with the code you already have.
 **Join the conversation:** I'll be speaking about async Ruby and AI at [EuRuKo 2025](https://2025.euruko.org/), [San Francisco Ruby Conference 2025](https://sfruby.com/), and [RubyConf Thailand 2026](https://rubyconfth.com/). Let's build the future together.
 
 [RubyLLM]: https://rubyllm.com
-[Chat with Work]: https://chatwitwork.com
+[Chat with Work]: https://chatwithwork.com
 [Samuel Williams]: https://github.com/ioquatix
 [async]: https://github.com/socketry/async
 [Falcon]: https://github.com/socketry/falcon
