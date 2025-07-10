@@ -43,12 +43,12 @@ Your 26th user? They're waiting in line. Not because your server is busy, but be
 
 ### 2. Resource Multiplication
 
-Each thread needs its own:
-- Database connection (25 threads = 25 connections minimum)
+Each background job worker thread needs its own:
+- Database connection (25 workers = 25 connections minimum)
 - Stack memory allocation
 - OS thread management overhead
 
-For 1000 concurrent conversations, you'd need 1000 threads. Each thread needs its database connection. That's 1000 database connections for threads that are 99% idle.
+For 1000 concurrent conversations using traditional job queues like SolidQueue or Sidekiq, you'd need 1000 worker threads. Each worker thread holds its database connection for the entire job duration. That's 1000 database connections for threads that are 99% idle, waiting for streaming tokens.
 
 ### 3. Performance Overhead
 
