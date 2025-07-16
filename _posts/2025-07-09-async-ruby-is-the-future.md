@@ -259,6 +259,8 @@ end
 
 This is Ruby at its best. Libraries that follow conventions get superpowers without even trying. It just works because it was built on solid foundations.
 
+Check out [RubyLLM's Scale with Async guide](https://rubyllm.com/guides/async) to learn more.
+
 ### The Rest of the Ecosystem
 
 - **[Falcon][]**: Multi-process, multi-fiber web server built for streaming
