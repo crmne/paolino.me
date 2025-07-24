@@ -289,21 +289,66 @@ gem "async-job-adapter-active_job"
 gem "async-cable"
 ```
 
-### Step 2: One Configuration Line
+### Step 2: Configure Your Application
 
 ```ruby
 # config/application.rb
 require "async/cable"
 
-# config/environments/production.rb
-config.active_job.queue_adapter = :async_job
+# config/initializers/async_job.rb
+require 'async/job/processor/inline'
+
+Rails.application.configure do
+  config.async_job.define_queue "default" do
+    dequeue Async::Job::Processor::Inline
+  end
+  
+  config.active_job.queue_adapter = :async_job
+end
 ```
 
 ### Step 3: There's No Step 3!
 
 Your existing jobs work unchanged. Your channels don't need updates.
 
-Just deploy and watch. You'll get more performance, more capacity, and better response times.
+Just deploy with Falcon and watch. You'll get more performance, more capacity, and better response times.
+
+#### Note on Puma
+
+The above configuration works out of the box with Falcon. If you're using Puma, you'll need additional setup for concurrent job processing. See the [RubyLLM Async Guide](https://rubyllm.com/guides/async#note-on-puma) for Puma configuration details.
+
+### Mixing Job Adapters: Best of Both Worlds
+
+You don't have to go all-in. Use async-job only for LLM operations while keeping your existing job processor for everything else:
+
+```ruby
+# Keep your existing adapter as default
+config.active_job.queue_adapter = :solid_queue  # or :sidekiq, :good_job, etc.
+
+# Base class for all LLM jobs
+class LLMJob < ApplicationJob
+  self.queue_adapter = :async_job
+end
+
+# LLM jobs inherit the async adapter
+class ChatResponseJob < LLMJob
+  def perform(conversation_id, message)
+    # Runs with async-job - perfect for streaming
+    response = RubyLLM.chat.ask(message)
+    # ...
+  end
+end
+
+# Regular jobs use your default adapter
+class ImageProcessingJob < ApplicationJob
+  def perform(image_id)
+    # Runs with solid_queue - better for CPU work
+    # ...
+  end
+end
+```
+
+This approach lets you optimize each job type for its workload without disrupting your existing infrastructure.
 
 ## When to Use What
 
