@@ -19,7 +19,7 @@ The good news is that RubyLLM makes it super easy to use once you know that quir
 chat = RubyLLM
          .chat(model: "gemini-2.5-flash-image")
          .with_temperature(1.0) # optional, but you like creativity, right?
-         .with_params(generationConfig: { responseModalities: ["image"] })
+         .with_params(generationConfig: { responseModalities: ["image"] }) # also optional, if you prefer the model to return only images
 
 response = chat.ask "your prompt", with: ["all.png", "the.jpg", "attachments.png", "you.png", "want.jpg"]
 
