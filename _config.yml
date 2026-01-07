@@ -65,6 +65,7 @@ plugins:
   - jekyll-sitemap
   - jekyll/tagging
   - jekyll-feed
+  - jekyll-twitter-plugin
 
 paginate: 9
 paginate_path: "/page/:num"

@@ -32,7 +32,14 @@ layout: default
 <article class="post fadein">
   <div class="container">
     <div class="row">
-      {% if page.image %}
+      {% if page.video %}
+      <div class="image-box">
+        <video class="post-image" autoplay muted loop playsinline>
+          <source src="{{site.baseurl}}{{page.video}}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      {% elsif page.image %}
       <div class="image-box">
         <img class="post-image" src="{{site.baseurl}}{{page.image}}"></img>
       </div>
