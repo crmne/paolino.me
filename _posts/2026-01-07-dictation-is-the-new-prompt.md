@@ -8,7 +8,7 @@ image: /images/omarchy-voxtype-demo.png
 video: /images/omarchy-voxtype-demo.mp4
 ---
 
-Typing every prompt with your fingers feels backwards in 2026. We can speak faster than we can type, and it feels more natural. If you care about flow, dictation is the most underrated AI upgrade you can make.
+Typing every prompt with your fingers feels backwards in 2026. We can speak faster than we can type, and it feels more natural. Hold a hotkey, speak, and your OS types it for you. If you care about flow, dictation is the most underrated AI upgrade you can make.
 
 In the [Omarchy](https://omarchy.org/) world, [Hyprwhspr](https://github.com/goodroot/hyprwhspr) is getting a lot of attention after a recent DHH tweet:
 
