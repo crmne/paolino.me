@@ -16,6 +16,10 @@ In the [Omarchy](https://omarchy.org/) world, [Hyprwhspr](https://github.com/goo
 
 He's right: local dictation is _shockingly_ good now. The catch is Hyprwhspr uses Python virtual environments, which don't mix well with [mise](http://mise.jdx.dev/). Fortunately [Pete Jackson](https://github.com/peteonrails) [saw that and created](https://github.com/basecamp/omarchy/discussions/3872) [Voxtype](https://github.com/peteonrails/voxtype/) to solve exactly this issue!
 
+EDIT: five minutes after I posted this, DHH confirmed that Voxtype ships will ship with Omarchy 3.3! 🎉
+
+{% twitter https://twitter.com/dhh/status/2008856834258645389 %}
+
 ## Why Voxtype
 
 Voxtype is built in Rust, so you don't need Python virtual environments which means it works well with mise. It's fast, it just works, and when [I opened an issue asking for an Omarchy theme](https://github.com/peteonrails/voxtype/issues/26), [the author shipped it immediately](https://github.com/peteonrails/voxtype/releases/tag/v0.4.4). Now it looks *stunning* in my setup.
