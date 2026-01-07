@@ -164,8 +164,7 @@ In your Hyprland config:
 
 ```ini
 # Voxtype
-bindd = SUPER, XF86AudioMicMute, Transcribe, exec, voxtype record start
-bindr = SUPER, XF86AudioMicMute, exec, voxtype record stop
+bindd = SHIFT, XF86AudioMicMute, Transcribe, exec, voxtype record toggle
 ```
 
 That's it. Use your voice whenever possible. It's faster, it's more natural, and it keeps you in flow. This is what prompting in 2026 should feel like.
