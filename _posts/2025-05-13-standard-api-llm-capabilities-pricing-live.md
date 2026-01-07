@@ -87,11 +87,11 @@ Check out the [model browser](https://llmspecs.parsera.org/) to explore what's a
 
 ## Next Steps
 
-The API is live and serving real traffic. We're continuously expanding coverage and improving accuracy. Found a bug or missing model? [Report it on the GitHub tracker](https://github.com/parsera-labs/api-llm-specs/issues).
+The API is live and serving real traffic. We're continuously expanding coverage and improving accuracy. Found a bug or missing model? [Report it on the GitHub tracker](https://github.com/parsera-labs/llm-specs/issues).
 
 In the longer term, we hope providers will adopt this standard directly - this shouldn't require scraping. But for now, we've solved the immediate problem. Model information is finally accessible, standardized, and always current.
 
-What do you think? How are you using the API? Let me know on [GitHub Discussions](https://github.com/crmne/ruby_llm/discussions) or in the [bug tracker](https://github.com/parsera-labs/api-llm-specs/issues).
+What do you think? How are you using the API? Let me know on [GitHub Discussions](https://github.com/crmne/ruby_llm/discussions) or in the [bug tracker](https://github.com/parsera-labs/llm-specs/issues).
 
 [rubyllm]: https://rubyllm.com
 [rubyllm-release]: /rubyllm-1-3
