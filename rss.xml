@@ -17,13 +17,14 @@ permalink: /rss.xml
 
 <atom:link href="{{ site.url }}/rss.xml"
            rel="self"
-           type="application/rss+xml" />
+           type="application/rss+xml"/>
 
 <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
 
-{% for post in site.posts limit:20 %}
+{% for post in site.posts limit:15 %}
 
 <item>
+
 <title>{{ post.title | xml_escape }}</title>
 
 <link>{{ site.url }}{{ post.url }}</link>
@@ -36,13 +37,22 @@ permalink: /rss.xml
 
 <description>
 <![CDATA[
-{{ post.excerpt | strip_html }}
+{{ post.excerpt | strip_html | truncate: 280 }}
 ]]>
 </description>
 
+{% capture email_content %}
+{{ post.content
+   | replace: '<div class="language-', '<pre><code>'
+   | replace: '<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>', '<pre><code>'
+   | replace: '</code></pre></div></div>', '</code></pre>'
+   | replace: '</div>', ''
+}}
+{% endcapture %}
+
 <content:encoded>
 <![CDATA[
-{{ post.content }}
+{{ email_content }}
 ]]>
 </content:encoded>
 

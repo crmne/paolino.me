@@ -1,0 +1,7 @@
+{%- comment -%}
+Email-safe rendering:
+- Uses the raw Markdown without Rouge span markup by relying on `markdownify`
+- Avoids your page layout/theme wrappers
+{%- endcomment -%}
+
+{{ include.content | markdownify }}
