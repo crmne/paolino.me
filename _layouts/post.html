@@ -32,12 +32,30 @@ layout: default
 <article class="post fadein">
   <div class="container">
     <div class="row">
-      {% if page.video %}
+      {% assign video_url = page.video | strip %}
+      {% if video_url %}
       <div class="image-box">
+        {% assign youtube_embed_url = video_url %}
+        {% if video_url contains "youtu.be/" %}
+          {% assign youtube_id = video_url | split: "youtu.be/" | last | split: "?" | first %}
+          {% assign youtube_embed_url = "https://www.youtube.com/embed/" | append: youtube_id %}
+          {% if video_url contains "?" %}
+            {% assign youtube_query = video_url | split: "?" | last %}
+            {% assign youtube_embed_url = youtube_embed_url | append: "?" | append: youtube_query %}
+          {% endif %}
+        {% endif %}
+
+        {% if youtube_embed_url contains "youtube.com/embed/" %}
+        <iframe class="post-image post-video" src="{{ youtube_embed_url }}" title="{{ page.title | escape }}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        {% else %}
         <video class="post-image" autoplay muted loop playsinline>
-          <source src="{{site.baseurl}}{{page.video}}" type="video/mp4">
+          <source src="{% if video_url contains '://' %}{{video_url}}{% else %}{{site.baseurl}}{{video_url}}{% endif %}" type="video/mp4">
           Your browser does not support the video tag.
         </video>
+        {% endif %}
       </div>
       {% elsif page.image %}
       <div class="image-box">
