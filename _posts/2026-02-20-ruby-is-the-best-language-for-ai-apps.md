@@ -161,6 +161,8 @@ const { text } = await supportAgent.generateText({
 **Ruby ([RubyLLM][]):**
 
 ```ruby
+require 'ruby_llm'
+
 class SupportAgent < RubyLLM::Agent
   model "gpt-5-nano"
   instructions "You are a concise support assistant."
