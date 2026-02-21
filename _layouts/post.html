@@ -32,8 +32,8 @@ layout: default
 <article class="post fadein">
   <div class="container">
     <div class="row">
-      {% assign video_url = page.video | strip %}
-      {% if video_url %}
+      {% assign video_url = page.video | default: "" | strip %}
+      {% if video_url != "" %}
       <div class="image-box">
         {% assign youtube_embed_url = video_url %}
         {% if video_url contains "youtu.be/" %}
