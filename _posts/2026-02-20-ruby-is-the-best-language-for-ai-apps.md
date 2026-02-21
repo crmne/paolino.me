@@ -71,7 +71,9 @@ What if you want to use a model from another provider?
 **Ruby ([RubyLLM][]):**
 
 ```ruby
-RubyLLM.chat.ask "Hello!"
+require 'ruby_llm'
+
+RubyLLM.chat(model: 'gpt-5.2').ask "Hello!"
 ```
 
 Reads like it should.
