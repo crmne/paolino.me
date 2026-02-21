@@ -73,7 +73,7 @@ What if you want to use a model from another provider?
 ```ruby
 require 'ruby_llm'
 
-RubyLLM.chat(model: 'gpt-5.2').ask "Hello!"
+RubyLLM.chat.ask "Hello!"
 ```
 
 Reads like it should.
