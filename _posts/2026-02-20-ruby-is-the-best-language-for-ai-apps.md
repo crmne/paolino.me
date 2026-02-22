@@ -236,7 +236,7 @@ Someone ported [RubyLLM][]'s API design to JavaScript as [NodeLLM](https://githu
 
 The JavaScript community's response: zero upvotes on Reddit. 14 GitHub stars. Top comments: "How's this different from AI SDK?" and "It's always fun when you AI bros post stuff. They all look and sound the same. Also, totally unnecessary."
 
-[RubyLLM][]: #1 on Hacker News. ~3,600 stars. 5 million downloads. Half a million people using RubyLLM-powered apps today.
+[RubyLLM][]: #1 on Hacker News. ~3,600 stars. 5 million downloads. Millions of people using RubyLLM-powered apps today.
 
 Same design. Wildly different reception. That tells you everything about which community is ready for this moment.
 
