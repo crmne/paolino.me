@@ -20,8 +20,8 @@ body {
   }
 
   @media only screen and (max-width: $mobile) {
-    font-size: 16px;
-    line-height: 26px;
+    font-size: 18px;
+    line-height: 30px;
   }
 }
 
@@ -107,13 +107,22 @@ blockquote {
 }
 
 pre {
+  font-family: $monospace-font-family;
   overflow: auto;
   padding: 15px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: $monospace-font-size;
+  line-height: $monospace-line-height;
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
+}
+
+code,
+kbd,
+samp {
+  font-family: $monospace-font-family;
+  font-size: $monospace-font-size;
 }
 
 img,
