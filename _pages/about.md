@@ -5,21 +5,18 @@ permalink: /about/
 image: '/images/me-04.jpg'
 ---
 
-Hi, I'm Carmine Paolino. My journey with technology started early – at age 5, I wrote my first scripts to automate launching my favorite games. That moment of making a computer do exactly what I wanted felt like magic, and it sparked a lifelong fascination with technology.
+I'm Carmine Paolino. I wrote my first scripts at 5 to automate launching my favorite games. I've been hooked ever since.
 
-These days, I'm building AI tools I'm passionate about: [Chat with Work][chatwithwork], which helps teams unlock the knowledge buried in their workplace documents. I also co-founded [Freshflow][freshflow], where we used AI to help supermarkets reduce food waste.
+Right now I'm building [RubyLLM][rubyllm], an open-source library that gives Ruby a clean, provider-independent interface to every major LLM. I also run [Chat with Work][chatwithwork], an AI tool that lets you talk to your actual work data. Before that I co-founded [Freshflow][freshflow] — AI that tells supermarkets how much fresh produce to order so less of it ends up in the bin.
 
-My path in technology has been driven by curiosity. From becoming Vice President and Technical Officer of the Italian [Gentoo Linux][gentoo] community in my teens, to studying computer science at the [University of Bologna][unibo] where my work on [large-scale social network analysis][lana] was published by [Springer][springer]. This led me to AI at the [Free University of Amsterdam][vu], where I had the chance to work with an alumnus of Geoffrey Hinton on combining deep learning with my love for music.
+I got into open source early, running the Italian [Gentoo Linux][gentoo] community as a teenager. Studied CS at the [University of Bologna][unibo], where I published work on [large-scale social network analysis][lana] with [Springer][springer]. Then AI at the [Free University of Amsterdam][vu], combining deep learning with music. Worked at [OLX][olx], [Capgemini][capgemini], and the [Alan Turing Institute][turing].
 
-Over the years, I've been fortunate to work with amazing teams at [OLX][olx], [Capgemini][capgemini], and the [Alan Turing Institute][turing], always learning new ways to solve real-world problems at scale. Each experience has taught me something valuable about building technology that matters.
-
-When I'm not coding or training models, you'll find me making house and disco music as [Crimson Lake][crimsonlake], running Berlin's [Floppy Disco][floppydisco] collective, or exploring the world through my [camera lens][pictures].
+Outside of code: house and disco music as [Crimson Lake][crimsonlake], Berlin's [Floppy Disco][floppydisco] collective, and [photography][pictures].
 
 [pictures]: https://paolino.photography
 [crimsonlake]: https://crimsonlake.live
 [freshflow]: https://freshflow.ai
 [chatwithwork]: https://chatwithwork.com
-[vettr]: https://vettr.ai
 [gentoo]: https://www.gentoo.org
 [unibo]: https://www.unibo.it/en
 [springer]: https://www.springer.com
@@ -29,3 +26,4 @@ When I'm not coding or training models, you'll find me making house and disco mu
 [turing]: https://www.turing.ac.uk
 [floppydisco]: https://floppydisco.live
 [lana]: https://link.springer.com/chapter/10.1007/978-1-4614-9242-9_6
+[rubyllm]: https://rubyllm.com

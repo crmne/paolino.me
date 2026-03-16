@@ -8,7 +8,7 @@ image: /images/omarchy-voxtype-demo.png
 video: /images/omarchy-voxtype-demo.mp4
 ---
 
-Typing every prompt with your fingers feels backwards in 2026. We can speak faster than we can type, and it feels more natural. Hold a hotkey, speak, and your OS types it for you. If you care about flow, dictation is the most underrated AI upgrade you can make.
+Typing every prompt feels backwards in 2026. You can speak faster than you can type. Hold a hotkey, speak, your OS types it for you. If you care about flow, dictation is the most underrated upgrade you can make.
 
 In the [Omarchy](https://omarchy.org/) world, [Hyprwhspr](https://github.com/goodroot/hyprwhspr) is getting a lot of attention after a recent DHH tweet:
 
@@ -167,4 +167,4 @@ In your Hyprland config:
 bindd = SHIFT, XF86AudioMicMute, Transcribe, exec, voxtype record toggle
 ```
 
-That's it. Use your voice whenever possible. It's faster, it's more natural, and it keeps you in flow. This is what prompting in 2026 should feel like.
+That's it. Use your voice whenever possible. It's faster, more natural, and keeps you in flow.

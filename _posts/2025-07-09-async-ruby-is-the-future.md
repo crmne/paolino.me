@@ -7,15 +7,13 @@ tags: [Ruby, Async, LLM, AI, Rails, Concurrency, Performance, Falcon]
 image: /images/async.webp
 ---
 
-After a decade as an ML engineer/scientist immersed in Python's async ecosystem, returning to Ruby felt like stepping back in time. Where was the async revolution? Why was everyone still using threads for everything? SolidQueue, Sidekiq, GoodJob -- all thread-based. Even newer solutions defaulted to the same concurrency model.
+I spent a decade in Python's async ecosystem. When I came back to Ruby, I couldn't find the async revolution. SolidQueue, Sidekiq, GoodJob — all thread-based. Where Python had reorganized its entire world around `asyncio`, Ruby seemed stuck.
 
-Coming from Python, where the entire community had reorganized around `asyncio`, this seemed bizarre. FastAPI replaced Flask. Every library spawned an async twin. The transformation was total and necessary.
+Then I started building [RubyLLM][] and [Chat with Work][], and it clicked. LLM communication is async Ruby's killer app. Long-lived connections, token-by-token streaming, thousands of concurrent conversations — exactly where threads fall apart.
 
-Then, building [RubyLLM][] and [Chat with Work][], I noticed that _LLM communication is async Ruby's killer app_. The unique demands of streaming AI responses -- long-lived connections, token-by-token delivery, thousands of concurrent conversations -- expose exactly why async matters.
+Here's the thing: Ruby's approach to async is actually *superior* to Python's. Python forced everyone to rewrite their entire stack. Ruby didn't. Your existing code just works. No syntax changes. No library migrations. Just better performance when you need it.
 
-Here's the exciting bit: once I understood Ruby's approach to async, I realized it's actually *superior* to Python's. While Python forced everyone to rewrite their entire stack, Ruby quietly built something better. Your existing code just works. No syntax changes. No library migrations. Just better performance when you need it.
-
-The async ecosystem that [Samuel Williams][] and others have been building for years suddenly makes perfect sense. We just needed the right use case to see it.
+[Samuel Williams][] and the [async][] community have been building this for years. We just needed the right use case to see it.
 
 ## Threads don't work well for LLM streaming in Ruby
 
@@ -63,13 +61,13 @@ When you're handling thousands of streaming connections, these microseconds add 
 
 Try creating 10,000 threads and the OS scheduler starts to struggle. The overhead becomes crushing. Yet modern AI apps need to handle thousands of concurrent conversations.
 
-These aren't separate issues -- they're all symptoms of the same architectural mismatch. LLM communication is fundamentally different from traditional background jobs.
+These aren't separate issues. They're all symptoms of the same mismatch: LLM communication is fundamentally different from traditional background jobs.
 
 [^1]: [Samuel Williams][]' [fiber-vs-thread performance comparison](https://github.com/socketry/performance/tree/adfd780c6b4842b9534edfa15e383e5dfd4b4137/fiber-vs-thread)
 
 ## Understanding Concurrency: Threads vs Async
 
-To understand why LLM applications are async's perfect use case -- and why Ruby's implementation is so elegant -- we need to build up from first principles.
+To understand why, we need to build up from first principles.
 
 ### The Hierarchy: Processes, Threads, and Fibers
 
@@ -210,7 +208,7 @@ Remember those four problems? Here's how async addresses each one:
 
 ## Ruby's Async Ecosystem
 
-The beauty of Ruby's [async][] lies in its transparency. Unlike Python's requirement to use `async`/`await` everywhere, Ruby code just works:
+The beauty of Ruby's [async][] is transparency. Python requires `async`/`await` everywhere. Ruby code just works:
 
 ### The Foundation: The [async][] Gem
 
@@ -239,9 +237,9 @@ No callbacks. No promises. No async/await keywords. Just Ruby code that scales.
 
 ### Why RubyLLM Just Works™
 
-Here's the thing that made me smile when I discovered it: [RubyLLM][] gets async performance *for free*. No special RubyLLM-async version needed. No code changes to the library. No configuration. Nothing.
+[RubyLLM][] gets async performance *for free*. No async version of the library. No code changes. No configuration.
 
-Why? Because RubyLLM uses `Net::HTTP` under the hood. When you wrap RubyLLM calls in an Async block, `Net::HTTP` automatically yields during network I/O, allowing thousands of concurrent LLM conversations to happen on a single thread.
+RubyLLM uses `Net::HTTP` under the hood. Wrap your calls in an Async block and `Net::HTTP` automatically yields during network I/O. Thousands of concurrent LLM conversations on a single thread.
 
 ```ruby
 # This is all you need for concurrent LLM calls
@@ -257,7 +255,7 @@ Async do
 end
 ```
 
-This is Ruby at its best. Libraries that follow conventions get superpowers without even trying. It just works because it was built on solid foundations.
+Libraries that follow conventions get superpowers without even trying. That's Ruby at its best.
 
 Check out [RubyLLM's Scale with Async guide](https://rubyllm.com/guides/async) to learn more.
 

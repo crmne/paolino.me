@@ -56,7 +56,7 @@ puts model.pricing.text_tokens.standard.input_per_million  # => 0.1
 
 The API is open to everyone — any language, any framework. Found a missing model? [Report it](https://github.com/parsera-labs/llm-specs/issues).
 
-Ideally providers would expose this data themselves. Until they do, this works.
+Providers should expose this data themselves. Until they do, this works.
 
 [rubyllm]: https://rubyllm.com
 [rubyllm-release]: /rubyllm-1-3

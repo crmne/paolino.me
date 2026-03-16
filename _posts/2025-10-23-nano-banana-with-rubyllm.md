@@ -7,11 +7,9 @@ tags: [Ruby, AI, RubyLLM, Google, Gemini]
 image: /images/nano-banana.png
 ---
 
-Providers sometimes make curious choices. Take Nano Banana: Google wired it into the chat interface `generateContent`, not the image API's `predict`.
+Google wired Nano Banana into the chat interface `generateContent`, not the image API's `predict`. Counterintuitive if you're using RubyLLM, which makes you think in terms of _actions_ like [`paint`](https://rubyllm.com/image-generation/) instead of [`chat`](https://rubyllm.com/chat/).
 
-This is counterintuitive especially if you're using RubyLLM which makes you think in terms of _actions_ like [`paint`](https://rubyllm.com/image-generation/), instead of [`chat`](https://rubyllm.com/chat/).
-
-The good news is that RubyLLM makes it super easy to use once you know that quirk. Only caveat: as of writing this post, you need the latest trunk or v1.9+ in the future, because that's where we taught it how to unpack inline file data from chat responses.
+Once you know that quirk, it's straightforward. Only caveat: you need the latest trunk or v1.9+, because that's where we taught RubyLLM to unpack inline file data from chat responses.
 
 ## Wire It Up
 

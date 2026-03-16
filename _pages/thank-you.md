@@ -6,15 +6,8 @@ nav: false
 sitemap: false
 ---
 
-Thank you for subscribing to my newsletter! 🎉
+You're in. Check your inbox for a confirmation email (and your spam folder if it's not there).
 
-I'm excited to share updates about my journey in tech, entrepreneurship, and music with you. You'll be among the first to hear about:
+I write about Ruby, AI, building products, and whatever else I'm working on. No schedule, no filler. Just posts when I have something worth saying.
 
-* New blog posts and insights
-* Updates on my AI projects at [Chat with Work](https://chatwithwork.com) and [Vettr](https://vettr.ai)
-* Music releases and upcoming [Crimson Lake](https://crimsonlake.live) performances
-* Berlin's [Floppy Disco](https://floppydisco.live) events
-
-You should receive a confirmation email shortly. Please make sure to check your spam folder if you don't see it in your inbox.
-
-[Back to homepage](/)
+[Back to the blog](/)

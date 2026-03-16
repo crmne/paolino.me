@@ -11,9 +11,9 @@ image: /images/standard-llm-capabilities-pricing-api.jpg
 
 It's 2025, and no LLM provider exposes basic model information through their API. Context window? Pricing per token? Function calling support? You're reading documentation pages that change without notice and look different for every provider.
 
-I've been maintaining this data by hand in [RubyLLM][rubyllm] since the beginning. Every pricing change, every new model — someone updates a file. It doesn't scale, and every other LLM library is doing the same thing independently.
+I've been maintaining this data by hand in [RubyLLM][rubyllm] since the beginning. Every pricing change, every new model — someone updates a file. It doesn't scale. And every other LLM library is doing the same thing independently.
 
-So I'm partnering with [Parsera][parsera] to build what should have existed from the start: a single API that returns capabilities and pricing for every major LLM.
+So I partnered with [Parsera][parsera] to build what should have existed from the start: a single API that returns capabilities and pricing for every major LLM.
 
 ## The schema
 
