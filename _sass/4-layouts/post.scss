@@ -291,3 +291,27 @@
     }
   }
 }
+
+/* In-post newsletter typography */
+.post {
+  .widget-subscribe {
+    margin-top: 50px;
+
+    .widget__title {
+      font-size: 28px;
+      line-height: 1.25;
+    }
+
+    .subscribe-subtitle {
+      font-size: 19px;
+      line-height: 31px;
+    }
+
+    .subscribe-group-top {
+      .subscribe-email,
+      .subscribe-button {
+        font-size: 16px;
+      }
+    }
+  }
+}
