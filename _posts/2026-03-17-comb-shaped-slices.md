@@ -8,7 +8,7 @@ tags: [Startups, Product Strategy, SaaS, Bootstrapping, Indie]
 
 A friend who's built and shut down companies in this space sat across from me at breakfast during a conference recently. He knows what I'm building: [Chat with Work](https://chatwithwork.com), an AI tool that lets you talk to your actual work data. He wanted to know what my plan was. I think he was a bit concerned.
 
-"Add more integrations, finish the security assessment, market it well."
+"Add more integrations, finish the security assessment, market it well." I said.
 
 That didn't help. "All those LLM providers are going to eat the whole market. They'll ship every integration you can think of. If you want a piece of the pie, you need to pick a vertical and own it."
 
