@@ -66,6 +66,7 @@ plugins:
   - jekyll/tagging
   - jekyll-feed
   - jekyll-twitter-plugin
+  - jekyll-og-image
 
 paginate: 9
 paginate_path: "/page/:num"
@@ -90,3 +91,34 @@ sass:
   style: compressed
   silence_deprecations:
     - import
+
+# Open Graph image generation (https://github.com/crmne/jekyll-og-image)
+og_image:
+  collections:
+    - posts
+  output_dir: "assets/images/og"
+  force: false
+  skip_drafts: true
+  domain: "paolino.me"
+  image:
+    path: "images/me-04_small.jpg"
+    width: 140
+    height: 140
+    radius: 70
+  canvas:
+    background_color: "#FFFFFF"
+  header:
+    font_family: "Lora, Bold"
+    color: "#17181e"
+  content:
+    font_family: "Inter, Regular"
+    color: "#4a4b51"
+  metadata:
+    fields:
+      - date
+      - description
+  border_bottom:
+    width: 16
+    fill:
+      - "#17181e"
+      - "#ffe66a"

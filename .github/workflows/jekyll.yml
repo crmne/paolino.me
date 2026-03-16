@@ -41,6 +41,14 @@ jobs:
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 0 # Increment this number if you need to re-download cached gems
+      - name: Install libvips (only if missing)
+        run: |
+          if command -v vips >/dev/null 2>&1; then
+            echo "libvips already available: $(vips --version)"
+          else
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends libvips
+          fi
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5

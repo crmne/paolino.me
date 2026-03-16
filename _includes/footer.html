@@ -31,10 +31,11 @@
                   <h4 class="widget__title">Recent Posts</h4>
                 </div>
                 {% for post in site.posts limit:3 %}
+                {% assign post_image = post.image.path | default: post.image %}
                 <div class="recent-posts">
-                  {% if post.image %}
+                  {% if post_image %}
                   <a class="recent-posts__image" href="{{ post.url }}"
-                    style="background-image: url({{site.baseurl}}{{post.image}})"></a>
+                    style="background-image: url({{site.baseurl}}{{post_image}})"></a>
                   {% else %}
                   {% endif %}
                   <span class="recent-posts__count">{{ forloop.index }}</span>
