@@ -86,6 +86,16 @@ jobs:
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+      - name: Create SendFox draft campaign
+        if: ${{ secrets.SENDFOX_API_TOKEN != '' && secrets.SENDFOX_FROM_NAME != '' && secrets.SENDFOX_FROM_EMAIL != '' }}
+        continue-on-error: true
+        run: bundle exec ruby scripts/sendfox_create_campaign.rb
+        env:
+          SENDFOX_API_TOKEN: ${{ secrets.SENDFOX_API_TOKEN }}
+          SENDFOX_FROM_NAME: ${{ secrets.SENDFOX_FROM_NAME }}
+          SENDFOX_FROM_EMAIL: ${{ secrets.SENDFOX_FROM_EMAIL }}
+          SITE_URL: "https://paolino.me"
+          SENDFOX_CAMPAIGN_PREFIX: "paolino.me"
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
