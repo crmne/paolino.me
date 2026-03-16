@@ -166,4 +166,87 @@ $(document).ready(function() {
     }
   });
 
+
+  /* =======================
+  // Code Block Copy Button
+  ======================= */
+  initCodeBlockCopy();
+
+  function initCodeBlockCopy() {
+    var codeBlocks = document.querySelectorAll('.post__content .highlighter-rouge .highlight, .page__content .highlighter-rouge .highlight');
+
+    codeBlocks.forEach(function(block) {
+      if (block.querySelector('.code-copy-button')) return;
+
+      var pre = block.querySelector('pre');
+      if (!pre) return;
+
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'code-copy-button';
+      button.setAttribute('aria-label', 'Copy code to clipboard');
+      button.textContent = 'Copy';
+
+      button.addEventListener('click', function() {
+        var code = pre.textContent.replace(/\n$/, '');
+
+        copyTextToClipboard(code)
+          .then(function() {
+            setCopiedState(button);
+          })
+          .catch(function() {
+            button.textContent = 'Failed';
+            button.disabled = true;
+          });
+      });
+
+      block.appendChild(button);
+    });
+  }
+
+  function setCopiedState(button) {
+    button.classList.add('is-copied');
+    button.textContent = 'Copied';
+
+    clearTimeout(button.copyTimeoutId);
+    button.copyTimeoutId = setTimeout(function() {
+      button.classList.remove('is-copied');
+      button.textContent = 'Copy';
+    }, 1600);
+  }
+
+  function copyTextToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise(function(resolve, reject) {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      try {
+        var copied = document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        if (!copied) {
+          reject(new Error('Copy command failed'));
+          return;
+        }
+
+        resolve();
+      } catch (error) {
+        document.body.removeChild(textarea);
+        reject(error);
+      }
+    });
+  }
+
 });
