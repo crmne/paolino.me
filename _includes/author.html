@@ -7,12 +7,12 @@
         <div class="author-inner">
           <div class="author-content">
             {% if site.author.image %}
-            <div class="author-avatar">
+            <a href="{{site.baseurl}}/about/" class="author-avatar" aria-label="About {{site.author.name}}">
               <img src="{{site.baseurl}}{{site.author.image}}" alt="{{site.author.name}}'s Picture" class="author-avatar__img">
-            </div>
+            </a>
             {% endif %}
             {% if site.author.name %}
-            <h1 class="author__name">{{site.author.name}}</h1>
+            <h1 class="author__name"><a href="{{site.baseurl}}/about/" class="author__name-link">{{site.author.name}}</a></h1>
             {% endif %}
             {% if site.author.description %}
             <p class="author__desc">{{site.author.description}}</p>
