@@ -7,9 +7,9 @@ tags: [Ruby, Async, LLM, AI, Rails, Concurrency, Performance, Falcon]
 image: /images/async.webp
 ---
 
-I spent a decade in Python's async ecosystem. When I came back to Ruby, I couldn't find the async revolution. SolidQueue, Sidekiq, GoodJob — all thread-based. Where Python had reorganized its entire world around `asyncio`, Ruby seemed stuck.
+I spent a decade in Python's async ecosystem. When I came back to Ruby, I couldn't find the async revolution. SolidQueue, Sidekiq, and GoodJob were all thread-based. Where Python had reorganized its entire world around `asyncio`, Ruby seemed stuck.
 
-Then I started building [RubyLLM][] and [Chat with Work][], and it clicked. LLM communication is async Ruby's killer app. Long-lived connections, token-by-token streaming, thousands of concurrent conversations — exactly where threads fall apart.
+Then I started building [RubyLLM][] and [Chat with Work][], and it clicked. LLM communication is async Ruby's killer app. Long-lived connections, token-by-token streaming, and thousands of concurrent conversations: exactly where threads fall apart.
 
 Here's the thing: Ruby's approach to async is actually *superior* to Python's. Python forced everyone to rewrite their entire stack. Ruby didn't. Your existing code just works. No syntax changes. No library migrations. Just better performance when you need it.
 
@@ -369,7 +369,7 @@ Python forced its entire community to rewrite everything for `asyncio`. Librarie
 
 Ruby didn't do that. [Samuel Williams][] and the [async][] community built something that works with the code you already have. No syntax changes. No library migrations. Just better performance when you need it.
 
-LLM apps are where this pays off. Long-lived connections, streaming responses, thousands of concurrent conversations — exactly the workload where fibers beat threads. And your existing code doesn't have to change to benefit.
+LLM apps are where this pays off. Long-lived connections, streaming responses, and thousands of concurrent conversations: exactly the workload where fibers beat threads. And your existing code doesn't have to change to benefit.
 
 ---
 

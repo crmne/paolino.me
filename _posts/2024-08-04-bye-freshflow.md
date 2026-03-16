@@ -13,7 +13,7 @@ Now I'm moving on.
 
 Not because something went wrong. The company is in a good place and I'm staying on as a shareholder. But I want to build something different. Something bootstrapped, something mine.
 
-The best part of Freshflow was always the people. A small remote team that actually trusted each other, communicated asynchronously, and shipped work they were proud of. That's the thing I'll carry with me. Not a playbook, not a set of "key learnings" — just the proof that a small group of people who give a damn can build something real.
+The best part of Freshflow was always the people. A small remote team that actually trusted each other, communicated asynchronously, and shipped work they were proud of. That's the thing I'll carry with me. Not a playbook, not a set of "key learnings," just the proof that a small group of people who give a damn can build something real.
 
 More on what's next soon.
 

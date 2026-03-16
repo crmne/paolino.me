@@ -39,7 +39,7 @@ pricing:
       cached_input_per_million: 0.075
 ```
 
-[Parsera][parsera] scrapes provider docs and keeps the data current. Context windows, pricing, capabilities, modalities — all in one place.
+[Parsera][parsera] scrapes provider docs and keeps the data current. Context windows, pricing, capabilities, and modalities are all in one place.
 
 ## Already in RubyLLM
 
@@ -54,7 +54,7 @@ puts model.capabilities          # => ["batch", "function_calling", "structured_
 puts model.pricing.text_tokens.standard.input_per_million  # => 0.1
 ```
 
-The API is open to everyone — any language, any framework. Found a missing model? [Report it](https://github.com/parsera-labs/llm-specs/issues).
+The API is open to everyone: any language, any framework. Found a missing model? [Report it](https://github.com/parsera-labs/llm-specs/issues).
 
 Providers should expose this data themselves. Until they do, this works.
 

@@ -11,7 +11,7 @@ image: /images/standard-llm-capabilities-pricing-api.jpg
 
 It's 2025, and no LLM provider exposes basic model information through their API. Context window? Pricing per token? Function calling support? You're reading documentation pages that change without notice and look different for every provider.
 
-I've been maintaining this data by hand in [RubyLLM][rubyllm] since the beginning. Every pricing change, every new model — someone updates a file. It doesn't scale. And every other LLM library is doing the same thing independently.
+I've been maintaining this data by hand in [RubyLLM][rubyllm] since the beginning. Every pricing change, every new model: someone updates a file. It doesn't scale. And every other LLM library is doing the same thing independently.
 
 So I partnered with [Parsera][parsera] to build what should have existed from the start: a single API that returns capabilities and pricing for every major LLM.
 
@@ -59,7 +59,7 @@ pricing:
 
 Context windows, token limits, modalities, capabilities, pricing for standard and batch operations. Everything you need to programmatically pick a model and estimate costs.
 
-Parsera handles the scraping. They expose a public GET endpoint. RubyLLM integrates on day one. But this isn't just for RubyLLM — any library in any language can use it.
+Parsera handles the scraping. They expose a public GET endpoint. RubyLLM integrates on day one. But this isn't just for RubyLLM; any library in any language can use it.
 
 We're finalizing the schema now: [check out the draft][gist]. Starting with OpenAI, Anthropic, Gemini, and DeepSeek. Feedback welcome in the [Gist comments][gist] or on [GitHub Discussions](https://github.com/crmne/ruby_llm/discussions).
 

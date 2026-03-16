@@ -34,7 +34,7 @@ Nextcloud, Todoist. That's my stack. My own tiny vertical.
 
 Gmail and Calendar. Everybody needs those. Horizontal.
 
-IMAP and CalDAV — the open protocols of the web. They connect to virtually any email server or calendar out there. Horizontal.
+IMAP and CalDAV are the open protocols of the web. They connect to virtually any email server or calendar out there. Horizontal.
 
 Basecamp. Rails developers, small teams, people who think like me. Vertical.
 
@@ -46,7 +46,7 @@ When you're small, you sample from what's right in front of you. First yourself,
 
 Then you listen to your customers. "This is cool, but I use X." You take the suggestion. You think about it. Sometimes you build it, sometimes you don't. One tooth at a time.
 
-The shape that emerges is yours. Not because you planned it on a whiteboard, but because you started from yourself and grew outward. It works for the small teams, the freelancers, the music collectives, the people who don't have an IT department and don't want one. It's a comb — not a strategy you choose, but what naturally happens when you're small and you give a damn.
+The shape that emerges is yours. Not because you planned it on a whiteboard, but because you started from yourself and grew outward. It works for the small teams, the freelancers, the music collectives, the people who don't have an IT department and don't want one. It's a comb: not a strategy you choose, but what naturally happens when you're small and you give a damn.
 
 There's a reason people still choose Basecamp over Monday.com, or Linear over Jira, or Hey over Gmail. It's not because the small player has more features. It's because someone built it for themselves first, and that resonated. The entire market doesn't need to resonate with you. Just enough of it.
 

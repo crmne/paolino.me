@@ -19,7 +19,7 @@ The problem is what happens next. Which is: nothing. People leave the MCP server
 
 It won't. Or rather, it will, but worse than you think.
 
-Every MCP server you connect dumps tool descriptions, schemas, and instructions into your context. You didn't write those descriptions. You didn't optimize them. You probably haven't even read them. You're handing over a chunk of your strictly limited context window — the most precious resource your agent has — to whatever some third party decided to shove in there.
+Every MCP server you connect dumps tool descriptions, schemas, and instructions into your context. You didn't write those descriptions. You didn't optimize them. You probably haven't even read them. You're handing over a chunk of your strictly limited context window, the most precious resource your agent has, to whatever some third party decided to shove in there.
 
 It's the equivalent of letting strangers put random items on your desk and then wondering why you can't find anything. In the LLM world, we call that [context rot](https://research.trychroma.com/context-rot): the more tokens you stuff into the window, the worse your model performs, regardless of how big the window is.
 
@@ -43,7 +43,7 @@ class Weather < RubyLLM::Tool
 end
 ```
 
-Twelve lines. You wrote the description, so you know exactly what tokens are going into your context. You wrote the parameters, so the model gets precisely the interface it needs — no more. You own it, you can tune it, and nobody can inject anything into your agent's brain through it.
+Twelve lines. You wrote the description, so you know exactly what tokens are going into your context. You wrote the parameters, so the model gets precisely the interface it needs, no more. You own it, you can tune it, and nobody can inject anything into your agent's brain through it.
 
 My take is simple: use MCP to prototype. Then replace it with purpose-built tools you actually control. Write the tool descriptions yourself. Keep your context tight. Know exactly what's in there and why.
 
@@ -55,7 +55,7 @@ The pitch is that agents should collaborate "as agents, not just as tools."
 
 That last bit is the tell. Read it again. "Not just as tools."
 
-Someone opened an issue on RubyLLM a few days ago asking for A2A support. They'd done their homework — checked the scope, read the contributing guide, linked the spec and an existing Ruby implementation. The case was reasonable: multi-agent setups might cross host boundaries, and A2A seems like the way to do that. First comment from another contributor: "Love this one."
+Someone opened an issue on RubyLLM a few days ago asking for A2A support. They'd done their homework: checked the scope, read the contributing guide, linked the spec and an existing Ruby implementation. The case was reasonable: multi-agent setups might cross host boundaries, and A2A seems like the way to do that. First comment from another contributor: "Love this one."
 
 So I went and read the spec. All of it. The Agent Cards, the task lifecycle, the JSON-RPC layer, the capability negotiation. And the whole time I kept thinking: I can already do this.
 
@@ -94,7 +94,7 @@ First call, `chat_id` is nil, a new researcher is spawned. The tool returns the 
 
 That's persistent conversation, shared state, ongoing collaboration, and capability discovery. With an optional parameter on a tool.
 
-This post is my answer to that issue. I don't think a protocol is the right solution — a convention is. And if someone wants A2A badly enough, it can live as a community extension, the same way [ruby_llm-mcp](https://github.com/patvice/ruby_llm-mcp) does. But it doesn't belong in the core.
+This post is my answer to that issue. I don't think a protocol is the right solution; a convention is. And if someone wants A2A badly enough, it can live as a community extension, the same way [ruby_llm-mcp](https://github.com/patvice/ruby_llm-mcp) does. But it doesn't belong in the core.
 
 Because this ties back to the same context window problem: every protocol comes with metadata, capability schemas, and negotiation overhead that ends up as tokens in your window. A2A doesn't just add complexity to your architecture. It adds complexity to your context.
 
