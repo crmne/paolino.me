@@ -42,12 +42,7 @@ permalink: /rss.xml
 </description>
 
 {% capture email_content %}
-{{ post.content
-   | replace: '<div class="language-', '<pre><code>'
-   | replace: '<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>', '<pre><code>'
-   | replace: '</code></pre></div></div>', '</code></pre>'
-   | replace: '</div>', ''
-}}
+{{ post.content | sanitize_feed_html | strip }}
 {% endcapture %}
 
 <content:encoded>
