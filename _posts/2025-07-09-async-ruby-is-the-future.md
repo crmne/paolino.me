@@ -17,9 +17,9 @@ Here's the exciting bit: once I understood Ruby's approach to async, I realized 
 
 The async ecosystem that [Samuel Williams][] and others have been building for years suddenly makes perfect sense. We just needed the right use case to see it.
 
-## Why LLM Communication Breaks Everything
+## Threads don't work well for LLM streaming in Ruby
 
-LLM applications create a perfect storm of challenges that expose every weakness in thread-based concurrency:
+Streaming LLM responses hit every weak spot in thread-based concurrency at once:
 
 ### 1. Slot Starvation
 
@@ -75,9 +75,9 @@ To understand why LLM applications are async's perfect use case -- and why Ruby'
 
 Think of your computer as an office building:
 
-- **Processes** are like separate offices -- each with its own locked door, furniture, and files. They can't see into each other's spaces (memory isolation).
-- **Threads** are like workers sharing the same office -- they can access the same filing cabinets (shared memory) but need to coordinate to avoid collisions.
-- **Fibers** are like multiple tasks juggled by one worker at their desk -- switching between them manually when waiting for something (like a phone call).
+- **Processes** are separate offices -- each with its own locked door, furniture, and files. They can't see into each other's spaces.
+- **Threads** are workers sharing the same office -- they can access the same filing cabinets but need to coordinate to avoid collisions.
+- **Fibers** are multiple tasks juggled by one worker at their desk -- switching between them when waiting for something, like a phone call.
 
 ### Scheduling: The Core Difference
 
@@ -365,31 +365,21 @@ Let's be practical -- async isn't always the answer:
 - WebSockets, SSE, and other forms of streaming
 - LLM applications
 
-## A New Chapter for Ruby
+## Ruby got this right
 
-After years in Python's async world, I've seen what happens when a language forces a syntax change to access the benefits of async concurrency on its community. Libraries fragment. Codebases split. Developers struggle with new syntax and concepts.
+Python forced its entire community to rewrite everything for `asyncio`. Libraries fragmented. Codebases split. Every library needed an async twin.
 
-Ruby chose a different path -- and it's the right one.
+Ruby didn't do that. [Samuel Williams][] and the [async][] community built something that works with the code you already have. No syntax changes. No library migrations. Just better performance when you need it.
 
-We're witnessing Ruby's next evolution. Not through breaking changes or ecosystem splits, but through thoughtful additions that make our existing code better. The async ecosystem that seemed unnecessary when compared to traditional threading suddenly becomes essential when you hit the right use case.
-
-LLM applications are that use case. The combination of long-lived connections, streaming responses, and massive concurrency creates the perfect storm where async's benefits become undeniable.
-
-[Samuel Williams][] and the [async][] community have given us incredible tools. Unlike Python, you don't have to rewrite everything to use it.
-
-For those building the next generation of AI-powered applications, [async][] Ruby isn't just an option -- it's a competitive advantage. Lower costs, better performance, simpler operations, and you keep your existing codebase.
-
-The future is concurrent. The future is streaming. The future is [async][].
-
-And in Ruby, that future works with the code you already have.
+LLM apps are where this pays off. Long-lived connections, streaming responses, thousands of concurrent conversations — exactly the workload where fibers beat threads. And your existing code doesn't have to change to benefit.
 
 ---
 
-*[RubyLLM][] powers [Chat with Work][] in production with thousands of concurrent AI conversations using [async][]. Want elegant AI integration in Ruby? Check out [RubyLLM][].*
+*[RubyLLM][] powers [Chat with Work][] in production with thousands of concurrent AI conversations using [async][].*
 
-*Special thanks to [Samuel Williams][] for reviewing this post and providing the [fiber-vs-thread benchmarks](https://github.com/socketry/performance/tree/adfd780c6b4842b9534edfa15e383e5dfd4b4137/fiber-vs-thread) that substantiate these performance claims.*
+*Thanks to [Samuel Williams][] for reviewing this post and providing the [fiber-vs-thread benchmarks](https://github.com/socketry/performance/tree/adfd780c6b4842b9534edfa15e383e5dfd4b4137/fiber-vs-thread).*
 
-**Join the conversation:** I'll be speaking about async Ruby and AI at [EuRuKo 2025](https://2025.euruko.org/), [San Francisco Ruby Conference 2025](https://sfruby.com/), and [RubyConf Thailand 2026](https://rubyconfth.com/). Let's build the future together.
+*I'll be speaking about async Ruby and AI at [EuRuKo 2025](https://2025.euruko.org/), [San Francisco Ruby Conference 2025](https://sfruby.com/), and [RubyConf Thailand 2026](https://rubyconfth.com/).*
 
 [RubyLLM]: https://rubyllm.com
 [Chat with Work]: https://chatwithwork.com

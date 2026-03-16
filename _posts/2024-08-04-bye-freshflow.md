@@ -2,29 +2,19 @@
 layout:     post
 title:      Bye Freshflow
 date:       2024-08-04 09:00:00
-description:    After an incredible journey of over 3.5 years, I'm announcing my departure from Freshflow, where I've had the privilege of serving as Co-Founder and CTO since its inception.
+description:    I co-founded Freshflow 3.5 years ago. Now I'm leaving to build something of my own.
 tags:       [Career, Startup, Leadership]
 image:      /images/Freshflow_20231207_63206.jpg
 ---
 
-After an incredible journey of over 3.5 years, I'm announcing my departure from [Freshflow][freshflow], where I've had the privilege of serving as Co-Founder and CTO since its inception.
+I co-founded [Freshflow][freshflow] three and a half years ago. We built an AI system that tells supermarkets how much fresh produce to order so less of it ends up in the bin. We shipped fast, scaled to many stores, and assembled a team I'd work with again in a heartbeat.
 
-I'm immensely proud of what we've achieved at [Freshflow][freshflow]. From shipping our first version in just a few months to building an exceptional team tackling the complex challenge of optimizing fresh produce ordering for supermarkets, it's been a remarkable experience. We're successfully scaling our solution to many stores, demonstrating the real-world impact of our technology.
+Now I'm moving on.
 
-Some key highlights include:
+Not because something went wrong. The company is in a good place and I'm staying on as a shareholder. But I want to build something different. Something bootstrapped, something mine.
 
-* Creating and nurturing a high-performance tech team
-* Establishing a culture of empathy, trust, and psychological safety
-* Fostering a remote-first environment with effective asynchronous communication
-* Developing a scalable, high-performance solution with one of the best user interfaces in our segment
-* Successfully expanding our product to serve multiple stores, validating our market fit and paving the way for significant growth
+The best part of Freshflow was always the people. A small remote team that actually trusted each other, communicated asynchronously, and shipped work they were proud of. That's the thing I'll carry with me. Not a playbook, not a set of "key learnings" — just the proof that a small group of people who give a damn can build something real.
 
-I want to express my heartfelt gratitude to the entire [Freshflow][freshflow] team, especially our outstanding tech crew. Your dedication, creativity, and resilience have been truly inspiring.
-
-This journey has taught me invaluable lessons about building a business, cultivating resilience, and the power of a strong team culture. As I move on to my next adventure - founding a bootstrapped venture that builds upon these principles - I carry these insights with me.
-
-While my role at [Freshflow][freshflow] is changing, I remain a committed shareholder and look forward to seeing the company's continued success and growth.
-
-To my network: stay tuned for news about my next project. I'm excited to share more soon!
+More on what's next soon.
 
 [freshflow]: https://freshflow.ai
