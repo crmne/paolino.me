@@ -3,7 +3,7 @@ layout:     post
 title:      Bye Freshflow
 date:       2024-08-04 09:00:00
 description:    I co-founded Freshflow 3.5 years ago. Now I'm leaving to build something of my own.
-tags:       [Career, Startup, Leadership]
+tags:       [Career, Startups, Leadership]
 image:      /images/Freshflow_20231207_63206.jpg
 ---
 

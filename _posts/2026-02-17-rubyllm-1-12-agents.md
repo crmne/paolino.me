@@ -3,7 +3,7 @@ layout: post
 title: "RubyLLM 1.12: Agents Are Just LLMs with Tools"
 date: 2026-02-17
 description: "Agents aren't magic. They're LLMs that can call your code. RubyLLM 1.12 adds a clean DSL to define and reuse them."
-tags: [Ruby, AI, Agents, LLM, Ruby on Rails, Open Source, Tool Calling, RubyLLM]
+tags: [Ruby, AI, Agents, LLM, Rails, Open Source, Tool Calling, RubyLLM]
 image: /images/rubyllm-1.12.png
 ---
 
