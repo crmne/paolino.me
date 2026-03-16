@@ -40,7 +40,7 @@
     cursor: pointer;
     &:hover {
       transform: rotate(90deg);
-      color: darken($dark, 15%);
+      color: color.adjust($dark, $lightness: -15%);
     }
     @media only screen and (max-width: $tablet) {
       top: 75px;
@@ -116,7 +116,7 @@
         }
       }
       .search-results__link {
-        color: darken($dark, 15%);
+        color: color.adjust($dark, $lightness: -15%);
         transform: scale(0.97);
       }
     }

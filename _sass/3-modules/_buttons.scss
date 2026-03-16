@@ -27,7 +27,7 @@
     line-height: 50px;
     background-color: $dark;
     &:hover {
-      background-color: darken($brand-color, 5%);
+      background-color: color.adjust($brand-color, $lightness: -5%);
     }
   }
 
@@ -44,7 +44,7 @@
     background-color: $dark;
 
     &:hover {
-      background-color: darken($dark, 1%);
+      background-color: color.adjust($dark, $lightness: -1%);
     }
   }
 

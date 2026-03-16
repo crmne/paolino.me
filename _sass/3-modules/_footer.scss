@@ -198,7 +198,7 @@
     transition: border-color .2s ease-in-out;
 
     &:focus {
-      border-color: darken($brand-color, 25%);
+      border-color: color.adjust($brand-color, $lightness: -25%);
     }
   }
 
@@ -216,8 +216,8 @@
     transition: all .3s;
 
     &:hover {
-      background-color: darken($brand-color, 5%);
-      border-color: darken($brand-color, 5%);
+      background-color: color.adjust($brand-color, $lightness: -5%);
+      border-color: color.adjust($brand-color, $lightness: -5%);
     }
   }
 }

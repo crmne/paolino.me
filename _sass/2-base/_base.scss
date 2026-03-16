@@ -150,7 +150,7 @@ a {
   box-shadow: 0 -1px 0 0 $brand-color inset;
 
   &:hover {
-    color: darken($link-color, 15%);
+    color: color.adjust($link-color, $lightness: -15%);
     box-shadow: 0 -2px 0 0 $brand-color inset;
   }
 }

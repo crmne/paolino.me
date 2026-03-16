@@ -100,7 +100,7 @@
 
     &:hover {
       color: $dark;
-      background-color: darken($brand-color, 10%);
+      background-color: color.adjust($brand-color, $lightness: -10%);
     }
 
     @media only screen and (max-width: $mobile) {
