@@ -4,7 +4,7 @@ $(document).ready(function() {
 
   var topNav = $(".top-nav"),
     menuOpenIcon = $(".nav__icon-menu"),
-    menuCloseIcon = $(".ion-md-close"),
+    menuCloseIcon = $(".nav__icon-close"),
     menuList = $(".main-nav"),
     searchOpenIcon = $(".nav__icon-search"),
     searchCloseIcon = $(".search__close"),

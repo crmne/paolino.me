@@ -120,7 +120,7 @@
               <div class="footer__heading">Projects</div>
               <div class="projects__list">
                 {% for project in site.projects %}
-                <a href="{{ project.link }}" target="_blank">{{ project.name }}</a>
+                <a href="{{ project.link }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
                 {% endfor %}
               </div>
             </div>

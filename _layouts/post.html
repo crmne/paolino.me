@@ -59,7 +59,7 @@ layout: default
       </div>
       {% elsif page.image %}
       <div class="image-box">
-        <img class="post-image" src="{{site.baseurl}}{{page.image}}"></img>
+        <img class="post-image" src="{{ site.baseurl }}{{ page.image }}" alt="{{ page.title | escape }}">
       </div>
       {% endif %}
       <div class="col col-8 col-d-10 push-d-1 push-2 col-m-12 push-m-0">
@@ -73,11 +73,11 @@ layout: default
           </div>
           <p class="subscribe-subtitle">If you've enjoyed this article, consider subscribing to my newsletter!</p>
           <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form"
-            id="1wj8v6" data-async="true" data-recaptcha="true">
+            id="sendfox-post-form" data-async="true" data-recaptcha="true">
             <div class="subscribe-group">
               <div class="subscribe-group-top">
-                <label class="screen-reader-text" for="sendfox_form_email">Email</label>
-                <input class="subscribe-email" id="sendfox_form_email" type="email" name="email"
+                <label class="screen-reader-text" for="sendfox_post_form_email">Email</label>
+                <input class="subscribe-email" id="sendfox_post_form_email" type="email" name="email"
                   placeholder="Email Address" required>
                 <button class="subscribe-button button button--primary" type="submit">Subscribe</button>
               </div>
