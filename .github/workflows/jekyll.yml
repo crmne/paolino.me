@@ -41,14 +41,43 @@ jobs:
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 0 # Increment this number if you need to re-download cached gems
-      - name: Install libvips (only if missing)
+      - name: Install OG image dependencies (only if missing)
         run: |
+          packages=()
+
           if command -v vips >/dev/null 2>&1; then
             echo "libvips already available: $(vips --version)"
           else
-            sudo apt-get update -qq
-            sudo apt-get install -y --no-install-recommends libvips
+            packages+=(libvips)
           fi
+
+          if command -v fc-list >/dev/null 2>&1 && fc-list | grep -qi inter; then
+            echo "Inter fonts already available"
+          else
+            packages+=(fonts-inter fonts-inter-variable)
+          fi
+
+          if [ ${#packages[@]} -gt 0 ]; then
+            echo "Installing apt packages: ${packages[*]}"
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends "${packages[@]}"
+          else
+            echo "No apt packages needed"
+          fi
+
+          if command -v fc-list >/dev/null 2>&1 && fc-list | grep -qi lora; then
+            echo "Lora fonts already available"
+          else
+            echo "Installing Lora fonts from Google Fonts repository..."
+            wget -q -O /tmp/Lora-wght.ttf https://github.com/google/fonts/raw/main/ofl/lora/Lora%5Bwght%5D.ttf
+            wget -q -O /tmp/Lora-Italic-wght.ttf https://github.com/google/fonts/raw/main/ofl/lora/Lora-Italic%5Bwght%5D.ttf
+            sudo mkdir -p /usr/share/fonts/truetype/lora
+            sudo cp /tmp/Lora-wght.ttf /tmp/Lora-Italic-wght.ttf /usr/share/fonts/truetype/lora/
+          fi
+
+          sudo fc-cache -fv
+          echo "Font check:"
+          fc-list | grep -Ei "inter|lora" || true
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
