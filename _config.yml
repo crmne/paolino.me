@@ -46,6 +46,13 @@ disqus-identifier: # crmne # add your shortname for Disqus Comment. For example 
 # Newsletter
 mailchimp: false
 sendfox: true # New setting for SendFox
+sendfox_campaigns:
+  enabled: true
+  skip_in_development: true
+  campaign_prefix: "paolino.me"
+  max_pages: 5
+  dry_run: false
+  fail_build: false
 mailchimp-identifier: # Add your MailChimp form identifier. For example - blogenjoyfreedom.us16.list-manage.com/subscribe/post?u=cd56155d76ddeeb4c0bc4d080&amp;id=7a526cd13e
 newsletter-title: Newsletter
 newsletter-description: New posts in your inbox. No spam, no schedule.
