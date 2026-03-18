@@ -400,8 +400,15 @@ module Jekyll
           %r{<div class="language-([A-Za-z0-9_+\-]+)\s+highlighter-rouge">\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
         ) do
           language = Regexp.last_match(1)
-          code = code_lines_html_with_rouge(Regexp.last_match(2))
-          email_code_block(code, language, code_is_html: true)
+          source = Regexp.last_match(2)
+
+          if plain_code_language?(language)
+            code = plain_code(source)
+            email_code_block(code, language)
+          else
+            code = code_lines_html_with_rouge(source)
+            email_code_block(code, language, code_is_html: true)
+          end
         end
 
         content.gsub!(
@@ -412,6 +419,10 @@ module Jekyll
         end
 
         content
+      end
+
+      def plain_code_language?(language)
+        %w[sh bash shell zsh console plaintext text].include?(language.to_s.downcase)
       end
 
       def convert_plain_code_blocks(html)
@@ -525,12 +536,12 @@ module Jekyll
 
         items.each_with_index.map do |item, index|
           marker = ordered ? "#{index + 1}." : "&bull;"
-          padding_bottom = index == items.length - 1 ? "0" : "6px"
+          padding_bottom = "0"
 
           <<~HTML.chomp
             <tr>
-              <td style="width:18px;padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.55;">#{marker}</td>
-              <td style="padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.55;">#{item}</td>
+              <td style="width:18px;padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.25;">#{marker}</td>
+              <td style="padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.25;">#{item}</td>
             </tr>
           HTML
         end.join
@@ -579,8 +590,16 @@ module Jekyll
       end
 
       def email_code_block(code, language, code_is_html: false)
-        label = language.to_s.empty? ? "CODE" : CGI.escapeHTML(language.upcase)
+        label = CGI.escapeHTML(code_block_label(language))
         formatted_code = code_is_html ? code : code_lines_html(code)
+        content_html =
+          if code_is_html
+            formatted_code
+          else
+            %(<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">#{code_rows_html(formatted_code)}</table>)
+          end
+        content_padding = code_is_html ? "10px 12px" : "8px 10px"
+        content_line_height = code_is_html ? "1.25" : "1.2"
 
         <<~HTML.chomp
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:20px 0;border:1px solid #e5e7eb;">
@@ -588,10 +607,19 @@ module Jekyll
               <td style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</td>
             </tr>
             <tr>
-              <td style="padding:10px 12px;background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.25;color:#111827;">#{formatted_code}</td>
+              <td style="padding:#{content_padding};background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:#{content_line_height};color:#111827;">#{content_html}</td>
             </tr>
           </table>
         HTML
+      end
+
+      def code_block_label(language)
+        normalized = language.to_s.strip.downcase
+        return "CODE" if normalized.empty?
+        return "BASH" if %w[sh bash shell zsh console].include?(normalized)
+        return "PLAINTEXT" if %w[plaintext text].include?(normalized)
+
+        normalized.upcase
       end
 
       def plain_code(fragment)
@@ -703,6 +731,23 @@ module Jekyll
         escaped = CGI.escapeHTML(CGI.unescapeHTML(text.to_s)).gsub("\t", "  ")
         escaped = escaped.gsub(/\A +/) { |run| "&nbsp;" * run.length }
         escaped.gsub(/ {2,}/) { |run| " " + ("&nbsp;" * (run.length - 1)) }
+      end
+
+      def code_rows_html(formatted_code)
+        lines = formatted_code.to_s.split(%r{<br\s*/?>}, -1)
+        lines = trim_blank_code_lines(lines)
+        lines = [""] if lines.empty?
+
+        lines.map do |line|
+          padding_bottom = "0"
+          content = line.empty? ? "&nbsp;" : line
+
+          <<~HTML.chomp
+            <tr>
+              <td style="padding:0 0 #{padding_bottom};line-height:1.1;">#{content}</td>
+            </tr>
+          HTML
+        end.join
       end
 
       def author_header_html

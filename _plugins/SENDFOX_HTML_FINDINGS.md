@@ -34,17 +34,19 @@ Implication: for deterministic spacing/layout, prefer table/td wrappers over hea
 ### Code blocks
 
 - Code blocks are rendered as table cards (`label row` + `code row`).
-- Newlines are converted to `<br />`.
 - Trailing newline is removed to avoid extra blank line at block end.
-- For blocks with no Rouge token styling (`sh/plaintext` and similar), consecutive empty lines are collapsed.
-- Code cell line-height is intentionally tighter (`1.25`) to avoid "double-spaced" appearance after sanitization.
+- `sh/bash/shell/plaintext/text` are forced through plain rendering and emitted as one table row per line (no `<br />`-based layout).
+- Shell-family labels are normalized to `BASH` (so `sh` does not appear as a separate label).
+- For other highlighted languages (e.g. Ruby), Rouge HTML is kept with `<br />` to avoid span-balance breakage.
+- For plain-rendered blocks, consecutive empty lines are collapsed.
+- Code line row styles are intentionally tight (`line-height: 1.1`) with zero row padding to avoid "double-spaced" appearance after SendFox sanitization.
 
 ### Syntax highlighting
 
 - Rouge spans are converted to inline `<span style="...">` colors.
 - This works where Rouge emits token spans (e.g. Ruby, some shell tokens).
-- `plaintext` has no lexer tokens by definition, so label-only styling is expected.
-- Shell highlighting can be partial if Rouge returns few/no token classes for a snippet.
+- `plaintext` is intentionally label-only (no syntax colors).
+- `sh/bash/shell` are intentionally treated as plain (no syntax colors) to guarantee stable line rendering.
 - Code text keeps normal single spaces and preserves indentation/multi-space runs only, avoiding "bloated" spacing in shell/plaintext blocks.
 
 ## Known Constraints
