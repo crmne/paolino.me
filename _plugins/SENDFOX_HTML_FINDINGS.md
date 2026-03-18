@@ -29,7 +29,7 @@ Implication: for deterministic spacing/layout, prefer table/td wrappers over hea
 - Header title/date/author/read-link are rendered via table rows.
 - Body paragraphs/headings/lists/blockquote are converted into spacing-controlled table wrappers.
 - Media image + "Watch video/open post" link row are table-based for stable spacing.
-- Lists are rendered as a compact text block (`• item<br />• item`) inside a table cell (not native `ul/ol`) because SendFox strips list styles and can over-space row-based bullets.
+- Lists are rendered as compact block spans (`<span style="display:block">• item</span>`) inside a table cell (not native `ul/ol`) because SendFox strips list styles and can over-space row-based bullets.
 
 ### Code blocks
 

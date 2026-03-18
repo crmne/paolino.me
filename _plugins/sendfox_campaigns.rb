@@ -533,8 +533,8 @@ module Jekyll
 
         items.each_with_index.map do |item, index|
           marker = ordered ? "#{index + 1}." : "&bull;"
-          "#{marker} #{item}"
-        end.join("<br />")
+          %(<span style="display:block;line-height:1.15;mso-line-height-rule:exactly;">#{marker} #{item}</span>)
+        end.join
       end
 
       def convert_embedded_media(html, post_url)
