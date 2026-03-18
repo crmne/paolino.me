@@ -809,14 +809,19 @@ module Jekyll
         escaped_post_url = CGI.escapeHTML(post_url.to_s)
 
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:26px 0 6px;border-collapse:collapse;border:1px solid #e5e7eb;background:#f3f4f6;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:26px 0 6px;border-collapse:collapse;">
             <tr>
-              <td style="padding:10px 14px;font-size:14px;line-height:1.45;color:#111827;font-weight:600;">
+              <td style="padding:0 0 12px;">
+                <hr style="border:none;border-top:1px solid #e5e7eb;margin:0;width:72px;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 0 6px;font-size:14px;line-height:1.45;color:#111827;font-weight:600;">
                 If you've enjoyed this article, consider sending it to someone who might benefit.
               </td>
             </tr>
             <tr>
-              <td style="padding:0 14px 12px;font-size:13px;line-height:1.45;color:#111827;">
+              <td style="padding:0 0 0;font-size:13px;line-height:1.45;color:#111827;">
                 Copy this link:
                 <a href="#{escaped_post_url}" style="color:#111827;text-decoration:underline;word-break:break-all;">#{escaped_post_url}</a>
               </td>

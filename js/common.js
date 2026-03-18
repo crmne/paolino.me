@@ -8,7 +8,8 @@ $(document).ready(function() {
     menuList = $(".main-nav"),
     searchOpenIcon = $(".nav__icon-search"),
     searchCloseIcon = $(".search__close"),
-    searchBox = $(".search");
+    searchBox = $(".search"),
+    body = $("body");
 
 
   /* =======================
@@ -45,23 +46,48 @@ $(document).ready(function() {
   });
 
   searchCloseIcon.click(function () {
+    clearSearch();
     searchClose();
   });
 
+  searchBox.click(function (event) {
+    if (!$(event.target).closest(".search__box").length) {
+      searchClose();
+    }
+  });
+
   function menuOpen() {
+    searchBox.removeClass("is-visible");
     topNav.addClass("is-visible");
+    syncScrollLock();
   }
 
   function menuClose() {
     topNav.removeClass("is-visible");
+    syncScrollLock();
   }
 
   function searchOpen() {
+    topNav.removeClass("is-visible");
     searchBox.addClass("is-visible");
+    syncScrollLock();
+    $("#js-search-input").trigger("focus");
   }
 
   function searchClose() {
     searchBox.removeClass("is-visible");
+    syncScrollLock();
+  }
+
+  function clearSearch() {
+    var searchInput = $("#js-search-input");
+    searchInput.val("");
+    searchInput.trigger("keyup");
+  }
+
+  function syncScrollLock() {
+    var hasOverlay = topNav.hasClass("is-visible") || searchBox.hasClass("is-visible");
+    body.toggleClass("is-locked", hasOverlay);
   }
 
 

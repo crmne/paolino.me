@@ -25,6 +25,10 @@ body {
   }
 }
 
+body.is-locked {
+  overflow: hidden;
+}
+
 ::placeholder {
   color: #666;
 }
