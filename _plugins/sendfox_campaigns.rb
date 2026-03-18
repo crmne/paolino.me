@@ -506,35 +506,30 @@ module Jekyll
         html.gsub(%r{<(ul|ol)[^>]*>(.*?)</\1>}im) do
           tag = Regexp.last_match(1)
           list_inner = Regexp.last_match(2).to_s
-          lines = list_lines_html(tag, list_inner)
-          next "" if lines.empty?
+          list_html = normalized_list_html(tag, list_inner)
+          next "" if list_html.empty?
 
           <<~HTML.chomp
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
               <tr>
-                <td style="padding:0 0 16px;line-height:1.2;color:#111827;">#{lines}</td>
+                <td style="padding:0 0 16px;">#{list_html}</td>
               </tr>
             </table>
           HTML
         end
       end
 
-      def list_lines_html(tag, inner_html)
+      def normalized_list_html(tag, inner_html)
         items = inner_html.scan(%r{<li[^>]*>(.*?)</li>}im).flatten.map do |item|
           cleaned = item.to_s.strip
           cleaned = cleaned.gsub(%r{^\s*<p[^>]*>}i, "")
           cleaned = cleaned.gsub(%r{</p>\s*$}i, "")
-          cleaned = cleaned.gsub(/\r\n?/, "\n").gsub(/\n+/, " ").gsub(/[ \t]{2,}/, " ")
           cleaned.strip
         end.reject(&:empty?)
         return "" if items.empty?
 
-        ordered = tag.to_s.downcase == "ol"
-
-        items.each_with_index.map do |item, index|
-          marker = ordered ? "#{index + 1}." : "&bull;"
-          %(<span style="display:block;line-height:1.15;mso-line-height-rule:exactly;">#{marker} #{item}</span>)
-        end.join
+        list_items = items.map { |item| "<li>#{item}</li>" }.join
+        "<#{tag}>#{list_items}</#{tag}>"
       end
 
       def convert_embedded_media(html, post_url)
