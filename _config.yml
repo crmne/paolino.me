@@ -50,8 +50,10 @@ sendfox_campaigns:
   enabled: true
   skip_in_development: true
   campaign_prefix: "paolino.me"
-  max_pages: 5
+  post_scope: all
+  max_pages: 50
   dry_run: false
+  update_existing_draft: true
   fail_build: false
 mailchimp-identifier: # Add your MailChimp form identifier. For example - blogenjoyfreedom.us16.list-manage.com/subscribe/post?u=cd56155d76ddeeb4c0bc4d080&amp;id=7a526cd13e
 newsletter-title: Newsletter
