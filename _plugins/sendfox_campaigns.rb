@@ -461,7 +461,7 @@ module Jekyll
           next "" if content.empty?
 
           <<~HTML.chomp
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
               <tr>
                 <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};font-weight:700;color:#111827;">#{content}</td>
               </tr>
@@ -477,9 +477,9 @@ module Jekyll
           next "" if compact.empty?
 
           <<~HTML.chomp
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
               <tr>
-                <td style="padding:0 0 16px;">#{content}</td>
+                <td style="padding:0 0 16px;font-size:16px;line-height:1.65;color:#111827;">#{content}</td>
               </tr>
             </table>
           HTML
@@ -493,9 +493,9 @@ module Jekyll
           next "" if content.empty?
 
           <<~HTML.chomp
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
               <tr>
-                <td style="padding:0 0 18px 12px;border-left:3px solid #e5e7eb;color:#374151;">#{content}</td>
+                <td style="padding:0 0 18px 12px;border-left:3px solid #e5e7eb;color:#374151;font-size:16px;line-height:1.65;">#{content}</td>
               </tr>
             </table>
           HTML
@@ -510,7 +510,7 @@ module Jekyll
           next "" if list_html.empty?
 
           <<~HTML.chomp
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
               <tr>
                 <td style="padding:0 0 16px;">#{list_html}</td>
               </tr>
@@ -532,7 +532,7 @@ module Jekyll
         end.reject(&:empty?)
         return "" if items.empty?
 
-        list_style = 'margin:0 !important;padding:0 0 0 20px !important;line-height:1.35;list-style-position:outside;mso-margin-top-alt:0;mso-margin-bottom-alt:0;'
+        list_style = 'margin:0 !important;padding:0 0 0 20px !important;line-height:1.35;list-style-position:outside;mso-margin-top-alt:0;mso-margin-bottom-alt:0;font-size:16px;color:#111827;'
         item_style = 'margin:0 !important;padding:0 !important;line-height:1.35;mso-margin-top-alt:0;mso-margin-bottom-alt:0;'
         list_items = items.map { |item| %(<li style="#{item_style}">#{item}</li>) }.join
         %(<#{tag} style="#{list_style}">#{list_items}</#{tag}>)
@@ -593,7 +593,7 @@ module Jekyll
         content_line_height = code_is_html ? "1.25" : "1.2"
 
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:20px 0;border:1px solid #e5e7eb;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;margin:20px 0;border:1px solid #e5e7eb;">
             <tr>
               <td style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</td>
             </tr>
@@ -630,7 +630,7 @@ module Jekyll
 
       def text_row_html(content, font_size:, line_height:, padding_top: "0", padding_bottom: "0", color: "#111827", font_weight: "400")
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};color:#{color};font-weight:#{font_weight};">#{content}</td>
             </tr>
@@ -735,7 +735,7 @@ module Jekyll
 
           <<~HTML.chomp
             <tr>
-              <td style="padding:0 0 #{padding_bottom};line-height:1.1;">#{content}</td>
+              <td style="padding:0 0 #{padding_bottom};font-size:13px;line-height:1.1;">#{content}</td>
             </tr>
           HTML
         end.join
@@ -760,7 +760,7 @@ module Jekyll
           end
 
         <<~HTML.chomp
-          <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 18px;">
+          <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 18px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td style="vertical-align:middle;padding-bottom:14px;">#{avatar_html}</td>
               <td style="vertical-align:middle;padding-left:10px;padding-bottom:14px;font-size:14px;color:#111827;font-weight:600;">#{escaped_name}</td>
@@ -792,7 +792,7 @@ module Jekyll
         escaped_title = CGI.escapeHTML(post.data["title"].to_s)
 
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td>
                 <a href="#{escaped_post_url}" style="text-decoration:none;">
@@ -819,12 +819,12 @@ module Jekyll
           end
 
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td>#{image_html}</td>
             </tr>
           </table>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td style="font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></td>
             </tr>
@@ -847,12 +847,12 @@ module Jekyll
           end
 
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td>#{image_html}</td>
             </tr>
           </table>
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td style="font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></td>
             </tr>
