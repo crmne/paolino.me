@@ -12,38 +12,36 @@ This file captures practical findings from real `POST/PATCH/GET` tests against t
 
 Observed behavior from live campaigns:
 
-- `h1`, `h2`, `h3`, `p` inline styles are often stripped or heavily rewritten.
-- table markup and `td` inline styles are preserved much more reliably.
+- `h1`, `h2`, `h3`, `p`, and `div` inline styles are generally preserved in current SendFox output.
+- table markup can be rewritten by the editor by appending empty rows (`<tr><td></td></tr>`), which creates visible spacing drift.
 - `span` inline styles are preserved.
 - absolute-position overlays are not reliable.
 - hidden preheader tricks (`display:none` + invisible chars) can leak into visible content in SendFox output.
 - `pre` can be flattened/reformatted in ways that harm code readability.
-- trailing empty rows (`<tr><td></td></tr>`) may be injected by SendFox.
 
-Implication: for deterministic spacing/layout, prefer table/td wrappers over heading/paragraph CSS.
+Implication: avoid using table wrappers for general layout spacing in SendFox campaigns.
 
 ## Current Rendering Strategy
 
 ### Layout and spacing
 
-- Header title/date/author/read-link are rendered via table rows.
-- Body paragraphs/headings/lists/blockquote are converted into spacing-controlled table wrappers.
-- Media image + "Watch video/open post" link row are table-based for stable spacing.
-- Lists are rendered as native `ul/li` or `ol/li` blocks (inside a table cell wrapper for vertical rhythm), with explicit compact inline styles on both list and items.
+- Header title/date/author/read-link are rendered as styled `div` blocks.
+- Body paragraphs/headings/lists/blockquote are rendered as native block tags with inline margins and typography.
+- Media image + "Watch video/open post" are rendered as `div`/`p` blocks.
+- Lists are rendered as native `ul/li` or `ol/li` blocks with explicit compact inline styles on both list and items.
 - List item internals are normalized to inline-safe HTML by stripping `<p>` wrappers and collapsing duplicate `<br>` runs before rendering `<li>`.
 - `ul/li` spacing uses inline `!important` on margin/padding to override SendFox/editor CSS that can otherwise reintroduce paragraph-like gaps.
-- Table wrappers now include `border-collapse` plus zero-default typography (`font-size:0;line-height:0`) so any editor-injected empty table rows collapse instead of creating visible vertical gaps.
-- Content `td` nodes explicitly set their own font-size/line-height to preserve intended typography while keeping table-default rows collapsed.
+- Paragraph conversion skips wrapping when the paragraph contains block-level HTML, preventing invalid nested markup during embedded-media expansion.
 
 ### Code blocks
 
-- Code blocks are rendered as table cards (`label row` + `code row`).
+- Code blocks are rendered as `div` cards (`label div` + `content div`).
 - Trailing newline is removed to avoid extra blank line at block end.
-- `sh/bash/shell/plaintext/text` are forced through plain rendering and emitted as one table row per line (no `<br />`-based layout).
+- `sh/bash/shell/plaintext/text` are forced through plain rendering with `<br />` line flow.
 - Shell-family labels are normalized to `BASH` (so `sh` does not appear as a separate label).
 - For other highlighted languages (e.g. Ruby), Rouge HTML is kept with `<br />` to avoid span-balance breakage.
 - For plain-rendered blocks, consecutive empty lines are collapsed.
-- Code line row styles are intentionally tight (`line-height: 1.1`) with zero row padding to avoid "double-spaced" appearance after SendFox sanitization.
+- Code cards use tight monospace line-height to avoid "double-spaced" appearance after SendFox sanitization.
 
 ### Syntax highlighting
 
@@ -88,7 +86,7 @@ Do not trust only local HTML output. Always inspect the HTML returned by SendFox
 
 ## If You Improve This Later
 
-- Keep spacing-critical elements in table/td wrappers.
+- Prefer native `div/p/h/ul/li` blocks for spacing-critical elements.
 - Keep code rendering independent from `pre`.
 - Prefer additive changes and verify against one real campaign before mass publish.
 - Re-check the `cluster-headache-tracker` post: it historically exposed parser edge cases.
