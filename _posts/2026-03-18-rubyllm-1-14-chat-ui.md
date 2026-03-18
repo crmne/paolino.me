@@ -12,7 +12,7 @@ RubyLLM 1.14 ships a full chat UI generator. Two commands and you have a working
 
 ## Why This Matters
 
-RubyLLM turned one last week. [1.0 shipped on March 11, 2025](/rubyllm-1-0/) with Rails integration from day one: ActiveRecord models, `acts_as_chat`, Turbo streaming, persistence out of the box. [1.4](/rubyllm-1.4-1.5.1/) added the install generator. [1.7](/rubyllm-1-7/) brought the first scaffold chat UI with Turbo Streams. [1.12](/rubyllm-1-12-agents/) introduced agents with prompt conventions. Each release got closer to the same thing: AI that works the way Rails works.
+RubyLLM turned one last week. [1.0 shipped on March 11, 2025](/rubyllm-1-0/) with Rails integration from day one: ActiveRecord models, `acts_as_chat`, Turbo streaming, persistence out of the box. [1.4](/rubyllm-1.4-1.5.1/) added the install generator. [1.7](https://github.com/crmne/ruby_llm/releases/tag/1.7.0) brought the first scaffold chat UI with Turbo Streams. [1.12](/rubyllm-1-12-agents/) introduced agents with prompt conventions. Each release got closer to the same thing: AI that works the way Rails works.
 
 1.14 fully realizes that goal. A beautiful Tailwind chat UI (with automatic fallback to scaffold if you're not using Tailwind). Generators for agents and tools. Conventional directories for everything. All of it extracted from [Chat with Work](https://chatwithwork.com), where it's been running in production for months.
 
