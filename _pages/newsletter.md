@@ -9,7 +9,7 @@ page_class: page--newsletter
 Short, practical notes on Ruby, AI, and building products.
 
 <div class="widget widget-subscribe newsletter-signup">
-  <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form" id="sendfox-newsletter-page-form" data-async="true">
+  <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form" id="sendfox-newsletter-page-form" data-async="true" data-recaptcha="true">
     <div class="subscribe-group">
       <div class="subscribe-group-top">
         <label class="screen-reader-text" for="sendfox_newsletter_page_email">Email</label>
