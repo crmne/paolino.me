@@ -364,6 +364,7 @@ module Jekyll
                           #{body}
                           <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
                           <p style="margin:0;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Continue reading on paolino.me</a></p>
+                          <p style="margin:14px 0 0;font-size:12px;color:#6b7280;">If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.</p>
                           <!-- source-post: #{escaped_url} -->
                         </td>
                       </tr>
@@ -435,7 +436,7 @@ module Jekyll
           source_url = source_url_from_video_tag(video_tag)
           poster_url = poster_url_from_video_tag(video_tag)
           preview_image_url = poster_url || preview_image_for_video(source_url, nil)
-          media_preview_card(
+          inline_media_preview_html(
             post_url,
             preview_image_url,
             "Watch video",
@@ -446,7 +447,7 @@ module Jekyll
         content.gsub!(%r{<iframe\b[^>]*>.*?</iframe>}im) do |iframe_tag|
           source_url = iframe_tag[/\bsrc=(['"])(.*?)\1/i, 2]
           preview_image_url = preview_image_for_video(source_url, nil)
-          media_preview_card(
+          inline_media_preview_html(
             post_url,
             preview_image_url,
             "Watch media",
@@ -589,6 +590,23 @@ module Jekyll
             </tr>
           </table>
         HTML
+      end
+
+      def inline_media_preview_html(post_url, preview_image_url, label, link_url: nil)
+        resolved_link_url = link_url.to_s.strip.empty? ? post_url : link_url
+        escaped_link_url = CGI.escapeHTML(resolved_link_url)
+        escaped_post_url = CGI.escapeHTML(post_url)
+        escaped_label = CGI.escapeHTML(label)
+
+        image_html =
+          if preview_image_url.to_s.strip.empty?
+            ""
+          else
+            escaped_image = CGI.escapeHTML(preview_image_url)
+            %(<a href="#{escaped_link_url}" style="text-decoration:none;display:inline-block;"><img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;max-width:100%;height:auto;border:1px solid #e5e7eb;border-radius:10px;" /></a><br />)
+          end
+
+        %(#{image_html}<a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a>)
       end
 
       def media_play_overlay_html
