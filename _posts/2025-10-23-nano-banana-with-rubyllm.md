@@ -5,8 +5,8 @@ date: 2025-10-23
 description: "Nano Banana hides behind Google's chat endpoint. Here's the straight line to ship it with RubyLLM."
 tags: [Ruby, AI, RubyLLM, Google, Gemini]
 image: /images/nano-banana.png
+sendfox_campaign_id: 2750880
 ---
-
 Google wired Nano Banana into the chat interface `generateContent`, not the image API's `predict`. Counterintuitive if you're using RubyLLM, which makes you think in terms of _actions_ like [`paint`](https://rubyllm.com/image-generation/) instead of [`chat`](https://rubyllm.com/chat/).
 
 Once you know that quirk, it's straightforward. Only caveat: you need the latest trunk or v1.9+, because that's where we taught RubyLLM to unpack inline file data from chat responses.

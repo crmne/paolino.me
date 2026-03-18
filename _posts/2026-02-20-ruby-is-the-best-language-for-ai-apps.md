@@ -6,8 +6,8 @@ description: "A pragmatic, code-first argument for Ruby as the best language to 
 tags: [Ruby, Rails, AI, LLM, RubyLLM, Async, Developer Experience]
 image: /images/rubyconfth-2026-keynote.jpg
 video: https://www.youtube.com/embed/fAHif8MNCfw?si=L1ZXT690lXcB-0Lu
+sendfox_campaign_id: 2750883
 ---
-
 > If your goal is to ship AI applications in 2026, Ruby is the best language to do it.
 
 ## The AI Training Ecosystem Is Irrelevant

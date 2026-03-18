@@ -5,8 +5,8 @@ date: 2025-05-13
 description: "The standard API for LLM model information I announced last month is now live and already integrated into RubyLLM 1.3.0."
 tags: [Ruby, AI, LLM, API Standards, OpenAI, Anthropic, Gemini, DeepSeek, Open Source, Parsera]
 image: /images/standard-llm-capabilities-pricing-api-live.png
+sendfox_campaign_id: 2750876
 ---
-
 *Update: The Parsera API has been sunsetted. RubyLLM now uses [models.dev](https://models.dev) for model capabilities and pricing.*
 
 The [LLM Capabilities API](/standard-api-llm-capabilities-pricing) I announced last month is live. [Browse the models](https://llmspecs.parsera.org/) or [hit the API directly](http://api.parsera.org/v1/llm-specs).

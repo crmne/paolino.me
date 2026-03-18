@@ -5,8 +5,8 @@ date: 2025-07-09
 description: "How Ruby's async ecosystem transforms resource-intensive LLM applications into efficient, scalable systems - without rewriting your codebase."
 tags: [Ruby, Async, LLM, AI, Rails, Concurrency, Performance, Falcon]
 image: /images/async.webp
+sendfox_campaign_id: 2750878
 ---
-
 I spent a decade in Python's async ecosystem. When I came back to Ruby, I couldn't find the async revolution. SolidQueue, Sidekiq, and GoodJob were all thread-based. Where Python had reorganized its entire world around `asyncio`, Ruby seemed stuck.
 
 Then I started building [RubyLLM][] and [Chat with Work][], and it clicked. LLM communication is async Ruby's killer app. Long-lived connections, token-by-token streaming, and thousands of concurrent conversations: exactly where threads fall apart.

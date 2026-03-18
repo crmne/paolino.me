@@ -5,8 +5,8 @@ date: 2026-02-17
 description: "Agents aren't magic. They're LLMs that can call your code. RubyLLM 1.12 adds a clean DSL to define and reuse them."
 tags: [Ruby, AI, Agents, LLM, Rails, Open Source, Tool Calling, RubyLLM]
 image: /images/rubyllm-1.12.png
+sendfox_campaign_id: 2750882
 ---
-
 "Agent" might be the most overloaded word in tech right now. Every startup claims to have one. Every framework promises to help you build them. The discourse has gotten so thick that the actual concept is buried under layers of marketing.
 
 So let's start from first principles.

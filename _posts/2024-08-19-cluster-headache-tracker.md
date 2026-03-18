@@ -5,8 +5,8 @@ date:       2024-08-19 09:00:00
 description:    "Cluster headaches hit up to eight times a day. The hospital gave me a paper form with one line per day. So I built an app between attacks."
 tags:       [Cluster Headaches, Open Source, Health]
 image:      /images/charite_headache_log.jpg
+sendfox_campaign_id: 2750873
 ---
-
 Cluster headaches are called "suicide headaches" for a reason. The worst pain you can imagine, behind one eye, up to eight times a day. I've had them for years.
 
 During my last bout I spent two weeks in hospital. They handed me a paper form, one line per day. One line. For up to eight attacks, each with different intensity, duration, location, and medication. I looked at the form, looked at the nurses, and started coding.

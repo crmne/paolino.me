@@ -6,8 +6,8 @@ description: "RubyLLM 1.14 ships a Tailwind chat UI, Rails generators for agents
 tags: [Ruby, AI, Rails, LLM, Open Source, RubyLLM, Chat UI]
 image: /images/rubyllm-1.14.png
 video: https://talks.paolino.me/rucoco-2026/demo.mp4
+sendfox_campaign_id: 2750884
 ---
-
 RubyLLM 1.14 ships a full chat UI generator. Two commands and you have a working AI chat app with Turbo streaming, model selection, and tool call display, in under two minutes. The demo above shows the whole thing: new Rails app to working chat in 1:46, including trying it out.
 
 ## Why This Matters

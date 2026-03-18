@@ -5,8 +5,8 @@ date: 2025-04-01
 description: "No provider exposes model capabilities and pricing through their API. So we're building one."
 tags: [Ruby, AI, LLM, API Standards, OpenAI, Anthropic, Gemini, DeepSeek, Open Source]
 image: /images/standard-llm-capabilities-pricing-api.jpg
+sendfox_campaign_id: 2750875
 ---
-
 *Update: The Parsera API has been sunsetted. RubyLLM now uses [models.dev](https://models.dev) for model capabilities and pricing.*
 
 It's 2025, and no LLM provider exposes basic model information through their API. Context window? Pricing per token? Function calling support? You're reading documentation pages that change without notice and look different for every provider.

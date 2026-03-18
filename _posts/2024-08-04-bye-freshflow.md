@@ -5,8 +5,8 @@ date:       2024-08-04 09:00:00
 description:    I co-founded Freshflow 3.5 years ago. Now I'm leaving to build something of my own.
 tags:       [Career, Startups, Leadership]
 image:      /images/Freshflow_20231207_63206.jpg
+sendfox_campaign_id: 2750872
 ---
-
 I co-founded [Freshflow][freshflow] three and a half years ago. We built an AI system that tells supermarkets how much fresh produce to order so less of it ends up in the bin. We shipped fast, scaled to many stores, and assembled a team I'd work with again in a heartbeat.
 
 Now I'm moving on.

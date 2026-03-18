@@ -6,8 +6,8 @@ description: "Stop typing every prompt. Speak it instead, with a fast Rust stack
 tags: [AI, Voice, Linux, Omarchy, Rust, Productivity]
 image: /images/omarchy-voxtype-demo.png
 video: /images/omarchy-voxtype-demo.mp4
+sendfox_campaign_id: 2750881
 ---
-
 Typing every prompt feels backwards in 2026. You can speak faster than you can type. Hold a hotkey, speak, your OS types it for you. If you care about flow, dictation is the most underrated upgrade you can make.
 
 In the [Omarchy](https://omarchy.org/) world, [Hyprwhspr](https://github.com/goodroot/hyprwhspr) is getting a lot of attention after a recent DHH tweet:
