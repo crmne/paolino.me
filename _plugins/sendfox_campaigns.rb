@@ -575,11 +575,9 @@ module Jekyll
         CGI.escapeHTML(CGI.unescapeHTML(stripped))
       end
 
-      def code_lines_html(code)
-        normalized = CGI.unescapeHTML(code.to_s).gsub("\r\n", "\n").sub(/\n\z/, "")
-        normalized.split("\n").map do |line|
-          CGI.escapeHTML(line).gsub("\t", "&nbsp;&nbsp;").gsub(" ", "&nbsp;")
-        end.join("<br />")
+      def code_lines_html(code, collapse_blank_lines: true)
+        lines = normalized_code_lines(code, unescape: true, collapse_blank_lines: collapse_blank_lines)
+        lines.map { |line| format_code_text_segment(line) }.join("<br />")
       end
 
       def text_row_html(content, font_size:, line_height:, padding_top: "0", padding_bottom: "0", color: "#111827", font_weight: "400")
@@ -629,14 +627,51 @@ module Jekyll
           style ? %(<span style="#{style}">) : "<span>"
         end
 
-        parts = html.split(%r{(<span[^>]*>|</span>)})
-        parts.map do |part|
-          if part.start_with?("<span") || part == "</span>"
-            part
+        has_styled_tokens = html.include?('<span style="')
+        lines = normalized_code_lines(html, unescape: false, collapse_blank_lines: !has_styled_tokens)
+        lines.map { |line| format_html_code_line(line) }.join("<br />")
+      end
+
+      def normalized_code_lines(text, unescape:, collapse_blank_lines:)
+        normalized = text.to_s.gsub("\r\n", "\n").sub(/\n\z/, "")
+        normalized = CGI.unescapeHTML(normalized) if unescape
+        lines = normalized.split("\n", -1)
+        lines = trim_blank_code_lines(lines)
+        collapse_blank_lines ? collapse_consecutive_blank_code_lines(lines) : lines
+      end
+
+      def trim_blank_code_lines(lines)
+        trimmed = lines.drop_while { |line| line.strip.empty? }
+        trimmed.reverse.drop_while { |line| line.strip.empty? }.reverse
+      end
+
+      def collapse_consecutive_blank_code_lines(lines)
+        collapsed = []
+        previous_blank = false
+
+        lines.each do |line|
+          blank = line.strip.empty?
+          next if blank && previous_blank
+
+          collapsed << line
+          previous_blank = blank
+        end
+
+        collapsed
+      end
+
+      def format_html_code_line(line)
+        line.split(%r{(<[^>]+>)}).map do |segment|
+          if segment.start_with?("<") && segment.end_with?(">")
+            segment
           else
-            code_lines_html(part)
+            format_code_text_segment(segment)
           end
         end.join
+      end
+
+      def format_code_text_segment(text)
+        CGI.escapeHTML(CGI.unescapeHTML(text.to_s)).gsub("\t", "&nbsp;&nbsp;").gsub(" ", "&nbsp;")
       end
 
       def author_header_html

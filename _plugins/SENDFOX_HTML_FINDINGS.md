@@ -35,6 +35,7 @@ Implication: for deterministic spacing/layout, prefer table/td wrappers over hea
 - Code blocks are rendered as table cards (`label row` + `code row`).
 - Newlines are converted to `<br />`.
 - Trailing newline is removed to avoid extra blank line at block end.
+- For blocks with no Rouge token styling (`sh/plaintext` and similar), consecutive empty lines are collapsed.
 - Code cell line-height is intentionally tighter (`1.25`) to avoid "double-spaced" appearance after sanitization.
 
 ### Syntax highlighting
