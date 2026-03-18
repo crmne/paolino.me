@@ -44,3 +44,17 @@
     }
   }
 }
+
+/* Newsletter page */
+.page--newsletter {
+  .newsletter-signup {
+    margin-top: 24px;
+
+    .subscribe-group-top {
+      .subscribe-email,
+      .subscribe-button {
+        font-size: 16px;
+      }
+    }
+  }
+}

@@ -352,7 +352,7 @@ module Jekyll
         title_block = text_row_html(escaped_title, font_size: "32px", line_height: "1.2", font_weight: "700", color: "#111827", padding_bottom: "6px")
         date_block = text_row_html(CGI.escapeHTML(published_at), font_size: "14px", line_height: "1.4", color: "#6b7280", padding_bottom: "18px")
         read_link_block = text_row_html(%(<a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Read on paolino.me</a>), font_size: "15px", line_height: "1.5", padding_bottom: "20px")
-        continue_link_block = text_row_html(%(<a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Continue reading on paolino.me</a>), font_size: "15px", line_height: "1.5")
+        cta_block = newsletter_cta_html(post_url)
         unsubscribe_block = text_row_html(%(If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.), font_size: "12px", line_height: "1.4", color: "#6b7280", padding_top: "14px")
 
         <<~HTML
@@ -365,8 +365,8 @@ module Jekyll
               #{read_link_block}
               #{hero_media}
               #{body}
+              #{cta_block}
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
-              #{continue_link_block}
               #{unsubscribe_block}
               <!-- source-post: #{escaped_url} -->
             </body>
@@ -746,27 +746,141 @@ module Jekyll
         author_name = @from_name.to_s.strip if author_name.empty?
         author_name = "Author" if author_name.empty?
 
+        author_url = author_profile_url
+        company_name = author_company_name
+        company_url = author_company_url
+
         avatar_path = @site.config.dig("author", "avatar")
         avatar_path = @site.config.dig("author", "image") if avatar_path.to_s.strip.empty?
         avatar_url = absolute_asset_url(avatar_path)
         escaped_name = CGI.escapeHTML(author_name)
+
+        name_html =
+          if author_url.to_s.strip.empty?
+            escaped_name
+          else
+            escaped_author_url = CGI.escapeHTML(author_url)
+            %(<a href="#{escaped_author_url}" style="color:#111827;text-decoration:none;">#{escaped_name}</a>)
+          end
+
+        company_line_html =
+          if company_name.to_s.strip.empty?
+            ""
+          else
+            escaped_company_name = CGI.escapeHTML(company_name)
+            company_label = "Founder, #{escaped_company_name}"
+
+            if company_url.to_s.strip.empty?
+              %(<div style="margin-top:3px;font-size:12px;line-height:1.3;color:#6b7280;">#{company_label}</div>)
+            else
+              escaped_company_url = CGI.escapeHTML(company_url)
+              %(<div style="margin-top:3px;font-size:12px;line-height:1.3;color:#6b7280;">Founder, <a href="#{escaped_company_url}" style="color:#6b7280;text-decoration:underline;">#{escaped_company_name}</a></div>)
+            end
+          end
 
         avatar_html =
           if avatar_url.to_s.strip.empty?
             ""
           else
             escaped_avatar = CGI.escapeHTML(avatar_url)
-            %(<img src="#{escaped_avatar}" alt="#{escaped_name}" width="42" height="42" style="display:block;width:42px;height:42px;border-radius:999px;" />)
+            image_html = %(<img src="#{escaped_avatar}" alt="#{escaped_name}" width="42" height="42" style="display:block;width:42px;height:42px;border-radius:999px;" />)
+            if author_url.to_s.strip.empty?
+              image_html
+            else
+              escaped_author_url = CGI.escapeHTML(author_url)
+              %(<a href="#{escaped_author_url}" style="text-decoration:none;">#{image_html}</a>)
+            end
           end
 
         <<~HTML.chomp
           <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 18px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td style="vertical-align:middle;padding-bottom:14px;">#{avatar_html}</td>
-              <td style="vertical-align:middle;padding-left:10px;padding-bottom:14px;font-size:14px;color:#111827;font-weight:600;">#{escaped_name}</td>
+              <td style="vertical-align:middle;padding-left:10px;padding-bottom:14px;">
+                <div style="font-size:14px;line-height:1.25;color:#111827;font-weight:600;">#{name_html}</div>
+                #{company_line_html}
+              </td>
             </tr>
           </table>
         HTML
+      end
+
+      def newsletter_cta_html(post_url)
+        escaped_post_url = CGI.escapeHTML(post_url.to_s)
+
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:26px 0 6px;border-collapse:collapse;border:1px solid #e5e7eb;background:#f3f4f6;">
+            <tr>
+              <td style="padding:10px 14px;font-size:14px;line-height:1.45;color:#111827;font-weight:600;">
+                If you've enjoyed this article, consider sending it to someone who might benefit.
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 14px 12px;font-size:13px;line-height:1.45;color:#111827;">
+                Copy this link:
+                <a href="#{escaped_post_url}" style="color:#111827;text-decoration:underline;word-break:break-all;">#{escaped_post_url}</a>
+              </td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      def author_profile_url
+        configured = absolute_link_url(@site.config.dig("author", "url"))
+        return configured unless configured.to_s.strip.empty?
+
+        absolute_site_prefix
+      end
+
+      def author_company_name
+        value = @site.config.dig("author", "company_name").to_s.strip
+        return value unless value.empty?
+
+        "Chat with Work"
+      end
+
+      def author_company_url
+        configured = absolute_link_url(@site.config.dig("author", "company_url"))
+        return configured unless configured.to_s.strip.empty?
+
+        project_link_url_by_name(author_company_name) || "https://chatwithwork.com"
+      end
+
+      def author_company_logo_url
+        configured = absolute_link_url(@site.config.dig("author", "company_logo"))
+        return configured unless configured.to_s.strip.empty?
+
+        return "https://chatwithwork.com/logotype.svg" if author_company_name.casecmp("Chat with Work").zero?
+
+        nil
+      end
+
+      def project_link_url_by_name(name)
+        target = name.to_s.strip.downcase
+        return nil if target.empty?
+
+        project = Array(@site.config["projects"]).find do |item|
+          item_name = if item.is_a?(Hash)
+                        item["name"] || item[:name]
+                      end
+          item_name.to_s.strip.downcase == target
+        end
+        return nil unless project.is_a?(Hash)
+
+        raw_url = project["link"] || project[:link]
+        absolute_link_url(raw_url)
+      end
+
+      def absolute_link_url(raw_url)
+        value = raw_url.to_s.strip
+        return nil if value.empty?
+        return value if value.match?(%r{\Ahttps?://}i)
+
+        value = "/#{value}" unless value.start_with?("/")
+        prefix = absolute_site_prefix
+        return value if prefix.empty?
+
+        "#{prefix}#{value}"
       end
 
       def post_hero_media_html(post, post_url)

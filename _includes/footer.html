@@ -1,12 +1,15 @@
 <!-- begin footer-widgets -->
 <section class="footer-widgets">
+  {% assign is_newsletter_page = false %}
+  {% if page.url == '/newsletter/' or page.url == '/newsletter/index.html' %}
+  {% assign is_newsletter_page = true %}
+  {% endif %}
   <div class="container">
     <div class="row">
       <div class="col col-12 col-d-10 push-d-1 col-m-12 push-m-0">
         <div class="widget-box">
           <div class="row">
 
-            {% if site.tags.size >= 1 %}
             <div class="col col-4 col-d-6 col-t-12">
               <div class="widget widget-about">
                 <div class="widget__head">
@@ -14,6 +17,8 @@
                 </div>
                 <p class="about__desc">{{site.author.description}}</p>
               </div>
+              {% if site.tags.size >= 1 %}
+              {% unless is_newsletter_page %}
               <div class="widget widget-tags">
                 <div class="widget__head">
                   <h4 class="widget__title">Tags</h4>
@@ -22,8 +27,9 @@
                   {{ site | tag_cloud }}
                 </div>
               </div>
+              {% endunless %}
+              {% endif %}
             </div>
-            {% endif %}
 
             <div class="col col-4 col-d-6 col-t-12">
               <div class="widget widget-recent">
@@ -51,6 +57,16 @@
             </div>
 
             <div class="col col-4 col-d-6 col-t-12">
+              {% if is_newsletter_page and site.tags.size >= 1 %}
+              <div class="widget widget-tags">
+                <div class="widget__head">
+                  <h4 class="widget__title">Tags</h4>
+                </div>
+                <div class="tag__cloud">
+                  {{ site | tag_cloud }}
+                </div>
+              </div>
+              {% else %}
               {% if site.mailchimp %}
               <div class="widget widget-subscribe">
                 <div class="widget__head">
@@ -94,6 +110,7 @@
                   </div>
                 </form>
               </div>
+              {% endif %}
               {% endif %}
             </div>
           </div>

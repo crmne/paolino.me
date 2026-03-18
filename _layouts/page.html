@@ -12,7 +12,7 @@ layout: default
 </div>
 
 <!-- begin page -->
-<article class="page fadein">
+<article class="page fadein{% if page.page_class %} {{ page.page_class }}{% endif %}">
   <div class="container">
     <div class="row">
       {% assign page_image = page.image.path | default: page.image %}
