@@ -439,8 +439,8 @@ module Jekyll
         content = convert_blockquotes_to_tables(content)
         content = convert_heading_to_table(content, tag: "h2", font_size: "28px", line_height: "1.25", padding_top: "30px", padding_bottom: "12px")
         content = convert_heading_to_table(content, tag: "h3", font_size: "22px", line_height: "1.3", padding_top: "24px", padding_bottom: "10px")
-        content = convert_paragraphs_to_tables(content)
         content = convert_lists_to_tables(content)
+        content = convert_paragraphs_to_tables(content)
         content
       end
 
@@ -495,16 +495,45 @@ module Jekyll
         html.gsub(%r{<(ul|ol)[^>]*>(.*?)</\1>}im) do
           tag = Regexp.last_match(1)
           list_inner = Regexp.last_match(2).to_s
-          list_html = "<#{tag}>#{list_inner}</#{tag}>"
+          rows = list_rows_html(tag, list_inner)
+          next "" if rows.empty?
 
           <<~HTML.chomp
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
               <tr>
-                <td style="padding:0 0 18px;">#{list_html}</td>
+                <td style="padding:0 0 16px;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">
+                    #{rows}
+                  </table>
+                </td>
               </tr>
             </table>
           HTML
         end
+      end
+
+      def list_rows_html(tag, inner_html)
+        items = inner_html.scan(%r{<li[^>]*>(.*?)</li>}im).flatten.map do |item|
+          cleaned = item.to_s.strip
+          cleaned = cleaned.gsub(%r{^\s*<p[^>]*>}i, "")
+          cleaned = cleaned.gsub(%r{</p>\s*$}i, "")
+          cleaned.strip
+        end.reject(&:empty?)
+        return "" if items.empty?
+
+        ordered = tag.to_s.downcase == "ol"
+
+        items.each_with_index.map do |item, index|
+          marker = ordered ? "#{index + 1}." : "&bull;"
+          padding_bottom = index == items.length - 1 ? "0" : "6px"
+
+          <<~HTML.chomp
+            <tr>
+              <td style="width:18px;padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.55;">#{marker}</td>
+              <td style="padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.55;">#{item}</td>
+            </tr>
+          HTML
+        end.join
       end
 
       def convert_embedded_media(html, post_url)
@@ -671,7 +700,9 @@ module Jekyll
       end
 
       def format_code_text_segment(text)
-        CGI.escapeHTML(CGI.unescapeHTML(text.to_s)).gsub("\t", "&nbsp;&nbsp;").gsub(" ", "&nbsp;")
+        escaped = CGI.escapeHTML(CGI.unescapeHTML(text.to_s)).gsub("\t", "  ")
+        escaped = escaped.gsub(/\A +/) { |run| "&nbsp;" * run.length }
+        escaped.gsub(/ {2,}/) { |run| " " + ("&nbsp;" * (run.length - 1)) }
       end
 
       def author_header_html

@@ -29,6 +29,7 @@ Implication: for deterministic spacing/layout, prefer table/td wrappers over hea
 - Header title/date/author/read-link are rendered via table rows.
 - Body paragraphs/headings/lists/blockquote are converted into spacing-controlled table wrappers.
 - Media image + "Watch video/open post" link row are table-based for stable spacing.
+- Lists are rendered as table rows with explicit bullet/number cells (not native `ul/ol`) because SendFox strips list styles.
 
 ### Code blocks
 
@@ -44,6 +45,7 @@ Implication: for deterministic spacing/layout, prefer table/td wrappers over hea
 - This works where Rouge emits token spans (e.g. Ruby, some shell tokens).
 - `plaintext` has no lexer tokens by definition, so label-only styling is expected.
 - Shell highlighting can be partial if Rouge returns few/no token classes for a snippet.
+- Code text keeps normal single spaces and preserves indentation/multi-space runs only, avoiding "bloated" spacing in shell/plaintext blocks.
 
 ## Known Constraints
 
