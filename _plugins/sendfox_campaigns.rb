@@ -506,28 +506,25 @@ module Jekyll
         html.gsub(%r{<(ul|ol)[^>]*>(.*?)</\1>}im) do
           tag = Regexp.last_match(1)
           list_inner = Regexp.last_match(2).to_s
-          rows = list_rows_html(tag, list_inner)
-          next "" if rows.empty?
+          lines = list_lines_html(tag, list_inner)
+          next "" if lines.empty?
 
           <<~HTML.chomp
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
               <tr>
-                <td style="padding:0 0 16px;">
-                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">
-                    #{rows}
-                  </table>
-                </td>
+                <td style="padding:0 0 16px;line-height:1.2;color:#111827;">#{lines}</td>
               </tr>
             </table>
           HTML
         end
       end
 
-      def list_rows_html(tag, inner_html)
+      def list_lines_html(tag, inner_html)
         items = inner_html.scan(%r{<li[^>]*>(.*?)</li>}im).flatten.map do |item|
           cleaned = item.to_s.strip
           cleaned = cleaned.gsub(%r{^\s*<p[^>]*>}i, "")
           cleaned = cleaned.gsub(%r{</p>\s*$}i, "")
+          cleaned = cleaned.gsub(/\r\n?/, "\n").gsub(/\n+/, " ").gsub(/[ \t]{2,}/, " ")
           cleaned.strip
         end.reject(&:empty?)
         return "" if items.empty?
@@ -536,15 +533,8 @@ module Jekyll
 
         items.each_with_index.map do |item, index|
           marker = ordered ? "#{index + 1}." : "&bull;"
-          padding_bottom = "0"
-
-          <<~HTML.chomp
-            <tr>
-              <td style="width:18px;padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.25;">#{marker}</td>
-              <td style="padding:0 0 #{padding_bottom};vertical-align:top;color:#111827;line-height:1.25;">#{item}</td>
-            </tr>
-          HTML
-        end.join
+          "#{marker} #{item}"
+        end.join("<br />")
       end
 
       def convert_embedded_media(html, post_url)
