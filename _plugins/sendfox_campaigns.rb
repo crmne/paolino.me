@@ -40,6 +40,7 @@ module Jekyll
         @from_email = env("SENDFOX_FROM_EMAIL", @config["from_email"])
         @max_pages = positive_int(@config["max_pages"], fallback: 5)
         @dry_run = truthy?(@config["dry_run"]) || truthy?(ENV["SENDFOX_DRY_RUN"])
+        @fail_build = truthy?(@config["fail_build"]) || truthy?(ENV["SENDFOX_FAIL_BUILD"])
       end
 
       def publish
@@ -65,7 +66,7 @@ module Jekyll
           stats[result] += 1 if stats.key?(result)
         rescue StandardError => e
           log_error("Failed to sync '#{preview.fetch(:post).data["title"]}': #{e.message}")
-          raise if truthy?(@config["fail_build"])
+          raise if @fail_build
         end
 
         log_info(
@@ -73,7 +74,7 @@ module Jekyll
         )
       rescue StandardError => e
         log_error("Failed to sync draft campaigns: #{e.message}")
-        raise if truthy?(@config["fail_build"])
+        raise if @fail_build
       end
 
       def campaign_preview
