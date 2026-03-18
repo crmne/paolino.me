@@ -342,26 +342,32 @@ module Jekyll
         body = convert_embedded_media(body, post_url)
         body = unwrap_block_paragraphs(body)
         body = remove_empty_paragraphs(body)
+        body = apply_content_spacing(body)
 
         published_at = post.date.getlocal.strftime("%B %-d, %Y")
         escaped_title = CGI.escapeHTML(post.data["title"].to_s)
         escaped_url = CGI.escapeHTML(post_url)
         author_block = author_header_html
         hero_media = post_hero_media_html(post, post_url)
+        title_block = text_row_html(escaped_title, font_size: "32px", line_height: "1.2", font_weight: "700", color: "#111827", padding_bottom: "6px")
+        date_block = text_row_html(CGI.escapeHTML(published_at), font_size: "14px", line_height: "1.4", color: "#6b7280", padding_bottom: "18px")
+        read_link_block = text_row_html(%(<a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Read on paolino.me</a>), font_size: "15px", line_height: "1.5", padding_bottom: "20px")
+        continue_link_block = text_row_html(%(<a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Continue reading on paolino.me</a>), font_size: "15px", line_height: "1.5")
+        unsubscribe_block = text_row_html(%(If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.), font_size: "12px", line_height: "1.4", color: "#6b7280", padding_top: "14px")
 
         <<~HTML
           <!doctype html>
           <html>
             <body style="margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.65;font-size:16px;">
-              <h1 style="margin:0 0 8px;font-size:32px;line-height:1.2;color:#111827;">#{escaped_title}</h1>
-              <p style="margin:0 0 14px;font-size:14px;color:#6b7280;">#{CGI.escapeHTML(published_at)}</p>
+              #{title_block}
+              #{date_block}
               #{author_block}
-              <p style="margin:0 0 24px;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Read on paolino.me</a></p>
+              #{read_link_block}
               #{hero_media}
               #{body}
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
-              <p style="margin:0;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Continue reading on paolino.me</a></p>
-              <p style="margin:14px 0 0;font-size:12px;color:#6b7280;">If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.</p>
+              #{continue_link_block}
+              #{unsubscribe_block}
               <!-- source-post: #{escaped_url} -->
             </body>
           </html>
@@ -394,15 +400,15 @@ module Jekyll
           %r{<div class="language-([A-Za-z0-9_+\-]+)\s+highlighter-rouge">\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
         ) do
           language = Regexp.last_match(1)
-          code = plain_code(Regexp.last_match(2))
-          email_code_block(code, language)
+          code = code_lines_html_with_rouge(Regexp.last_match(2))
+          email_code_block(code, language, code_is_html: true)
         end
 
         content.gsub!(
           %r{<div class="highlighter-rouge">\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
         ) do
-          code = plain_code(Regexp.last_match(1))
-          email_code_block(code, nil)
+          code = code_lines_html_with_rouge(Regexp.last_match(1))
+          email_code_block(code, nil, code_is_html: true)
         end
 
         content
@@ -426,6 +432,79 @@ module Jekyll
 
       def unwrap_block_paragraphs(html)
         html.gsub(%r{<p>\s*(<(?:div|table|pre|blockquote|ul|ol|h[1-6])\b.*?</(?:div|table|pre|blockquote|ul|ol|h[1-6])>)\s*</p>}im, '\1')
+      end
+
+      def apply_content_spacing(html)
+        content = html.dup
+        content = convert_blockquotes_to_tables(content)
+        content = convert_heading_to_table(content, tag: "h2", font_size: "28px", line_height: "1.25", padding_top: "30px", padding_bottom: "12px")
+        content = convert_heading_to_table(content, tag: "h3", font_size: "22px", line_height: "1.3", padding_top: "24px", padding_bottom: "10px")
+        content = convert_paragraphs_to_tables(content)
+        content = convert_lists_to_tables(content)
+        content
+      end
+
+      def convert_heading_to_table(html, tag:, font_size:, line_height:, padding_top:, padding_bottom:)
+        html.gsub(%r{<#{tag}[^>]*>(.*?)</#{tag}>}im) do
+          content = Regexp.last_match(1).to_s.strip
+          next "" if content.empty?
+
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+              <tr>
+                <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};font-weight:700;color:#111827;">#{content}</td>
+              </tr>
+            </table>
+          HTML
+        end
+      end
+
+      def convert_paragraphs_to_tables(html)
+        html.gsub(%r{<p[^>]*>(.*?)</p>}im) do
+          content = Regexp.last_match(1).to_s.strip
+          compact = content.gsub(%r{<br\s*/?>}i, "").gsub("&nbsp;", "").strip
+          next "" if compact.empty?
+
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+              <tr>
+                <td style="padding:0 0 16px;">#{content}</td>
+              </tr>
+            </table>
+          HTML
+        end
+      end
+
+      def convert_blockquotes_to_tables(html)
+        html.gsub(%r{<blockquote>\s*(.*?)\s*</blockquote>}im) do
+          content = Regexp.last_match(1).to_s
+          content = content.gsub(%r{</?p[^>]*>}i, "").strip
+          next "" if content.empty?
+
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+              <tr>
+                <td style="padding:0 0 18px 12px;border-left:3px solid #e5e7eb;color:#374151;">#{content}</td>
+              </tr>
+            </table>
+          HTML
+        end
+      end
+
+      def convert_lists_to_tables(html)
+        html.gsub(%r{<(ul|ol)[^>]*>(.*?)</\1>}im) do
+          tag = Regexp.last_match(1)
+          list_inner = Regexp.last_match(2).to_s
+          list_html = "<#{tag}>#{list_inner}</#{tag}>"
+
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+              <tr>
+                <td style="padding:0 0 18px;">#{list_html}</td>
+              </tr>
+            </table>
+          HTML
+        end
       end
 
       def convert_embedded_media(html, post_url)
@@ -470,9 +549,9 @@ module Jekyll
         absolute_asset_url(poster)
       end
 
-      def email_code_block(code, language)
+      def email_code_block(code, language, code_is_html: false)
         label = language.to_s.empty? ? "CODE" : CGI.escapeHTML(language.upcase)
-        formatted_code = code_lines_html(code)
+        formatted_code = code_is_html ? code : code_lines_html(code)
 
         <<~HTML.chomp
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:20px 0;border:1px solid #e5e7eb;">
@@ -480,7 +559,7 @@ module Jekyll
               <td style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</td>
             </tr>
             <tr>
-              <td style="padding:12px 14px;background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.5;color:#111827;"><code>#{formatted_code}</code></td>
+              <td style="padding:12px 14px;background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.5;color:#111827;">#{formatted_code}</td>
             </tr>
           </table>
         HTML
@@ -501,6 +580,63 @@ module Jekyll
         normalized.split("\n", -1).map do |line|
           CGI.escapeHTML(line).gsub("\t", "&nbsp;&nbsp;").gsub(" ", "&nbsp;")
         end.join("<br />")
+      end
+
+      def text_row_html(content, font_size:, line_height:, padding_top: "0", padding_bottom: "0", color: "#111827", font_weight: "400")
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;">
+            <tr>
+              <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};color:#{color};font-weight:#{font_weight};">#{content}</td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      ROUGE_INLINE_COLOR_STYLES = {
+        "k" => "color:#b45309;font-weight:700;",
+        "kd" => "color:#b45309;font-weight:700;",
+        "kn" => "color:#b45309;font-weight:700;",
+        "kp" => "color:#b45309;font-weight:700;",
+        "kr" => "color:#b45309;font-weight:700;",
+        "kt" => "color:#b45309;font-weight:700;",
+        "nb" => "color:#0f766e;",
+        "nc" => "color:#1d4ed8;font-weight:700;",
+        "nf" => "color:#1d4ed8;font-weight:700;",
+        "nn" => "color:#1d4ed8;",
+        "no" => "color:#1d4ed8;",
+        "sx" => "color:#047857;",
+        "s" => "color:#047857;",
+        "s1" => "color:#047857;",
+        "s2" => "color:#047857;",
+        "m" => "color:#2563eb;",
+        "mi" => "color:#2563eb;",
+        "mf" => "color:#2563eb;",
+        "mh" => "color:#2563eb;",
+        "mo" => "color:#2563eb;",
+        "c" => "color:#6b7280;font-style:italic;",
+        "c1" => "color:#6b7280;font-style:italic;",
+        "cm" => "color:#6b7280;font-style:italic;",
+        "cp" => "color:#6b7280;font-style:italic;",
+        "cs" => "color:#6b7280;font-style:italic;",
+        "o" => "color:#374151;"
+      }.freeze
+
+      def code_lines_html_with_rouge(fragment)
+        html = fragment.to_s.gsub("\r\n", "\n")
+        html = html.gsub(%r{<span class="([^"]+)">}) do
+          classes = Regexp.last_match(1).split(/\s+/)
+          style = classes.map { |klass| ROUGE_INLINE_COLOR_STYLES[klass] }.compact.first
+          style ? %(<span style="#{style}">) : "<span>"
+        end
+
+        parts = html.split(%r{(<span[^>]*>|</span>)})
+        parts.map do |part|
+          if part.start_with?("<span") || part == "</span>"
+            part
+          else
+            code_lines_html(part)
+          end
+        end.join
       end
 
       def author_header_html
@@ -524,8 +660,8 @@ module Jekyll
         <<~HTML.chomp
           <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 18px;">
             <tr>
-              <td style="vertical-align:middle;">#{avatar_html}</td>
-              <td style="vertical-align:middle;padding-left:10px;font-size:14px;color:#111827;font-weight:600;">#{escaped_name}</td>
+              <td style="vertical-align:middle;padding-bottom:14px;">#{avatar_html}</td>
+              <td style="vertical-align:middle;padding-left:10px;padding-bottom:14px;font-size:14px;color:#111827;font-weight:600;">#{escaped_name}</td>
             </tr>
           </table>
         HTML
@@ -554,11 +690,15 @@ module Jekyll
         escaped_title = CGI.escapeHTML(post.data["title"].to_s)
 
         <<~HTML.chomp
-          <p style="margin:0 0 24px;">
-            <a href="#{escaped_post_url}" style="text-decoration:none;">
-              <img src="#{escaped_image}" alt="#{escaped_title}" style="display:block;width:100%;height:auto;border-radius:10px;" />
-            </a>
-          </p>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;">
+            <tr>
+              <td>
+                <a href="#{escaped_post_url}" style="text-decoration:none;">
+                  <img src="#{escaped_image}" alt="#{escaped_title}" style="display:block;width:100%;height:auto;border-radius:10px;" />
+                </a>
+              </td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -577,8 +717,16 @@ module Jekyll
           end
 
         <<~HTML.chomp
-          <p style="margin:0 0 8px;">#{image_html}</p>
-          <p style="margin:0 0 24px;font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></p>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;">
+            <tr>
+              <td>#{image_html}</td>
+            </tr>
+          </table>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;">
+            <tr>
+              <td style="font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -593,10 +741,21 @@ module Jekyll
             ""
           else
             escaped_image = CGI.escapeHTML(preview_image_url)
-            %(<a href="#{escaped_link_url}" style="text-decoration:none;"><img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;max-width:100%;height:auto;border-radius:10px;" /></a><br />)
+            %(<a href="#{escaped_link_url}" style="text-decoration:none;"><img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;max-width:100%;height:auto;border-radius:10px;" /></a>)
           end
 
-        %(#{image_html}<a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a>)
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;">
+            <tr>
+              <td>#{image_html}</td>
+            </tr>
+          </table>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;">
+            <tr>
+              <td style="font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></td>
+            </tr>
+          </table>
+        HTML
       end
 
       def preview_image_for_video(video_url, fallback_image_url)
