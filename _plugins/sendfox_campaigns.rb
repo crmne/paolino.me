@@ -522,14 +522,20 @@ module Jekyll
       def normalized_list_html(tag, inner_html)
         items = inner_html.scan(%r{<li[^>]*>(.*?)</li>}im).flatten.map do |item|
           cleaned = item.to_s.strip
-          cleaned = cleaned.gsub(%r{^\s*<p[^>]*>}i, "")
-          cleaned = cleaned.gsub(%r{</p>\s*$}i, "")
+          # SendFox may render list items with paragraph-like spacing unless we
+          # keep list item content as inline-only markup.
+          cleaned = cleaned.gsub(%r{</?p[^>]*>}i, "")
+          cleaned = cleaned.gsub(%r{(?:\s*<br\s*/?>\s*){2,}}i, "<br />")
+          cleaned = cleaned.gsub(%r{\A(?:\s|<br\s*/?>)+}i, "")
+          cleaned = cleaned.gsub(%r{(?:\s|<br\s*/?>)+\z}i, "")
           cleaned.strip
         end.reject(&:empty?)
         return "" if items.empty?
 
-        list_items = items.map { |item| "<li>#{item}</li>" }.join
-        "<#{tag}>#{list_items}</#{tag}>"
+        list_style = 'margin:0 !important;padding:0 0 0 20px !important;line-height:1.35;list-style-position:outside;mso-margin-top-alt:0;mso-margin-bottom-alt:0;'
+        item_style = 'margin:0 !important;padding:0 !important;line-height:1.35;mso-margin-top-alt:0;mso-margin-bottom-alt:0;'
+        list_items = items.map { |item| %(<li style="#{item_style}">#{item}</li>) }.join
+        %(<#{tag} style="#{list_style}">#{list_items}</#{tag}>)
       end
 
       def convert_embedded_media(html, post_url)

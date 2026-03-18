@@ -29,7 +29,9 @@ Implication: for deterministic spacing/layout, prefer table/td wrappers over hea
 - Header title/date/author/read-link are rendered via table rows.
 - Body paragraphs/headings/lists/blockquote are converted into spacing-controlled table wrappers.
 - Media image + "Watch video/open post" link row are table-based for stable spacing.
-- Lists are rendered as native `ul/li` or `ol/li` blocks (inside a table cell wrapper for vertical rhythm), so SendFox editor recognizes them as real list structures.
+- Lists are rendered as native `ul/li` or `ol/li` blocks (inside a table cell wrapper for vertical rhythm), with explicit compact inline styles on both list and items.
+- List item internals are normalized to inline-safe HTML by stripping `<p>` wrappers and collapsing duplicate `<br>` runs before rendering `<li>`.
+- `ul/li` spacing uses inline `!important` on margin/padding to override SendFox/editor CSS that can otherwise reintroduce paragraph-like gaps.
 
 ### Code blocks
 
