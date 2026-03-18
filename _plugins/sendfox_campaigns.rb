@@ -559,7 +559,7 @@ module Jekyll
               <td style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</td>
             </tr>
             <tr>
-              <td style="padding:12px 14px;background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.5;color:#111827;">#{formatted_code}</td>
+              <td style="padding:10px 12px;background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.25;color:#111827;">#{formatted_code}</td>
             </tr>
           </table>
         HTML
@@ -576,8 +576,8 @@ module Jekyll
       end
 
       def code_lines_html(code)
-        normalized = CGI.unescapeHTML(code.to_s).gsub("\r\n", "\n")
-        normalized.split("\n", -1).map do |line|
+        normalized = CGI.unescapeHTML(code.to_s).gsub("\r\n", "\n").sub(/\n\z/, "")
+        normalized.split("\n").map do |line|
           CGI.escapeHTML(line).gsub("\t", "&nbsp;&nbsp;").gsub(" ", "&nbsp;")
         end.join("<br />")
       end
