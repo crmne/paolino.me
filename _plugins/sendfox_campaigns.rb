@@ -460,7 +460,13 @@ module Jekyll
           content = Regexp.last_match(1).to_s.strip
           next "" if content.empty?
 
-          %(<#{tag} style="margin:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};font-weight:700;color:#111827;">#{content}</#{tag}>)
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+              <tr>
+                <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};font-weight:700;color:#111827;">#{content}</td>
+              </tr>
+            </table>
+          HTML
         end
       end
 
@@ -469,11 +475,14 @@ module Jekyll
           content = Regexp.last_match(1).to_s.strip
           compact = content.gsub(%r{<br\s*/?>}i, "").gsub("&nbsp;", "").strip
           next "" if compact.empty?
-          if content.match?(%r{<(?:div|table|blockquote|ul|ol|h[1-6]|p)\b}i)
-            next content
-          end
 
-          %(<p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#111827;">#{content}</p>)
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+              <tr>
+                <td style="padding:0 0 16px;font-size:16px;line-height:1.65;color:#111827;">#{content}</td>
+              </tr>
+            </table>
+          HTML
         end
       end
 
@@ -483,7 +492,13 @@ module Jekyll
           content = content.gsub(%r{</?p[^>]*>}i, "").strip
           next "" if content.empty?
 
-          %(<blockquote style="margin:0 0 18px;padding:0 0 0 12px;border-left:3px solid #e5e7eb;color:#374151;font-size:16px;line-height:1.65;">#{content}</blockquote>)
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+              <tr>
+                <td style="padding:0 0 18px 12px;border-left:3px solid #e5e7eb;color:#374151;font-size:16px;line-height:1.65;">#{content}</td>
+              </tr>
+            </table>
+          HTML
         end
       end
 
@@ -494,7 +509,13 @@ module Jekyll
           list_html = normalized_list_html(tag, list_inner)
           next "" if list_html.empty?
 
-          list_html
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+              <tr>
+                <td style="padding:0 0 16px;">#{list_html}</td>
+              </tr>
+            </table>
+          HTML
         end
       end
 
@@ -511,7 +532,7 @@ module Jekyll
         end.reject(&:empty?)
         return "" if items.empty?
 
-        list_style = 'margin:0 0 16px !important;padding:0 0 0 20px !important;line-height:1.35;list-style-position:outside;mso-margin-top-alt:0;mso-margin-bottom-alt:0;font-size:16px;color:#111827;'
+        list_style = 'margin:0 !important;padding:0 0 0 20px !important;line-height:1.35;list-style-position:outside;mso-margin-top-alt:0;mso-margin-bottom-alt:0;font-size:16px;color:#111827;'
         item_style = 'margin:0 !important;padding:0 !important;line-height:1.35;mso-margin-top-alt:0;mso-margin-bottom-alt:0;'
         list_items = items.map { |item| %(<li style="#{item_style}">#{item}</li>) }.join
         %(<#{tag} style="#{list_style}">#{list_items}</#{tag}>)
@@ -562,15 +583,24 @@ module Jekyll
       def email_code_block(code, language, code_is_html: false)
         label = CGI.escapeHTML(code_block_label(language))
         formatted_code = code_is_html ? code : code_lines_html(code)
-        content_html = formatted_code
+        content_html =
+          if code_is_html
+            formatted_code
+          else
+            %(<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;">#{code_rows_html(formatted_code)}</table>)
+          end
         content_padding = code_is_html ? "10px 12px" : "8px 10px"
         content_line_height = code_is_html ? "1.25" : "1.2"
 
         <<~HTML.chomp
-          <div style="margin:20px 0;border:1px solid #e5e7eb;">
-            <div style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</div>
-            <div style="padding:#{content_padding};background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:#{content_line_height};color:#111827;">#{content_html}</div>
-          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;margin:20px 0;border:1px solid #e5e7eb;">
+            <tr>
+              <td style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</td>
+            </tr>
+            <tr>
+              <td style="padding:#{content_padding};background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:#{content_line_height};color:#111827;">#{content_html}</td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -599,7 +629,13 @@ module Jekyll
       end
 
       def text_row_html(content, font_size:, line_height:, padding_top: "0", padding_bottom: "0", color: "#111827", font_weight: "400")
-        %(<div style="margin:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};color:#{color};font-weight:#{font_weight};">#{content}</div>)
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};color:#{color};font-weight:#{font_weight};">#{content}</td>
+            </tr>
+          </table>
+        HTML
       end
 
       ROUGE_INLINE_COLOR_STYLES = {
@@ -720,13 +756,16 @@ module Jekyll
             ""
           else
             escaped_avatar = CGI.escapeHTML(avatar_url)
-            %(<img src="#{escaped_avatar}" alt="#{escaped_name}" width="42" height="42" style="display:inline-block;vertical-align:middle;width:42px;height:42px;border-radius:999px;" />)
+            %(<img src="#{escaped_avatar}" alt="#{escaped_name}" width="42" height="42" style="display:block;width:42px;height:42px;border-radius:999px;" />)
           end
 
         <<~HTML.chomp
-          <div style="margin:0 0 18px;">
-            #{avatar_html}<span style="display:inline-block;vertical-align:middle;padding-left:10px;font-size:14px;line-height:1.4;color:#111827;font-weight:600;">#{escaped_name}</span>
-          </div>
+          <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 18px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="vertical-align:middle;padding-bottom:14px;">#{avatar_html}</td>
+              <td style="vertical-align:middle;padding-left:10px;padding-bottom:14px;font-size:14px;color:#111827;font-weight:600;">#{escaped_name}</td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -753,11 +792,15 @@ module Jekyll
         escaped_title = CGI.escapeHTML(post.data["title"].to_s)
 
         <<~HTML.chomp
-          <div style="margin:0 0 24px;">
-            <a href="#{escaped_post_url}" style="text-decoration:none;">
-              <img src="#{escaped_image}" alt="#{escaped_title}" style="display:block;width:100%;height:auto;border-radius:10px;" />
-            </a>
-          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td>
+                <a href="#{escaped_post_url}" style="text-decoration:none;">
+                  <img src="#{escaped_image}" alt="#{escaped_title}" style="display:block;width:100%;height:auto;border-radius:10px;" />
+                </a>
+              </td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -776,8 +819,16 @@ module Jekyll
           end
 
         <<~HTML.chomp
-          <div style="margin:0 0 8px;">#{image_html}</div>
-          <p style="margin:0 0 24px;font-size:14px;line-height:1.4;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></p>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td>#{image_html}</td>
+            </tr>
+          </table>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -796,8 +847,16 @@ module Jekyll
           end
 
         <<~HTML.chomp
-          <div style="margin:0 0 8px;">#{image_html}</div>
-          <p style="margin:0 0 24px;font-size:14px;line-height:1.4;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></p>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 8px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td>#{image_html}</td>
+            </tr>
+          </table>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></td>
+            </tr>
+          </table>
         HTML
       end
 
