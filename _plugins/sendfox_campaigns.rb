@@ -340,6 +340,7 @@ module Jekyll
         body = convert_plain_code_blocks(body)
         body = remove_inline_rouge_classes(body)
         body = convert_embedded_media(body, post_url)
+        body = unwrap_block_paragraphs(body)
         body = remove_empty_paragraphs(body)
 
         published_at = post.date.getlocal.strftime("%B %-d, %Y")
@@ -425,6 +426,10 @@ module Jekyll
 
       def remove_empty_paragraphs(html)
         html.gsub(%r{<p>\s*(?:<br\s*/?>|\&nbsp;|\s)*</p>}im, "")
+      end
+
+      def unwrap_block_paragraphs(html)
+        html.gsub(%r{<p>\s*(<(?:div|table|pre|blockquote|ul|ol|h[1-6])\b.*?</(?:div|table|pre|blockquote|ul|ol|h[1-6])>)\s*</p>}im, '\1')
       end
 
       def convert_embedded_media(html, post_url)
