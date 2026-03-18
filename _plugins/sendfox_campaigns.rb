@@ -348,25 +348,21 @@ module Jekyll
         escaped_url = CGI.escapeHTML(post_url)
         author_block = author_header_html
         hero_media = post_hero_media_html(post, post_url)
-        preheader_html = hidden_preheader_html(campaign_preheader_text(post))
 
         <<~HTML
           <!doctype html>
           <html>
-            <body style="margin:0;padding:0;background:#ffffff;">
-              #{preheader_html}
-              <div style="margin:0 auto;max-width:680px;padding:24px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.65;font-size:16px;">
-                <h1 style="margin:0 0 8px;font-size:32px;line-height:1.2;color:#111827;">#{escaped_title}</h1>
-                <p style="margin:0 0 14px;font-size:14px;color:#6b7280;">#{CGI.escapeHTML(published_at)}</p>
-                #{author_block}
-                <p style="margin:0 0 24px;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Read on paolino.me</a></p>
-                #{hero_media}
-                #{body}
-                <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
-                <p style="margin:0;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Continue reading on paolino.me</a></p>
-                <p style="margin:14px 0 0;font-size:12px;color:#6b7280;">If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.</p>
-                <!-- source-post: #{escaped_url} -->
-              </div>
+            <body style="margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.65;font-size:16px;">
+              <h1 style="margin:0 0 8px;font-size:32px;line-height:1.2;color:#111827;">#{escaped_title}</h1>
+              <p style="margin:0 0 14px;font-size:14px;color:#6b7280;">#{CGI.escapeHTML(published_at)}</p>
+              #{author_block}
+              <p style="margin:0 0 24px;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Read on paolino.me</a></p>
+              #{hero_media}
+              #{body}
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
+              <p style="margin:0;font-size:15px;"><a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Continue reading on paolino.me</a></p>
+              <p style="margin:14px 0 0;font-size:12px;color:#6b7280;">If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.</p>
+              <!-- source-post: #{escaped_url} -->
             </body>
           </html>
         HTML
@@ -476,12 +472,17 @@ module Jekyll
 
       def email_code_block(code, language)
         label = language.to_s.empty? ? "CODE" : CGI.escapeHTML(language.upcase)
+        formatted_code = code_lines_html(code)
 
         <<~HTML.chomp
-          <div style="margin:24px 0;">
-            <p style="margin:0 0 8px;font-size:11px;line-height:1.3;letter-spacing:0.08em;text-transform:uppercase;color:#6b7280;font-weight:700;">#{label}</p>
-            <pre style="margin:0;padding:14px 16px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;white-space:pre-wrap;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.55;color:#111827;">#{code}</pre>
-          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;margin:20px 0;border:1px solid #e5e7eb;">
+            <tr>
+              <td style="padding:6px 10px;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:11px;line-height:1.2;color:#6b7280;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{label}</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 14px;background:#fafafa;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.5;color:#111827;"><code>#{formatted_code}</code></td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -493,6 +494,13 @@ module Jekyll
           .gsub(%r{<[^>]+>}, "")
 
         CGI.escapeHTML(CGI.unescapeHTML(stripped))
+      end
+
+      def code_lines_html(code)
+        normalized = CGI.unescapeHTML(code.to_s).gsub("\r\n", "\n")
+        normalized.split("\n", -1).map do |line|
+          CGI.escapeHTML(line).gsub("\t", "&nbsp;&nbsp;").gsub(" ", "&nbsp;")
+        end.join("<br />")
       end
 
       def author_header_html
@@ -510,13 +518,16 @@ module Jekyll
             ""
           else
             escaped_avatar = CGI.escapeHTML(avatar_url)
-            %(<img src="#{escaped_avatar}" alt="#{escaped_name}" width="42" height="42" style="display:inline-block;vertical-align:middle;width:42px;height:42px;border-radius:999px;border:1px solid #e5e7eb;object-fit:cover;margin-right:10px;" />)
+            %(<img src="#{escaped_avatar}" alt="#{escaped_name}" width="42" height="42" style="display:block;width:42px;height:42px;border-radius:999px;" />)
           end
 
         <<~HTML.chomp
-          <p style="margin:0 0 18px;font-size:14px;color:#111827;font-weight:600;line-height:42px;">
-            #{avatar_html}<span style="display:inline-block;vertical-align:middle;line-height:1.3;">#{escaped_name}</span>
-          </p>
+          <table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 18px;">
+            <tr>
+              <td style="vertical-align:middle;">#{avatar_html}</td>
+              <td style="vertical-align:middle;padding-left:10px;font-size:14px;color:#111827;font-weight:600;">#{escaped_name}</td>
+            </tr>
+          </table>
         HTML
       end
 
@@ -557,28 +568,17 @@ module Jekyll
         escaped_post_url = CGI.escapeHTML(post_url)
         escaped_label = CGI.escapeHTML(label)
 
-        image_row =
+        image_html =
           if preview_image_url.to_s.strip.empty?
             ""
           else
             escaped_image = CGI.escapeHTML(preview_image_url)
-            <<~HTML.chomp
-              <a href="#{escaped_link_url}" style="text-decoration:none;display:block;position:relative;">
-                <img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;width:100%;height:auto;border-radius:10px;" />
-                #{play_overlay ? media_play_overlay_html : ""}
-              </a>
-            HTML
+            %(<a href="#{escaped_link_url}" style="text-decoration:none;"><img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;width:100%;height:auto;border-radius:10px;" /></a>)
           end
 
         <<~HTML.chomp
-          <div style="margin:0 0 24px;">
-            #{image_row}
-            <p style="margin:10px 0 0;font-size:14px;">
-              <a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a>
-              <span style="color:#6b7280;"> · </span>
-              <a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a>
-            </p>
-          </div>
+          <p style="margin:0 0 8px;">#{image_html}</p>
+          <p style="margin:0 0 24px;font-size:14px;"><a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a></p>
         HTML
       end
 
@@ -593,59 +593,10 @@ module Jekyll
             ""
           else
             escaped_image = CGI.escapeHTML(preview_image_url)
-            <<~HTML.chomp
-              <a href="#{escaped_link_url}" style="text-decoration:none;display:block;position:relative;">
-                <img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;max-width:100%;height:auto;border-radius:10px;" />
-                #{play_overlay ? media_play_overlay_html : ""}
-              </a>
-            HTML
+            %(<a href="#{escaped_link_url}" style="text-decoration:none;"><img src="#{escaped_image}" alt="#{escaped_label}" style="display:block;max-width:100%;height:auto;border-radius:10px;" /></a><br />)
           end
 
-        <<~HTML.chomp
-          <div style="margin:20px 0;">
-            #{image_html}
-            <p style="margin:10px 0 0;font-size:14px;">
-              <a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a>
-              <span style="color:#6b7280;"> · </span>
-              <a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a>
-            </p>
-          </div>
-        HTML
-      end
-
-      def media_play_overlay_html
-        <<~HTML.chomp
-          <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:68px;height:68px;line-height:68px;text-align:center;border-radius:999px;background:rgba(17,24,39,0.72);color:#ffffff;font-size:30px;font-weight:700;">&#9658;</span>
-        HTML
-      end
-
-      def campaign_preheader_text(post)
-        text = post.data["description"]
-        text = post.data["excerpt"] if text.to_s.strip.empty?
-        text = post.excerpt.to_s if text.to_s.strip.empty?
-        normalized_plain_text(text, 220)
-      end
-
-      def hidden_preheader_html(text)
-        value = text.to_s.strip
-        return "" if value.empty?
-
-        escaped = CGI.escapeHTML(value)
-        filler = Array.new(24, "&#847;").join
-
-        <<~HTML.chomp
-          <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">#{escaped}#{filler}</div>
-        HTML
-      end
-
-      def normalized_plain_text(fragment, max_length)
-        plain = fragment.to_s
-          .gsub(%r{<[^>]+>}, " ")
-          .gsub(/&nbsp;/i, " ")
-          .gsub(/\s+/, " ")
-          .strip
-
-        truncate(plain, max_length)
+        %(#{image_html}<a href="#{escaped_link_url}" style="color:#2563eb;text-decoration:underline;">#{escaped_label}</a><span style="color:#6b7280;"> · </span><a href="#{escaped_post_url}" style="color:#6b7280;text-decoration:underline;">open post</a>)
       end
 
       def preview_image_for_video(video_url, fallback_image_url)

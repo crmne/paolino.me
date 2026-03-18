@@ -10,7 +10,6 @@ This site includes a post-build integration that syncs published posts to SendFo
 - Existing draft campaigns are updated on every build.
 - Sent campaigns are never modified.
 - The plugin never auto-sends campaigns.
-- Campaign email preheader text is sourced from post `description` (fallback: excerpt).
 
 ### Environment variables
 
