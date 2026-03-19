@@ -397,7 +397,7 @@ module Jekyll
         content = html.dup
 
         content.gsub!(
-          %r{<div class="language-([A-Za-z0-9_+\-]+)\s+highlighter-rouge">\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
+          %r{<div\b[^>]*class="[^"]*\blanguage-([A-Za-z0-9_+\-]+)\b[^"]*\bhighlighter-rouge\b[^"]*"[^>]*>\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
         ) do
           language = Regexp.last_match(1)
           source = Regexp.last_match(2)
@@ -412,7 +412,7 @@ module Jekyll
         end
 
         content.gsub!(
-          %r{<div class="highlighter-rouge">\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
+          %r{<div\b[^>]*class="[^"]*\bhighlighter-rouge\b[^"]*"[^>]*>\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m
         ) do
           code = code_lines_html_with_rouge(Regexp.last_match(1))
           email_code_block(code, nil, code_is_html: true)

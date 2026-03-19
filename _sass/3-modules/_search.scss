@@ -37,11 +37,15 @@
     font-size: 30px;
     line-height: 1;
     color: $dark;
-    transition: all .25s;
+    transition: color .25s;
     cursor: pointer;
     &:hover {
-      transform: rotate(90deg);
-      color: color.adjust($dark, $lightness: -15%);
+      color: $brand-color;
+    }
+
+    ion-icon {
+      position: relative;
+      top: -2px;
     }
   }
 
