@@ -5,8 +5,8 @@ date: 2026-03-19
 description: "The Ruby community doesn't have a great documentation theme. So I made one. Jekyll VitePress Theme brings VitePress's docs UX to Jekyll."
 tags: [Ruby, Jekyll, Documentation, Open Source, VitePress]
 image: /images/jekyll-vitepress.png
+sendfox_campaign_id: 2751500
 ---
-
 Have you ever looked at a VitePress documentation site and felt a little jealous?
 
 The sidebar navigation. The "On this page" outline on the right. The search that pops up with `/`. The homepage that actually looks like a product page, not a README with a nav bar. Dark mode that just works. Code blocks with copy buttons and language labels. It all looks like someone sat down and designed the whole experience.
