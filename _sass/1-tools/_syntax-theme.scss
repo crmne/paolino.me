@@ -1,0 +1,32 @@
+/*
+  Rouge syntax theme – GitHub Light (with italic comments & strings)
+  To swap themes: bundle exec rougify style <theme> > _sass/1-tools/_syntax-theme.scss
+  then re-add font-style: italic to comments (.c) and strings (.s) if desired.
+*/
+
+.highlight {
+  &, .w { color: #24292f; background-color: #f6f8fa }
+  .err  { color: #f6f8fa; background-color: #82071e }
+  .c, .ch, .cd, .cm, .cp, .cpf, .c1, .cs { color: #6e7781; font-style: italic }
+  .gl, .gt { color: #6e7781 }
+  .k, .kd, .kn, .kp, .kr, .kt, .kv { color: #cf222e }
+  .kc   { color: #0550ae }
+  .nb, .nc, .no, .nn { color: #953800 }
+  .sr, .na, .nt { color: #116329 }
+  .gi   { color: #116329; background-color: #dafbe1 }
+  .gd   { color: #82071e; background-color: #ffebe9 }
+  .gh, .gu { color: #0550ae; font-weight: bold }
+  .ge   { font-style: italic }
+  .ges  { font-weight: bold; font-style: italic }
+  .gs   { font-weight: bold }
+  .l, .ld, .m, .mb, .mf, .mh, .mi, .il, .mo, .mx { color: #0550ae }
+  .s, .sa, .sc, .dl, .sd, .s2, .se, .sh, .sx, .s1, .ss { color: #0a3069; font-style: italic }
+  .sb, .si { color: #24292f }
+  .nd   { color: #8250df }
+  .nf, .fm { color: #8250df }
+  .nl, .py, .ne { color: #0550ae }
+  .nv, .vc, .vg, .vi, .vm { color: #0550ae }
+  .o, .ow { color: #0550ae }
+  .ni   { color: #24292f }
+  .bp   { color: #0550ae }
+}
