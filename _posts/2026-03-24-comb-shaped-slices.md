@@ -52,4 +52,8 @@ There's a reason people still choose Basecamp over Monday.com, or Linear over Ji
 
 So yes, the big players are coming. They're going to ship a lot of integrations. They're going to spend a lot of money. And they're going to build software that feels like it was built by a company that spends a lot of money.
 
-I'll be over here, grabbing my comb shaped slice of pie. It's [Plenty](https://plenty.is).
+I'll be over here, grabbing my comb shaped slice of pie. It's [Plenty][].
+
+_Today also happens to be the day I officially founded [Plenty][]. The papers are signed. The comb is real!_
+
+[Plenty]: https://plenty.is
