@@ -4,8 +4,8 @@ title: "Comb Shaped Slices"
 date: 2026-03-24
 description: "You don't need to pick a vertical. Build for yourself, listen to your customers, and the shape that emerges is yours."
 tags: [Startups, Product Strategy, SaaS, Bootstrapping, Indie]
+sendfox_campaign_id: 2758269
 ---
-
 A friend who's built and shut down companies in this space sat across from me at breakfast during a conference recently. He knows what I'm building: [Chat with Work](https://chatwithwork.com), an AI tool that lets you talk to your actual work data. He wanted to know what my plan was. I think he was a bit concerned.
 
 "Add more integrations, finish the security assessment, market it well." I said.
