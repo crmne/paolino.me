@@ -30,7 +30,7 @@ I said T shaped in the moment. One horizontal, one vertical. But the more I thou
 
 Here's why. When you're OpenAI or Google, you sample from the top of the distribution. You build what most people use first, then work your way down. The result is always the same: a broad horizontal platform that serves everyone and surprises no one.
 
-When you're small, you sample from what's right in front of you. You build for yourself because no amount of user research, design thinking, or theory of mind will ever match the depth of actually needing the thing you're making. You understand your own problems in a way that connects to your emotions, your workflow, your instincts. You can't fake that. You can't interview your way to it. I chose fast onboarding over full sync, because I don't want to wait to start working. Nextcloud, Todoist, IMAP, and CalDAV — that's my stack, so that's where I'll go deep next.
+When you're small, you sample from what's right in front of you. You build for yourself because no amount of user research, design thinking, or theory of mind will ever match the depth of actually needing the thing you're making. You understand your own problems in a way that connects to your emotions, your workflow, your instincts. You can't fake that. You can't interview your way to it. I chose fast onboarding over full sync, because I don't want to wait to start working. Nextcloud, Todoist, IMAP, and CalDAV: that's my stack, so that's where I'll go deep next.
 
 Then you listen to your customers. "This is cool, but I use Slack." So you build that too. A team needs to own their data, so you add on-premises installation. Someone uses Basecamp, and you build that integration because the people behind it think like you. One tooth at a time.
 
