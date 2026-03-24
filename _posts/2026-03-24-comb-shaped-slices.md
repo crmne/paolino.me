@@ -10,9 +10,9 @@ A friend who's built and shut down companies in this space sat across from me at
 
 "Add more integrations, finish the security assessment, market it well." I said.
 
-That didn't help. "All those LLM providers are going to eat the whole market. They'll ship every integration you can think of. If you want a piece of the pie, you need to pick a vertical and own it."
+That didn't help. "All those LLM providers are going to eat the whole market. They'll ship every integration you can think of. If you want a slice of the pie, you need to pick a vertical and own it."
 
-I told him I was going to grab a T shaped piece of the pie instead.
+I told him I was going to grab a T shaped slice of the pie instead.
 
 He looked at me like I'd lost it.
 
@@ -26,29 +26,17 @@ But what if you don't care about making investors happy? Most companies don't ne
 
 ## The comb
 
-I said T shaped in the moment. But the more I thought about it, the more teeth it grew.
+I said T shaped in the moment. One horizontal, one vertical. But the more I thought about it, the more teeth it grew. Less like a T, more like a comb.
 
-Google Drive and Slack. That's what people asked for. Horizontal.
+Here's why. When you're OpenAI or Google, you sample from the top of the distribution. You build what most people use first, then work your way down. The result is always the same: a broad horizontal platform that serves everyone and surprises no one.
 
-Nextcloud, Todoist. That's my stack. My own tiny vertical.
+When you're small, you sample from what's right in front of you. You build for yourself because no amount of user research, design thinking, or theory of mind will ever match the depth of actually needing the thing you're making. You understand your own problems in a way that connects to your emotions, your workflow, your instincts. You can't fake that. You can't interview your way to it. I chose fast onboarding over full sync, because I don't want to wait to start working. Nextcloud, Todoist, IMAP, and CalDAV — that's my stack, so that's where I'll go deep next.
 
-Gmail and Calendar. Everybody needs those. Horizontal.
+Then you listen to your customers. "This is cool, but I use Slack." So you build that too. A team needs to own their data, so you add on-premises installation. Someone uses Basecamp, and you build that integration because the people behind it think like you. One tooth at a time.
 
-IMAP and CalDAV are the open protocols of the web. They connect to virtually any email server or calendar out there. Horizontal.
+The shape that emerges is yours. Not because you planned it on a whiteboard, but because you started from yourself and grew outward. It works for the small teams, the freelancers, the music collectives, the people who don't have an IT department and don't want one. That's the comb: not a strategy you choose, but what naturally happens when you're small and you give a damn.
 
-Basecamp. Rails developers, small teams, people who think like me. Vertical.
-
-That's the comb.
-
-Here's why it forms. When you're OpenAI or Google, you sample from the top of the distribution. You build what most people use first, then work your way down. The result is always the same: a broad horizontal platform that serves everyone and surprises no one.
-
-When you're small, you sample from what's right in front of you. First yourself, then the people around you. You build for yourself because no amount of user research, design thinking, or theory of mind will ever match the depth of actually needing the thing you're making. You understand your own problems in a way that connects to your emotions, your workflow, your instincts. You can't fake that. You can't interview your way to it.
-
-Then you listen to your customers. "This is cool, but I use X." You take the suggestion. You think about it. Sometimes you build it, sometimes you don't. One tooth at a time.
-
-The shape that emerges is yours. Not because you planned it on a whiteboard, but because you started from yourself and grew outward. It works for the small teams, the freelancers, the music collectives, the people who don't have an IT department and don't want one. It's a comb: not a strategy you choose, but what naturally happens when you're small and you give a damn.
-
-There's a reason people still choose Basecamp over Monday.com, or Linear over Jira, or Hey over Gmail. It's not because the small player has more features. It's because someone built it for themselves first, and that resonated. The entire market doesn't need to resonate with you. Just enough of it.
+There's a reason people still choose Linear over Jira, or Proton over Gmail, or Plausible over Google Analytics. It's not because the small player has more features. It's because someone built it for themselves first, and that resonated. The entire market doesn't need to resonate with you. Just enough of it.
 
 So yes, the big players are coming. They're going to ship a lot of integrations. They're going to spend a lot of money. And they're going to build software that feels like it was built by a company that spends a lot of money.
 
