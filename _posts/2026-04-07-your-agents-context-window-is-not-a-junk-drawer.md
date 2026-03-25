@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Agent's Context Window Is Not a Junk Drawer"
-date: 2026-03-31
+date: 2026-04-07
 description: "MCP is training wheels you should outgrow, A2A solves problems you don't have, and the only thing that matters is knowing what's in your context window."
 tags: [AI, LLM, MCP, A2A, Agents, Developer Experience]
 image: /images/context-rot.png

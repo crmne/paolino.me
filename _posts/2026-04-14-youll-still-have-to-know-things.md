@@ -1,4 +1,10 @@
-# You Will Still Have to Know Things
+---
+layout: post
+title: "You'll Still Have to Know Things"
+date: 2026-04-14
+description: "Everyone's talking about taste as the new skill. They're half right. But taste is the residue of experience — and if you stop doing, you lose it."
+tags: [AI, Taste, Learning, Software Development]
+---
 
 Everyone in tech is talking about taste. "Taste is the new skill." "In the age of AI, taste is all that matters." I agree with half of it. But most people get the mechanism wrong.
 
