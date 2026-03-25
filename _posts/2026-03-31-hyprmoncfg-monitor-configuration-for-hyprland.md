@@ -95,4 +95,4 @@ go install github.com/crmne/hyprmoncfg/cmd/hyprmoncfg@latest
 go install github.com/crmne/hyprmoncfg/cmd/hyprmoncfgd@latest
 ```
 
-Check out the [documentation](https://crmne.github.io/hyprmoncfg/) for the full guide, or browse the [source on GitHub](https://github.com/crmne/hyprmoncfg).
+Check out the [documentation](https://hyprmoncfg.dev/) for the full guide, or browse the [source on GitHub](https://github.com/crmne/hyprmoncfg).
