@@ -7,11 +7,11 @@ tags: [Hyprland, Open Source, Go, Linux, TUI]
 image: /images/hyprmoncfg-layout.png
 ---
 
-Configuring monitors in Hyprland means writing `monitor=` lines by hand. You guess at coordinates, reload, realize they're wrong, edit again. There's no visual feedback until after you've committed to a config.
+Configuring monitors in Hyprland means writing `monitor=` lines by hand. A 4K display at 1.33x scale is effectively 2880x1620 pixels, so the monitor next to it needs to start at x=2880. Vertically centering a 1080p panel against it means doing division in your head to get the y-offset right. You reload, you're off by 40 pixels, you edit, you reload again. There's no visual feedback until after you've committed to a config.
 
 Then it gets worse. You unplug your laptop, go to a conference, plug into a projector, and you're back to editing config files backstage before your talk. You come home, dock the laptop, and the layout is wrong again.
 
-I looked at what was available. The closest to what I wanted was [Monique](https://github.com/ToRvaLDz/monique): spatial editor, profiles, workspace management, a hotplug daemon. It does exactly what I need. But it's a GTK4 GUI that pulls in Python and a stack of dependencies, and the daemon was broken when I tried it. [nwg-displays](https://github.com/nwg-piotr/nwg-displays) has the same Python + GTK problem, minus profiles and a daemon. [kanshi](https://sr.ht/~emersion/kanshi/) does profiles and auto-switching but has no editor, you write config files. [HyprDynamicMonitors](https://github.com/fiffeek/hyprdynamicmonitors) has a TUI and a daemon, but the TUI is just a profile picker, you can't arrange monitors in it. And it pulls in UPower and D-Bus. [HyprMon](https://github.com/erans/hyprmon) has a spatial editor, but no daemon, and auto-switching is still on the roadmap.
+I looked at what was available. The closest to what I wanted was [Monique](https://github.com/ToRvaLDz/monique): spatial editor, profiles, workspace management, a hotplug daemon. It does exactly what I need. But it's a GTK4 GUI that pulls in Python and a stack of dependencies, and the daemon was broken when I tried it. The other tools each cover parts of this: [kanshi](https://sr.ht/~emersion/kanshi/) does profiles and auto-switching but has no editor, you write config files; [nwg-displays](https://github.com/nwg-piotr/nwg-displays) and [HyprMon](https://github.com/erans/hyprmon) have spatial editors but no daemon; [HyprDynamicMonitors](https://github.com/fiffeek/hyprdynamicmonitors) has a daemon but no real layout tool, and it pulls in UPower and D-Bus.
 
 I wanted Monique's feature set without the dependency baggage, in something that works over SSH when your monitors are broken. So I built [hyprmoncfg](https://github.com/crmne/hyprmoncfg).
 
@@ -61,7 +61,7 @@ Save a "desk" profile at home with your ultrawide. Save "conference-1080p" at on
 
 This is portable. The same profile library works across machines because matching is based on the monitors you have, not on the machine you're at.
 
-## Zero dependencies
+## One runtime dependency: Hyprland
 
 Two compiled Go binaries. No Python, no GTK, no GObject introspection, no D-Bus, no UPower. Install them and you're done. The only runtime requirement is Hyprland itself.
 
@@ -78,7 +78,7 @@ Two compiled Go binaries. No Python, no GTK, no GObject introspection, no D-Bus,
 | Safe apply with revert | Yes | Yes | No | Partial (manual rollback) | No | No |
 | Source-chain verification | Yes | No | No | No | No | No |
 | Works over SSH | Yes | No | No | No | No | N/A |
-| Runtime dependencies | None | Python + GTK4 + libadwaita | UPower, D-Bus | None | Python + GTK3 | None |
+| Additional runtime dependencies | None | Python + GTK4 + libadwaita | UPower, D-Bus | None | Python + GTK3 | None |
 
 ## Try it
 
