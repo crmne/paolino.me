@@ -7,7 +7,7 @@ gem 'jekyll-sitemap'
 gem 'jekyll-tagging'
 gem 'jekyll-feed'
 gem 'jekyll-twitter-plugin'
-gem 'jekyll-og-image', git: 'https://github.com/crmne/jekyll-og-image'
+gem 'jekyll-og-image'
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 # Ruby 4.0
