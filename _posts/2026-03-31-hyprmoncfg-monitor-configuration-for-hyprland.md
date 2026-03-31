@@ -69,15 +69,16 @@ Two compiled Go binaries. No Python, no GTK, no GObject introspection, no D-Bus,
 
 | | hyprmoncfg | Monique | HyprDynamicMonitors | HyprMon | nwg-displays | kanshi |
 |---|---|---|---|---|---|---|
-| Spatial layout editor | Yes | Yes (GTK4) | Partial (TUI) | Yes | Yes (GTK3) | No |
+| GUI or TUI | TUI | GUI | TUI | TUI | GUI | CLI |
+| Spatial layout editor | Yes | Yes | Partial | Yes | Yes | No |
 | Drag-and-drop | Yes | Yes | No | Yes | Yes | No |
 | Snapping | Yes | Not documented | No | Yes | Yes | No |
 | Profiles | Yes | Yes | Yes | Yes | No | Yes |
 | Auto-switching daemon | Yes | Yes | Yes | No (roadmap) | No | Yes |
 | Workspace planning | Yes | Yes | No | No | Basic | No |
+| Mirror support | Yes | Yes | Yes | Yes | Yes | No |
 | Safe apply with revert | Yes | Yes | No | Partial (manual rollback) | No | No |
 | Source-chain verification | Yes | No | No | No | No | No |
-| Works over SSH | Yes | No | No | No | No | N/A |
 | Additional runtime dependencies | None | Python + GTK4 + libadwaita | UPower, D-Bus | None | Python + GTK3 | None |
 
 ## Try it
