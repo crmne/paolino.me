@@ -13,7 +13,7 @@ Then it gets worse. You unplug your laptop, go to a conference, plug into a proj
 
 I looked at what was available. The closest to what I wanted was [Monique](https://github.com/ToRvaLDz/monique): spatial editor, profiles, workspace management, a hotplug daemon. It does exactly what I need. But it's a GTK4 GUI that pulls in Python and a stack of dependencies, and the daemon was broken when I tried it. The other tools each cover parts of this: [kanshi](https://sr.ht/~emersion/kanshi/) does profiles and auto-switching but has no editor, you write config files; [nwg-displays](https://github.com/nwg-piotr/nwg-displays) and [HyprMon](https://github.com/erans/hyprmon) have spatial editors but no daemon; [HyprDynamicMonitors](https://github.com/fiffeek/hyprdynamicmonitors) has a daemon but no real layout tool, and it pulls in UPower and D-Bus.
 
-I wanted Monique's feature set without the dependency baggage, in something that works over SSH when your monitors are broken. So I built [hyprmoncfg](https://github.com/crmne/hyprmoncfg).
+I wanted Monique's feature set without the dependency baggage, in something that works over SSH when your monitors are broken. So I built [hyprmoncfg](https://hyprmoncfg.dev).
 
 ## A real spatial editor, in your terminal
 
