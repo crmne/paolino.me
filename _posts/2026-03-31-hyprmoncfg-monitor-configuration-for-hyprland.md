@@ -5,8 +5,8 @@ date: 2026-03-31
 description: "A spatial TUI editor with drag-and-drop, safe apply with revert, workspace planning, and a hotplug daemon. All in two zero-dependency Go binaries."
 tags: [Hyprland, Open Source, Go, Linux, TUI]
 image: /images/hyprmoncfg-layout.png
+sendfox_campaign_id: 2764102
 ---
-
 Configuring monitors in Hyprland means writing `monitor=` lines by hand. A 4K display at 1.33x scale is effectively 2880x1620 pixels, so the monitor next to it needs to start at x=2880. Vertically centering a 1080p panel against it means doing division in your head to get the y-offset right. You reload, you're off by 40 pixels, you edit, you reload again. There's no visual feedback until after you've committed to a config.
 
 Then it gets worse. You unplug your laptop, go to a conference, plug into a projector, and you're back to editing config files backstage before your talk. You come home, dock the laptop, and the layout is wrong again.
