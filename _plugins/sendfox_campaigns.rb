@@ -289,7 +289,12 @@ module Jekyll
       end
 
       def source_post_url_from_html(html)
-        match = html.to_s.match(/source-post:\s*([^\s<]+)/i)
+        content = html.to_s
+
+        data_attr_match = content.match(/\bdata-source-post=(['"])(.*?)\1/i)
+        return data_attr_match[2] if data_attr_match
+
+        match = content.match(/source-post:\s*([^\s<]+)/i)
         return nil unless match
 
         match[1]
@@ -355,23 +360,25 @@ module Jekyll
         cta_block = newsletter_cta_html(post_url)
         unsubscribe_block = text_row_html(%(If this email is no longer relevant, you can <a href="{{unsubscribe_url}}" style="color:#6b7280;text-decoration:underline;">unsubscribe</a>.), font_size: "12px", line_height: "1.4", color: "#6b7280", padding_top: "14px")
 
-        <<~HTML
-          <!doctype html>
-          <html>
-            <body style="margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.65;font-size:16px;">
-              #{title_block}
-              #{date_block}
-              #{author_block}
-              #{read_link_block}
-              #{hero_media}
-              #{body}
-              #{cta_block}
-              <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
-              #{unsubscribe_block}
-              <!-- source-post: #{escaped_url} -->
-            </body>
-          </html>
-        HTML
+        compact_html(
+          <<~HTML
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" data-source-post="#{escaped_url}" style="max-width:640px;margin:0 auto;border-collapse:collapse;">
+              <tr>
+                <td style="padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.65;font-size:16px;">
+                  #{title_block}
+                  #{date_block}
+                  #{author_block}
+                  #{read_link_block}
+                  #{hero_media}
+                  #{body}
+                  #{cta_block}
+                  <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
+                  #{unsubscribe_block}
+                </td>
+              </tr>
+            </table>
+          HTML
+        )
       end
 
       def absolutize_urls(html)
@@ -636,6 +643,10 @@ module Jekyll
             </tr>
           </table>
         HTML
+      end
+
+      def compact_html(fragment)
+        fragment.to_s.gsub(/>\s+</, "><").strip
       end
 
       ROUGE_INLINE_COLOR_STYLES = {

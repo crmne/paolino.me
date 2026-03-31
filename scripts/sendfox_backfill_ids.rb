@@ -233,7 +233,12 @@ module SendfoxBackfillIds
   end
 
   def source_post_url_from_html(html)
-    match = html.to_s.match(/source-post:\s*([^\s<]+)/i)
+    content = html.to_s
+
+    data_attr_match = content.match(/\bdata-source-post=(['"])(.*?)\1/i)
+    return data_attr_match[2] if data_attr_match
+
+    match = content.match(/source-post:\s*([^\s<]+)/i)
     return nil unless match
 
     match[1]
