@@ -354,7 +354,15 @@ module Jekyll
         escaped_url = CGI.escapeHTML(post_url)
         author_block = author_header_html
         hero_media = post_hero_media_html(post, post_url)
-        title_block = text_row_html(escaped_title, font_size: "32px", line_height: "1.2", font_weight: "700", color: "#111827", padding_bottom: "6px")
+        title_block = text_row_html(
+          escaped_title,
+          font_size: "32px",
+          line_height: "1.2",
+          font_weight: "700",
+          color: "#111827",
+          padding_bottom: "6px",
+          extra_table_attributes: %( data-source-post="#{escaped_url}")
+        )
         date_block = text_row_html(CGI.escapeHTML(published_at), font_size: "14px", line_height: "1.4", color: "#6b7280", padding_bottom: "18px")
         read_link_block = text_row_html(%(<a href="#{escaped_url}" style="color:#2563eb;text-decoration:underline;">Read on paolino.me</a>), font_size: "15px", line_height: "1.5", padding_bottom: "20px")
         cta_block = newsletter_cta_html(post_url)
@@ -362,21 +370,15 @@ module Jekyll
 
         compact_html(
           <<~HTML
-            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" data-source-post="#{escaped_url}" style="max-width:640px;margin:0 auto;border-collapse:collapse;">
-              <tr>
-                <td style="padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#111827;line-height:1.65;font-size:16px;">
-                  #{title_block}
-                  #{date_block}
-                  #{author_block}
-                  #{read_link_block}
-                  #{hero_media}
-                  #{body}
-                  #{cta_block}
-                  <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
-                  #{unsubscribe_block}
-                </td>
-              </tr>
-            </table>
+            #{title_block}
+            #{date_block}
+            #{author_block}
+            #{read_link_block}
+            #{hero_media}
+            #{body}
+            #{cta_block}
+            <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0;" />
+            #{unsubscribe_block}
           HTML
         )
       end
@@ -635,9 +637,9 @@ module Jekyll
         lines.map { |line| format_code_text_segment(line) }.join("<br />")
       end
 
-      def text_row_html(content, font_size:, line_height:, padding_top: "0", padding_bottom: "0", color: "#111827", font_weight: "400")
+      def text_row_html(content, font_size:, line_height:, padding_top: "0", padding_bottom: "0", color: "#111827", font_weight: "400", extra_table_attributes: "")
         <<~HTML.chomp
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0"#{extra_table_attributes} style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
             <tr>
               <td style="padding:#{padding_top} 0 #{padding_bottom};font-size:#{font_size};line-height:#{line_height};color:#{color};font-weight:#{font_weight};">#{content}</td>
             </tr>
