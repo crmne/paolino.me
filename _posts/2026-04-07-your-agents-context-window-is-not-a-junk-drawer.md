@@ -51,18 +51,20 @@ Use MCP to prototype. Then replace it with crafted tools you actually control.
 
 MCP gets the most attention, but it's not the only way people fill the drawer.
 
-Look at what comes back from your tools. RAG that retrieves ten full documents when the model needs a paragraph. A tool that returns a massive JSON blob when the model needs two fields. An API response stuffed with nested objects nobody asked for.
+Look at what comes back from your tools. Your RAG retrieves ten full documents when the model needs a paragraph. Your tool returns a massive JSON blob when the model needs two fields. Your API response is stuffed with nested objects nobody asked for. You're paying for every one of those tokens with your agent's IQ.
 
-The fix is to give the model just enough to make a decision, then let it dig deeper. At [Chat with Work](https://chatwithwork.com), when the agent searches your Google Drive, we don't dump entire files into context. The search tool returns only some metadata and a single line from the file, the line that matched the search keywords. Fifty results, fifty lines. The AI reads those, decides which files actually matter, and only then reads them. If a file is too large, it even reads it in chunks. The model stays sharp because at every step it's only looking at what it needs.
+The fix is simple: give the model just enough to make a decision, then let it dig deeper. At [Chat with Work](https://chatwithwork.com), when the agent searches your Google Drive, we don't dump entire files into context. The search tool returns only some metadata and a single line from the file, the line that matched the search keywords. Fifty results, fifty lines. The AI reads those, decides which files actually matter, and only then reads them. If a file is too large, it reads it in chunks. At every step, the model is only looking at what it needs. It stays sharp because we don't let it get buried.
 
-Then there's the stuff you wrote yourself. Your system prompt is context. Your tool descriptions are context. Your parameter schemas are context. Every edge case in your system prompt, every overly detailed parameter description, every guardrail you can think of competes for the model's attention. A focused system prompt that covers the important things well will outperform an exhaustive one that covers everything poorly. Same goes for tool descriptions: say what the tool does and what the parameters mean, nothing more.
+Then there's the stuff you wrote yourself. Your system prompt is context. Your tool descriptions are context. Your parameter schemas are context. Every edge case, every guardrail, every overly detailed description competes for attention. You think you're being thorough. You're actually drowning the instructions that matter in a sea of instructions that don't. A focused system prompt will outperform an exhaustive one every time.
 
-Even if every tool is hand-written and perfectly crafted, having 40 registered when your agent needs 5 for the current task means 35 tool definitions sitting in context doing nothing. Scope your agent's tools to the task at hand, not to everything it might ever need.
+Same problem with tool count. You hand-crafted 40 beautiful tools. Your agent needs 5 for this task. The other 35? Dead weight. They sit in context doing nothing except making the model slower at picking the right one. Scope your tools to the task, not to everything the agent might ever need.
 
-Lastly, the conversation itself. Every message, every tool call, tool result, error, schema definition stays in the window as your agent runs. Dozens of turns in, the conversation shifts topic and most of your context is now just chipping away at your agent's intelligence. Educate your users to start new chats. Prune what you don't need. Compact when you can.
+And the conversation itself keeps growing. Every message, every tool call, every result, every error stays in the window. Dozens of turns in, the topic has shifted three times, and most of your context is stale. You're dragging around the whole history of a conversation that's moved on. Prune what you don't need. Compact when you can. Teach your users to start fresh.
 
 ## Every token should earn its place
 
-The context window is not a junk drawer. It's a workbench. Everything on it should be there for a reason, and you should be able to articulate what that reason is.
+The context window is not a junk drawer. It's a workbench. Everything on it should be there for a reason, and you should be able to say what that reason is.
 
-Before you add another MCP server, another RAG source, another paragraph to your system prompt, ask yourself: is this worth making my agent dumber?
+So before you plug in another MCP server, add another RAG source, or write another paragraph in your system prompt, ask yourself one question: is this worth making my agent dumber?
+
+Because that's the trade you're making. Every time.
