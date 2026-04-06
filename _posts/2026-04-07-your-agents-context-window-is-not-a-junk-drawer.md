@@ -7,23 +7,25 @@ tags: [AI, LLM, MCP, Agents, Developer Experience]
 image: /images/context-rot.png
 ---
 
-I keep getting the same feature request for RubyLLM: "Add MCP support." I've thought about it for a while now, and I've come to a position that's worth writing down.
+Your agent's context window is the most precious resource it has. The more you stuff into it, the worse your agent performs.
 
-## MCP: a useful crutch you should eventually throw away
+Researchers call it [context rot](https://research.trychroma.com/context-rot): the more tokens in the window, the harder it becomes for the model to follow instructions, retrieve information, and stay on task. The model essentially becomes _stupid_.
 
-Let me be clear: MCP is a fine idea. You need to talk to a service? Don't want to write the tool definition yourself? Grab an MCP server, plug it in, and you're running in ten minutes. For prototyping, for exploration, for the "let me see if this is even worth building" phase... it's great!
+This holds true regardless of how big the window is, yet most agent setups treat the context window like a junk drawer.
 
-The problem is what happens next. Which is: nothing. People leave the MCP servers plugged in. They add more. They treat their agent's context window like a junk drawer. Just toss it in there, the LLM will figure it out.
+"Just toss it in there, the LLM will figure it out!"
 
-It won't. Or rather, it will, but worse than you think.
+## MCP: the biggest offender
 
-Every MCP server you connect dumps tool descriptions, schemas, and instructions into your context. You didn't write those descriptions. You didn't optimize them. You probably haven't even read them. You're handing over a chunk of your strictly limited context window, the most precious resource your agent has, to whatever some third party decided to shove in there.
+Don't get me wrong. MCP is a fine idea. You need to talk to a service? Grab an MCP server, plug it in, and you're running in ten minutes. For prototyping, for exploration, for answering "is this even worth building?", it's great.
 
-It's the equivalent of letting strangers put random items on your desk and then wondering why you can't find anything. In the LLM world, we call that [context rot](https://research.trychroma.com/context-rot): the more tokens you stuff into the window, the worse your model performs, regardless of how big the window is.
+The problem is what happens next. Which is: nothing.
 
-These aren't just performance problems. They're security problems too. Those tool descriptions are text that gets interpreted by an LLM. You're injecting untrusted content directly into the brain of your agent. Every MCP server is a prompt injection surface you didn't audit.
+People leave the MCP servers plugged in. They add more. Every MCP server you connect dumps tool descriptions, schemas, and instructions into your context. You didn't write those. You didn't optimize them. You probably haven't even read them. You're handing over a chunk of your context window to whatever some third party decided to shove in there.
 
-Here's what I mean. Say you need a tool that checks the weather. You could plug in an MCP server and get whatever tool descriptions, parameter schemas, and instructions its author decided to write. Or you could write this:
+You're not just introducing performance problems. You're potentially introducing security problems too. Those tool descriptions are text that gets interpreted by an LLM. You're injecting untrusted content directly into the brain of your agent. Every MCP server is a prompt injection surface you didn't audit.
+
+Say you need a tool that checks the weather. You could plug in an MCP server and get a million tool descriptions, parameter schemas, and whatever instructions its author decided to write. Or you could write this:
 
 ```ruby
 class Weather < RubyLLM::Tool
@@ -34,7 +36,7 @@ class Weather < RubyLLM::Tool
 
   def execute(latitude:, longitude:)
     url = "https://api.open-meteo.com/v1/forecast?latitude=#{latitude}&longitude=#{longitude}&current=temperature_2m,wind_speed_10m"
-    JSON.parse(Faraday.get(url).body)
+    Faraday.get(url).body
   rescue => e
     { error: e.message }
   end
@@ -43,4 +45,22 @@ end
 
 Twelve lines. You wrote the description, so you know exactly what tokens are going into your context. You wrote the parameters, so the model gets precisely the interface it needs, no more. You own it, you can tune it, and nobody can inject anything into your agent's brain through it.
 
-My take is simple: use MCP to prototype. Then replace it with purpose-built tools you actually control. Write the tool descriptions yourself. Keep your context tight. Know exactly what's in there and why.
+Use MCP to prototype. Then replace it with crafted tools you actually control.
+
+## Batteries, old cables, and takeout menus
+
+MCP gets the most attention, but it's not the only way people fill the drawer.
+
+**Flooding the context with results.** RAG that retrieves ten full documents when the model needs a paragraph. A tool that returns a massive JSON blob when the model needs two fields. An API response stuffed with pagination metadata and nested objects nobody asked for. Same mistake every time: you found the right thing, then buried the model in everything that came with it.
+
+The fix is to give the model just enough to make a decision, then let it dig deeper. At [Chat with Work](https://chatwithwork.com), when the agent searches your Google Drive, we don't dump entire files into context. The search tool returns only some metadata and a single line from the file, the line that matched the search keywords. Fifty results, fifty lines. The AI reads those, decides which files actually matter, and only then reads them. If a file is too large, it even reads it in chunks. The model stays sharp because at every step it's only looking at what it needs.
+
+**Verbose prompts and descriptions.** Your system prompt is context. Your tool descriptions are context. Your parameter schemas are context. Every edge case in your system prompt, every overly detailed parameter description, every guardrail you can think of competes for the model's attention. A focused system prompt that covers the important things well will outperform an exhaustive one that covers everything poorly. Same goes for tool descriptions: say what the tool does and what the parameters mean, nothing more.
+
+**Too many tools.** Even if every tool is hand-written and perfectly crafted, having 40 registered when your agent needs 5 for the current task means 35 tool definitions sitting in context doing nothing. Scope your agent's tools to the task at hand, not to everything it might ever need.
+
+**Conversation history.** Every message, every tool definition, tool call, tool result, error, schema definition, etc. stays in the window as your agent runs. You didn't put it there on purpose, it just accumulated. Dozens of turns in, the conversation shifts topic and most of your context is now just chipping away at your agent's intelligence.
+
+## Every token should earn its place
+
+The context window is not a junk drawer. It's a workbench. Everything on it should be there for a reason, and you should be able to articulate what that reason is.
