@@ -5,8 +5,8 @@ date: 2026-04-07
 description: "Most of what's in your agent's context window shouldn't be there."
 tags: [AI, LLM, MCP, Agents, Developer Experience]
 image: /images/context-rot.png
+sendfox_campaign_id: 2772798
 ---
-
 Your agent's context window is the most precious resource it has. The more you stuff into it, the worse your agent performs.
 
 Researchers call it [context rot](https://research.trychroma.com/context-rot): the more tokens in the window, the harder it becomes for the model to follow instructions, retrieve information, and stay on task. Chroma tested 18 frontier models and found that accuracy drops up to 30% when you go from a focused 300-token input to 113k tokens of conversation history, with the task held constant. The model essentially became _dumber_.

@@ -4,8 +4,8 @@ title: "Your Agents Don't Need a Protocol"
 date: 2026-04-07
 description: "A2A solves problems you don't have. Twenty lines of code already solved them."
 tags: [AI, LLM, A2A, Agents, Developer Experience]
+sendfox_campaign_id: 2772799
 ---
-
 A2A is Google's Agent-to-Agent protocol. Agent Cards for capability discovery, task lifecycle state machines, modality negotiation, SDKs in five languages, a Linux Foundation project. The whole enterprise enchilada.
 
 The pitch is that agents should collaborate "as agents, not just as tools."
