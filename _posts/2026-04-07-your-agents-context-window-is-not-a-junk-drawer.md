@@ -9,7 +9,7 @@ image: /images/context-rot.png
 
 Your agent's context window is the most precious resource it has. The more you stuff into it, the worse your agent performs.
 
-Researchers call it [context rot](https://research.trychroma.com/context-rot): the more tokens in the window, the harder it becomes for the model to follow instructions, retrieve information, and stay on task. The model essentially becomes _stupid_.
+Researchers call it [context rot](https://research.trychroma.com/context-rot): the more tokens in the window, the harder it becomes for the model to follow instructions, retrieve information, and stay on task. Chroma tested 18 frontier models and found that accuracy drops up to 30% when you go from a focused 300-token input to 113k tokens of conversation history, with the task held constant. The model essentially became _dumber_.
 
 This holds true regardless of how big the window is, yet most agent setups treat the context window like a junk drawer.
 
@@ -59,7 +59,7 @@ Then there's the stuff you wrote yourself. Your system prompt is context. Your t
 
 Same problem with tool count. You hand-crafted 40 beautiful tools. Your agent needs 5 for this task. The other 35? Dead weight. They sit in context doing nothing except making the model slower at picking the right one. Scope your tools to the task, not to everything the agent might ever need.
 
-And the conversation itself keeps growing. Every message, every tool call, every result, every error stays in the window. Dozens of turns in, the topic has shifted three times, and most of your context is stale. You're dragging around the whole history of a conversation that's moved on. Prune what you don't need. Compact when you can. Teach your users to start fresh.
+And the conversation itself keeps growing. Every message, every tool call, every result, every error stays in the window. Dozens of turns in, the topic has shifted three times, and most of your context is stale. You're dragging around the whole history of a conversation that's moved on. Prune what you don't need. Compact when you can. Teach your users to start fresh chats.
 
 ## Every token should earn its place
 
