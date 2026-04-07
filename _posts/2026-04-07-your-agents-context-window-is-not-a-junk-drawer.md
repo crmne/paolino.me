@@ -2,7 +2,7 @@
 layout: post
 title: "Your Agent's Context Window Is Not a Junk Drawer"
 date: 2026-04-07
-description: "Most of what's in your agent's context window shouldn't be there."
+description: "Strategies to combat context rot."
 tags: [AI, LLM, MCP, Agents, Developer Experience]
 image: /images/context-rot.png
 sendfox_campaign_id: 2772798
@@ -68,5 +68,3 @@ Don't register every tool your agent might ever need. Load the tools the current
 The context window is not a junk drawer. It's a workbench. Everything on it should be there for a reason, and you should be able to say what that reason is.
 
 So before you plug in another MCP server, add another RAG source, or write another paragraph in your system prompt, ask yourself one question: is this worth making my agent dumber?
-
-Because that's the trade you're making. Every time.
