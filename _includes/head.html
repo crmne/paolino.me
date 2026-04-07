@@ -8,14 +8,15 @@
   {% assign social_image_width = nil %}
   {% assign social_image_height = nil %}
   {% assign social_image_alt = page.title | default: site.title %}
-  {% if page.image %}
-    {% if page.image.path %}
-      {% assign social_image = page.image.path %}
-      {% assign social_image_width = page.image.width %}
-      {% assign social_image_height = page.image.height %}
-      {% assign social_image_alt = page.image.alt | default: page.title | default: site.title %}
+  {% assign social_image_source = page.social_image | default: page.image %}
+  {% if social_image_source %}
+    {% if social_image_source.path %}
+      {% assign social_image = social_image_source.path %}
+      {% assign social_image_width = social_image_source.width %}
+      {% assign social_image_height = social_image_source.height %}
+      {% assign social_image_alt = social_image_source.alt | default: page.title | default: site.title %}
     {% else %}
-      {% assign social_image = page.image %}
+      {% assign social_image = social_image_source %}
       {% assign social_image_alt = page.title | default: site.title %}
     {% endif %}
   {% endif %}
