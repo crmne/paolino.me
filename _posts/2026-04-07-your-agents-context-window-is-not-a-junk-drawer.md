@@ -61,7 +61,7 @@ Then there's the stuff you wrote yourself. Your system prompt is context. Your t
 
 You hand-crafted 40 beautiful tools. Your agent needs 5 for this task. The other 35 sit in context doing nothing except making the model slower at picking the right one.
 
-Don't register every tool your agent might ever need. Load the tools the current task actually requires. If you're building a support agent that handles billing and technical issues, don't give it all of both. Route billing questions to a billing toolset and technical questions to a technical toolset. Two focused agents will outperform one bloated one.
+Don't register every tool your agent might ever need. Load the tools the current task actually requires. If you're building a support agent that handles billing and technical issues, don't give it all of both. Route billing questions to a billing agent and technical questions to a technical agent. Two focused agents will outperform one bloated one.
 
 ## Every token should earn its place
 
