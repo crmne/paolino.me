@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Your Agents Don't Need a Protocol"
-date: 2026-04-07
+date: 2026-04-14
 description: "A2A solves problems you don't have. Twenty lines of code already solved them."
 tags: [AI, LLM, A2A, Agents, Developer Experience]
 sendfox_campaign_id: 2772799

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "You'll Still Have to Know Things"
-date: 2026-04-14
+date: 2026-04-21
 description: "Everyone's talking about taste as the new skill. They're half right. But taste is the residue of experience — and if you stop doing, you lose it."
 tags: [AI, Taste, Learning, Software Development]
 ---
