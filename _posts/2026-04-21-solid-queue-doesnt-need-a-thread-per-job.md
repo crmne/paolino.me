@@ -30,7 +30,14 @@ For the full deep dive -- processes, threads, fibers, the GVL, I/O multiplexing 
 
 ## The switch
 
-One config change:
+While the PR gets approved, you can point your Gemfile at the branch:
+
+```ruby
+# Gemfile
+gem "solid_queue", git: "https://github.com/crmne/solid_queue.git", branch: "async-worker-execution-mode"
+```
+
+Then one config change:
 
 ```yaml
 # config/solid_queue.yml
@@ -128,16 +135,18 @@ The workloads:
 
 | Workload | Thread Best | Async Best | Best Paired Delta |
 |---|---|---|---|
-| Sleep | 447.78 j/s | 507.19 j/s | **+27.2%** |
-| Async HTTP | 432.08 j/s | 512.25 j/s | **+26.0%** |
-| CPU | 107.42 j/s | 112.47 j/s | +5.1% |
 | RubyLLM Stream | 6.25 j/s | 6.68 j/s | **+20.2%** |
+| Async HTTP | 432.08 j/s | 512.25 j/s | **+26.0%** |
+| Sleep | 447.78 j/s | 507.19 j/s | **+27.2%** |
+| CPU | 107.42 j/s | 112.47 j/s | +5.1% |
+
+RubyLLM Stream is the workload that matters. It runs an actual [RubyLLM][] chat completion with streaming, database writes, and Turbo broadcasts per token -- the same thing [Chat with Work][] does in production. Async wins every single paired experiment. 9 out of 9.
 
 The CPU row is the control. Fibers don't help computation, and the number confirms it: essentially flat. That's how you know the I/O gains are real and not measurement noise.
 
-![Throughput advantage ranges across all headline workloads. Async wins on I/O, stays neutral on CPU.](/images/solid-queue-throughput-ranges.png)
+The table above shows the best runs. Here's the full picture across all configurations. Some configurations favor threads for synthetic workloads, but the median (black dot) tilts async for every I/O workload, and the real RubyLLM Stream scenario always favors async:
 
-RubyLLM Stream is the workload that matters. It runs an actual [RubyLLM][] chat completion with streaming, database writes, and Turbo broadcasts per token -- the same thing [Chat with Work][] does in production. Async wins every single paired test cell. 9 out of 9.
+![Solid Queue async over thread throughput ranges across all workloads.](/images/solid-queue-throughput-async-vs-thread.png)
 
 ## Thread mode hit the wall
 
@@ -199,7 +208,11 @@ Almost everything is async. LLM streaming, Turbo broadcasts, notifications, main
 
 Instead of running Solid Queue and Async::Job side by side -- two processors, two configurations, two sets of things to monitor -- you run one. I moved [Chat with Work][] to this setup, and Brad Gessler has been running it in production too.
 
-Async::Job is actually faster if you compare raw throughput against Redis. But speed was never the problem. The problem was running two job processors, losing visibility into failures, and telling every new Rails developer building an LLM app that they need to swap their job backend before they can handle streaming. With this patch, they just set `execution_mode: async` and keep building.
+Async::Job is actually faster if you compare raw throughput against Redis. It's not close:
+
+![Async::Job over Solid Queue async throughput ranges.](/images/solid-queue-throughput-asyncjob-vs-async.png)
+
+If you're chasing pure speed and don't need persistence, use Async::Job -- it's great. If you want job visibility, failure tracking, retries, Mission Control, and the rest of the Rails operational stack, Solid Queue in async mode gets you fiber-based concurrency with a speed tradeoff that's worth it -- you still get unbounded fibers per process while keeping database connections flat. With this patch, you just set `execution_mode: async` and keep building.
 
 ---
 
