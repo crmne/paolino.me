@@ -44,25 +44,25 @@ Then one config change:
 production:
   workers:
     - queues: ["*"]
-      execution_mode: async  # <- that's it
-      capacity: 100
+      # threads: 10
+      fibers: 100  # <- that's it
       processes: 2
 ```
 
 Your jobs don't change. Your queue doesn't change. The worker runs them as fibers instead of threads.
 
-`capacity` replaces `threads` because "100 threads" and "100 fibers" are very different things resource-wise. You can also write `fibers: 100` if that reads better. One more thing in your Rails app:
+The concurrency model is determined by which key you use: `threads` for thread-based execution, `fibers` for fiber-based. They're mutually exclusive. One more thing in your Rails app:
 
 ```ruby
 # config/application.rb
-config.active_support.isolation_level = :fiber  # required for async
+config.active_support.isolation_level = :fiber  # required for fibers
 ```
 
 Multiple fibers sharing a thread need fiber-scoped execution state instead of the default thread-scoped state. The patch validates this at boot and gives you a clear error if it's wrong.
 
 ## Under the hood
 
-The core of the patch is `AsyncPool`. A single thread runs an [async][] reactor with a semaphore that bounds concurrency to whatever you configured as `capacity`:
+The core of the patch is `FiberPool`. A single thread runs an [async][] reactor with a semaphore that bounds concurrency to whatever you configured as `fibers`:
 
 ```ruby
 def start_reactor
@@ -102,13 +102,13 @@ I [wrote about this last year][async-article]:
 
 That was the theory. Here's the actual math from the patch.
 
-A Solid Queue worker needs database connections for three things: polling for new jobs, sending its heartbeat, and executing jobs. In thread mode, every thread can query the database concurrently, so each thread needs its own connection. The formula is `capacity + 2`: one connection per thread, plus two for the worker's own polling and heartbeat.
+A Solid Queue worker needs database connections for three things: polling for new jobs, sending its heartbeat, and executing jobs. In the threads concurrency model, every thread can query the database concurrently, so each thread needs its own connection. The formula is `threads + 2`: one connection per thread, plus two for the worker's own polling and heartbeat.
 
-In async mode on Rails 7.2+, all fibers run on a single reactor thread. Only one fiber executes at a time. That means fibers can never make concurrent database queries. They share one connection. Active Record on 7.2+ helps here: connections are query-scoped, meaning they're released back to the pool after each query rather than held for the lifetime of the fiber. So the formula is `1 + 2 = 3`: one shared execution connection, plus two for polling and heartbeat.
+In the fiber concurrency model on Rails 7.2+, all fibers run on a single reactor thread. Only one fiber executes at a time. That means fibers can never make concurrent database queries. They share one connection. Active Record on 7.2+ helps here: connections are query-scoped, meaning they're released back to the pool after each query rather than held for the lifetime of the fiber. So the formula is `1 + 2 = 3`: one shared execution connection, plus two for polling and heartbeat.
 
-Same capacity, different execution mode, very different connection requirements:
+Same number of concurrent jobs, different concurrency model, very different connection requirements:
 
-| Concurrent jobs | Thread DB pool (per process) | Async DB pool (per process) |
+| Concurrent jobs | Thread DB pool (per process) | Fiber DB pool (per process) |
 |---|---|---|
 | 10 | 12 | 3 |
 | 25 | 27 | 3 |
@@ -116,13 +116,13 @@ Same capacity, different execution mode, very different connection requirements:
 | 100 | 102 | 3 |
 | 200 | 202 | 3 |
 
-Thread scales linearly. Async stays flat. Multiply by the number of worker processes and the gap gets dramatic: 6 processes at capacity 50 means 312 connections for thread mode, 18 for async. PostgreSQL's default `max_connections` is 100.
+Thread scales linearly. Fiber stays flat. Multiply by the number of worker processes and the gap gets dramatic: 6 processes with 50 concurrent jobs means 312 connections for thread mode, 18 for fiber. PostgreSQL's default `max_connections` is 100.
 
 The patch detects your Rails version and calculates the right pool size automatically.
 
 ## The benchmarks
 
-I benchmarked four workloads across every combination of execution mode, capacity (5 to 100), and process count (1, 2, 6). Each configuration ran 5 times, median reported. Total concurrency was capped at 60 for both modes to keep the comparison fair.
+I benchmarked four workloads across every combination of concurrency model, concurrency (5 to 100), and process count (1, 2, 6). Each configuration ran 5 times, median reported. Total concurrency was capped at 60 for both modes to keep the comparison fair.
 
 The workloads:
 
@@ -133,26 +133,26 @@ The workloads:
 
 ### Results
 
-| Workload | Thread Best | Async Best | Best Paired Delta |
+| Workload | Thread Best | Fiber Best | Best Paired Delta |
 |---|---|---|---|
 | RubyLLM Stream | 6.25 j/s | 6.68 j/s | **+20.2%** |
 | Async HTTP | 432.08 j/s | 512.25 j/s | **+26.0%** |
 | Sleep | 447.78 j/s | 507.19 j/s | **+27.2%** |
 | CPU | 107.42 j/s | 112.47 j/s | +5.1% |
 
-RubyLLM Stream is the workload that matters. It runs an actual [RubyLLM][] chat completion with streaming, database writes, and Turbo broadcasts per token -- the same thing [Chat with Work][] does in production. Async wins every single paired experiment. 9 out of 9.
+RubyLLM Stream is the workload that matters. It runs an actual [RubyLLM][] chat completion with streaming, database writes, and Turbo broadcasts per token -- the same thing [Chat with Work][] does in production. Fiber wins every single paired experiment. 9 out of 9.
 
 The CPU row is the control. Fibers don't help computation, and the number confirms it: essentially flat. That's how you know the I/O gains are real and not measurement noise.
 
-The table above shows the best runs. Here's the full picture across all configurations. Some configurations favor threads for synthetic workloads, but the median (black dot) tilts async for every I/O workload, and the real RubyLLM Stream scenario always favors async:
+The table above shows the best runs. Here's the full picture across all configurations. Some configurations favor threads for synthetic workloads, but the median (black dot) tilts fiber for every I/O workload, and the real RubyLLM Stream scenario always favors fiber:
 
-![Solid Queue async over thread throughput ranges across all workloads.](/images/solid-queue-throughput-async-vs-thread.png)
+![Solid Queue fiber over thread throughput ranges across all workloads.](/images/solid-queue-throughput-async-vs-thread.png)
 
 ## Thread mode hit the wall
 
 The headline benchmarks cap total concurrency at 60 to keep the comparison fair. I wanted to see what happens when you push past that, so I ran a stress suite: 25 to 200 concurrent jobs per worker, with 2 and 6 worker processes.
 
-Remember the database math from earlier: thread mode needs `capacity + 2` connections per process, async needs 3. Here's what that means in practice for thread mode:
+Remember the database math from earlier: thread mode needs `threads + 2` connections per process, fiber mode needs 3. Here's what that means in practice for thread mode:
 
 | Concurrent jobs | Processes | DB pool (per process) | Total connections | Result |
 |---|---|---|---|---|
@@ -163,7 +163,7 @@ Remember the database math from earlier: thread mode needs `capacity + 2` connec
 
 PostgreSQL's default `max_connections` is 100. Thread mode at 50 concurrent jobs with just 2 processes already exceeds it. With 6 processes, even 25 concurrent jobs needs 162 connections. Out of every thread configuration I tested, only one survived: the smallest.
 
-Async mode needs 3 connections per process regardless of how many concurrent jobs you configure:
+Fiber mode needs 3 connections per process regardless of how many concurrent jobs you configure:
 
 | Concurrent jobs | Processes | DB pool (per process) | Total connections | Result |
 |---|---|---|---|---|
@@ -173,46 +173,42 @@ Async mode needs 3 connections per process regardless of how many concurrent job
 
 Every configuration completed. 18 total connections for 200 concurrent jobs across 6 processes. Thread mode needed 54 just to survive at 25 with 2.
 
-Thread mode doesn't scale because it can't. Every thread holds a connection, and database connections are a hard ceiling. Async scales because fibers share a small pool. You just increase the number.
+Thread mode doesn't scale because it can't. Every thread holds a connection, and database connections are a hard ceiling. Fiber mode scales because fibers share a small pool. You just increase the number.
 
 ## One backend, two modes
 
-Async isn't universally better. CPU-bound jobs get nothing from it. C extensions that aren't fiber-safe won't work. And that's fine -- you don't have to pick one.
+Fiber mode isn't universally better. CPU-bound jobs get nothing from it. C extensions that aren't fiber-safe won't work. And that's fine -- you don't have to pick one.
 
 As Trevor Turk pointed out in the PR discussion, this is really the key insight: separately configured worker pools. Here's a simplified version of what [Chat with Work][] runs in production:
 
 ```yaml
 workers:
   - queues: [ chat ]
-    execution_mode: async
-    capacity: 10
+    fibers: 10
     processes: 2
     polling_interval: 0.1
   - queues: [ turbo ]
-    execution_mode: async
-    capacity: 10
+    fibers: 10
     processes: 1
     polling_interval: 0.05
   - queues: [ notifications, default, maintenance ]
-    execution_mode: async
-    capacity: 5
+    fibers: 5
     processes: 1
     polling_interval: 0.2
   - queues: [ cpu ]
-    execution_mode: thread
     threads: 1
     processes: 1
 ```
 
-Almost everything is async. LLM streaming, Turbo broadcasts, notifications, maintenance jobs -- all fibers. Only the `cpu` queue uses threads, and right now it's just one thread for the occasional heavy extraction. One backend. One deployment. [Mission Control][] shows all of it.
+Almost everything uses fibers. LLM streaming, Turbo broadcasts, notifications, maintenance jobs -- all fiber-based. Only the `cpu` queue uses threads, and right now it's just one thread for the occasional heavy extraction. One backend. One deployment. [Mission Control][] shows all of it.
 
 Instead of running Solid Queue and Async::Job side by side -- two processors, two configurations, two sets of things to monitor -- you run one. I moved [Chat with Work][] to this setup, and Brad Gessler has been running it in production too.
 
 Async::Job is actually faster if you compare raw throughput against Redis. It's not close:
 
-![Async::Job over Solid Queue async throughput ranges.](/images/solid-queue-throughput-asyncjob-vs-async.png)
+![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-throughput-asyncjob-vs-async.png)
 
-If you're chasing pure speed and don't need persistence, use Async::Job -- it's great. If you want job visibility, failure tracking, retries, Mission Control, and the rest of the Rails operational stack, Solid Queue in async mode gets you fiber-based concurrency with a speed tradeoff that's worth it -- you still get unbounded fibers per process while keeping database connections flat. With this patch, you just set `execution_mode: async` and keep building.
+If you're chasing pure speed and don't need persistence, use Async::Job -- it's great. If you want job visibility, failure tracking, retries, Mission Control, and the rest of the Rails operational stack, Solid Queue's fiber mode gets you that concurrency with a speed tradeoff that's worth it -- you still get unbounded fibers per process while keeping database connections flat. With this patch, you just set `fibers: N` and keep building.
 
 ---
 
