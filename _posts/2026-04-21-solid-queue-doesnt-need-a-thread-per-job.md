@@ -146,7 +146,7 @@ The CPU row is the control. Fibers don't help computation, and the number confir
 
 The table above shows the best runs. Here's the full picture across all configurations. Some configurations favor threads for synthetic workloads, but the median (black dot) tilts fiber for every I/O workload, and the real RubyLLM Stream scenario always favors fiber:
 
-![Solid Queue fiber over thread throughput ranges across all workloads.](/images/solid-queue-throughput-async-vs-thread.png)
+![Solid Queue fiber over thread throughput ranges across all workloads.](/images/solid-queue-throughput-fiber-vs-thread.png)
 
 ## Thread mode hit the wall
 
@@ -206,7 +206,7 @@ Instead of running Solid Queue and Async::Job side by side -- two processors, tw
 
 Async::Job is actually faster if you compare raw throughput against Redis. It's not close:
 
-![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-throughput-asyncjob-vs-async.png)
+![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-throughput-asyncjob-vs-fiber.png)
 
 If you're chasing pure speed and don't need persistence, use Async::Job -- it's great. If you want job visibility, failure tracking, retries, Mission Control, and the rest of the Rails operational stack, Solid Queue's fiber mode gets you that concurrency with a speed tradeoff that's worth it -- you still get unbounded fibers per process while keeping database connections flat. With this patch, you just set `fibers: N` and keep building.
 
