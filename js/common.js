@@ -109,18 +109,38 @@ $(document).ready(function() {
   // =====================
   var $load_posts_button = $('.load-more-posts');
 
+  function resetLoadMoreButton() {
+    $load_posts_button.text('Load Posts ').append('<ion-icon name="arrow-down-outline"></ion-icon>');
+  }
+
+  function paginationPagePath(pageNumber) {
+    return pagination_page_path_template.replace('__page__', pageNumber);
+  }
+
   $load_posts_button.click(function(e) {
     e.preventDefault();
     var loadMore = $('.load-more-section');
-    var request_next_link = pagination_next_url.split('/page')[0] + '/page/' + pagination_next_page_number + '/';
+    var request_next_link = pagination_next_url || paginationPagePath(pagination_next_page_number);
+
+    if (!request_next_link || !pagination_next_page_number) {
+      loadMore.addClass('hide');
+      return;
+    }
 
     $.ajax({
       url: request_next_link,
       beforeSend: function() {
+        $load_posts_button.prop('disabled', true);
         $load_posts_button.text('Loading...');
       }
     }).done(function(data) {
       var posts = $('.grid__post', data);
+
+      if (!posts.length) {
+        loadMore.addClass('hide');
+        return;
+      }
+
       $('.grid').append(posts).masonry('appended', posts);
       $grid.imagesLoaded().progress(function() {
         $grid.masonry('layout');
@@ -132,12 +152,18 @@ $(document).ready(function() {
         }, 50);
       }
 
-      $load_posts_button.text('Load Posts ').append('<ion-icon name="arrow-down-outline"></ion-icon>');
       pagination_next_page_number++;
+      pagination_next_url = paginationPagePath(pagination_next_page_number);
 
       if (pagination_next_page_number > pagination_available_pages_number) {
         loadMore.addClass('hide');
+      } else {
+        resetLoadMoreButton();
       }
+    }).fail(function() {
+      resetLoadMoreButton();
+    }).always(function() {
+      $load_posts_button.prop('disabled', false);
     });
   });
 

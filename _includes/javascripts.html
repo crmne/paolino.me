@@ -16,11 +16,18 @@
 <script src="{{ site.baseurl }}/js/vendors/transition.js"></script>
 <script src="{{ site.baseurl }}/js/vendors/zoom.min.js"></script>
 <script src="{{ site.baseurl }}/js/common.js"></script>
+{% if paginator.next_page_path %}
+  {% assign pagination_next_url = paginator.next_page_path | prepend: site.baseurl %}
+{% else %}
+  {% assign pagination_next_url = "" %}
+{% endif %}
+{% assign pagination_page_path_template = site.paginate_path | replace: ":num", "__page__" | prepend: site.baseurl %}
 <script>
   var base_url = "{{ site.baseurl }}",
-    pagination_next_url = base_url + '/page2',
-    pagination_next_page_number = '{{ paginator.next_page }}',
-    pagination_available_pages_number = '{{ paginator.total_pages }}';
+    pagination_page_path_template = "{{ pagination_page_path_template }}",
+    pagination_next_url = "{{ pagination_next_url }}",
+    pagination_next_page_number = {% if paginator.next_page %}{{ paginator.next_page }}{% else %}null{% endif %},
+    pagination_available_pages_number = {% if paginator.total_pages %}{{ paginator.total_pages }}{% else %}0{% endif %};
 </script>
 <!-- Ionicons -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
