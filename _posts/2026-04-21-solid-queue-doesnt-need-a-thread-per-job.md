@@ -103,11 +103,11 @@ That was the theory. Here's the actual math from the patch.
 
 A Solid Queue worker needs database connections for three things: polling for jobs, heartbeats, and running jobs. With threads, every thread can query the database at the same time, so each one holds its own connection. That's `threads + 2`: one per thread, plus two for the worker itself.
 
-With fibers on Rails 7.2+, all fibers run on one reactor thread. Only one executes at a time, so they can never hit the database concurrently. They share one connection. Active Record 7.2+ makes this work: connections are released after each query instead of held for the fiber's lifetime. That's `1 + 2 = 3`. One shared connection, two for the worker.
+With fibers on Rails 7.2+, all fibers run on one reactor thread. Only one executes at a time, so the minimum is one shared connection. Active Record 7.2+ makes this work: connections are released after each query instead of held for the fiber's lifetime. That's `1 + 2 = 3` minimum. If your jobs are DB-heavy, increase the pool and fibers will check out separate connections concurrently.
 
 Same concurrency, wildly different connection costs:
 
-| Concurrent jobs | Thread DB pool (per process) | Fiber DB pool (per process) |
+| Concurrent jobs | Thread DB pool minimum (per process) | Fiber DB pool minimum (per process) |
 |---|---|---|
 | 10 | 12 | 3 |
 | 25 | 27 | 3 |
