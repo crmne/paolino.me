@@ -39,13 +39,15 @@ graph TD
     style F5 fill:#e8a87c,color:#fff
 </div>
 
-**Processes** are fully isolated. Each process has its own memory, its own Ruby VM, and its own GVL. When you run Puma with 3 workers, you get 3 processes. They can't corrupt each other's state because they don't share memory. The OS schedules them independently. The cost: each one loads your entire application into memory.
+Think of your computer as an office building.
 
-**Ractors** sit between processes and threads. Each Ractor has its own GVL, so threads in different Ractors can execute Ruby code truly in parallel. The tradeoff: strict isolation. Ractors can't share mutable objects. You communicate via message passing, copying or moving data between them. Every Ruby process has a "main Ractor" where all your code runs by default. Creating additional Ractors is opt-in.
+**Processes** are fully isolated: separate offices, each with its own locked door, furniture, and files. Each process has its own memory, its own Ruby VM, and its own GVL. When you run Puma with 3 workers, you get 3 processes. They can't corrupt each other's state because they don't share memory. The OS schedules them independently. The cost: each one loads your entire application into memory.
 
-**Threads** live inside a Ractor and share its memory. The OS preemptively schedules them, meaning it can pause any thread at any time and switch to another. You don't control when this happens. The GVL prevents threads within the same Ractor from executing Ruby code in parallel, but it releases the lock during I/O. So two threads can wait on two different network calls simultaneously, but they can't crunch numbers at the same time.
+**Ractors** sit between processes and threads: offices that share a mailroom but not their filing cabinets. Each Ractor has its own GVL, so threads in different Ractors can execute Ruby code truly in parallel, but they can only pass notes to each other -- no shared mutable objects. You communicate via message passing, copying or moving data between them. Every Ruby process has a "main Ractor" where all your code runs by default. Creating additional Ractors is opt-in.
 
-**Fibers** live inside a thread. They're cooperatively scheduled, which means a fiber runs until it explicitly yields. No OS involvement, no preemption. When a fiber hits I/O -- a network call, a database query, reading a file -- it yields to the reactor, and another fiber picks up. One thread can run thousands of fibers.
+**Threads** live inside a process and share its memory: workers sharing the same office, accessing the same filing cabinets, coordinating to avoid collisions. The OS preemptively schedules them, meaning it can pause any thread at any time and switch to another. You don't control when this happens. The GVL prevents threads from executing Ruby code in parallel, but it releases the lock during I/O. So two threads can wait on two different network calls simultaneously, but they can't crunch numbers at the same time.
+
+**Fibers** live inside a thread and are cooperatively scheduled: multiple tasks juggled by one worker at their desk. When they're waiting for something -- a phone call, a fax, a response -- they set it aside and pick up the next task. A fiber runs until it explicitly yields. When it hits I/O -- a network call, a database query, reading a file -- it yields to the reactor, and another fiber picks up. No OS involvement, no preemption. One thread can run thousands of fibers.
 
 Here's what that means for cost:
 
