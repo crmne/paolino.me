@@ -21,7 +21,7 @@ So I [opened a PR][pr].
 
 If you already know this, [skip ahead to the config](#the-switch).
 
-Solid Queue runs each job on its own thread. Each thread needs its own database connection, its own stack memory, and a slot in the OS scheduler. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
+Solid Queue runs each job on its own thread. Threads can all query the database concurrently, so each one needs its own connection, plus its own stack memory and a slot in the OS scheduler. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
 
 Fibers sidestep all of this. Cooperatively scheduled, running in userspace on a single thread. When a fiber hits I/O -- a network call, a database query, waiting for the next token -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No OS scheduling overhead, no extra database connections. The [async][] gem handles this for you: your code yields at I/O boundaries without you changing anything.
 
