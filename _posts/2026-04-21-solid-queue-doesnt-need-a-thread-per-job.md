@@ -5,6 +5,7 @@ date: 2026-04-21
 description: "I tried Async::Job for my LLM apps, hit its limits, and patched Solid Queue to run jobs as fibers instead."
 tags: [Ruby, Async, Rails, Solid Queue, Performance, Concurrency, Open Source]
 image: /images/solid-queue-async.webp
+sendfox_campaign_id: 2790538
 ---
 Last year I moved the LLM streaming jobs in [Chat with Work][] to [Async::Job][async-job]. It was fast. Genuinely fast. Fiber-based execution with Redis, thousands of concurrent jobs on a single thread. I was so convinced that I [wrote a whole post][async-article] about why async Ruby is the future for AI apps and recommended it to everyone.
 
