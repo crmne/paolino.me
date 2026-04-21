@@ -6,7 +6,7 @@ description: Subscribe to get new posts about Ruby, AI, and building products.
 page_class: page--newsletter
 ---
 
-Short, practical notes on Ruby, AI, and building products.
+I post when I have something worth your time. No schedule, no filler. If you follow me on Twitter or LinkedIn, the algorithm decides what you see. Subscribe and you get all of it.
 
 <div class="widget widget-subscribe newsletter-signup">
   <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form" id="sendfox-newsletter-page-form" data-async="true" data-recaptcha="true">
