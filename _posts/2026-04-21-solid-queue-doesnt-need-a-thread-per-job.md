@@ -151,7 +151,7 @@ That table shows the best runs. Here's the full spread. Some configurations favo
 
 Those benchmarks cap concurrency at 60. I wanted to see what breaks when you push past that, so I ran a stress suite: 25 to 200 concurrent jobs, 2 and 6 worker processes.
 
-Remember the connection math. Threads need `threads + 2` per process. Fibers need 3. Here's what happens to thread mode:
+Remember the connection math. Threads need `threads + 2` minimum per process. Fibers need 3 minimum. Here's what happens to thread mode:
 
 | Concurrent jobs | Processes | DB pool (per process) | Total connections | Result |
 |---|---|---|---|---|
@@ -162,7 +162,7 @@ Remember the connection math. Threads need `threads + 2` per process. Fibers nee
 
 PostgreSQL's default `max_connections` is 100. Thread mode at 50 concurrent jobs with just 2 processes already exceeds it. With 6 processes, even 25 concurrent jobs needs 162 connections. Out of every thread configuration I tested, only one survived: the smallest.
 
-Fiber mode. 3 connections per process, no matter what:
+Fiber mode. 3 minimum per process, no matter the concurrency:
 
 | Concurrent jobs | Processes | DB pool (per process) | Total connections | Result |
 |---|---|---|---|---|
@@ -172,7 +172,7 @@ Fiber mode. 3 connections per process, no matter what:
 
 Every configuration completed. 18 total connections for 200 concurrent jobs across 6 processes. Thread mode needed 54 just to survive at 25 with 2.
 
-Thread mode doesn't scale because it can't. Every thread holds a connection, and connections are a hard ceiling. Fibers share a pool. You just increase the number.
+Thread mode doesn't scale with the current pool sizing. Solid Queue sizes the pool to `threads + 2` to avoid connection contention, and database connections are a hard ceiling. Fibers share a smaller pool. You just increase the number.
 
 ## One backend, two modes
 
