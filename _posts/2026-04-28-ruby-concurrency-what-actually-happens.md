@@ -263,7 +263,7 @@ The fiber yields. Other fibers run. When PostgreSQL responds, the reactor resume
 
 ### Connection sharing
 
-With threads, every thread can query the database at the same time. Each one needs its own connection. With fibers, only one runs at a time, so a single shared connection is enough. If you need more concurrent DB access, increase the pool and fibers will check out separate connections concurrently. The reactor never preempts a fiber -- it only switches when a fiber yields at an I/O boundary:
+With threads, every thread can query the database at the same time. Each one needs its own connection. With fibers, the important difference is that ordinary Active Record query paths can release connections between DB operations, so a much smaller pool is often enough. If you need more concurrent DB access, increase the pool and fibers will check out separate connections concurrently. The reactor never preempts a fiber -- it only switches when a fiber yields at an I/O boundary:
 
 <div class="mermaid">
 sequenceDiagram
@@ -296,7 +296,7 @@ sequenceDiagram
     F2->>R: Done
 </div>
 
-Active Record 7.2+ makes this work: connections are released after each query instead of held for the fiber's lifetime. Check out, query, return. The minimum pool size is 3 per process (1 execution + 2 for worker overhead) regardless of how many fibers you run. For DB-heavy workloads, bump the pool size.
+Active Record 7.2+ makes this work: ordinary query paths can release connections between DB operations instead of holding them for the fiber's lifetime. Check out, query, return. The minimum pool size is often 3 per process (1 execution + 2 for worker overhead), but jobs that hold transactions, use connection-local session state, or explicitly pin connections need more. For DB-heavy workloads, bump the pool size.
 
 ## What happens when a fiber starts a transaction
 

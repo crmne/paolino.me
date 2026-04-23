@@ -23,7 +23,7 @@ If you already know this, [skip ahead to the config](#the-switch).
 
 Solid Queue runs each job on its own thread. Threads can all query the database concurrently, so each one needs its own connection, plus its own stack memory and a slot in the OS scheduler. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
 
-Fibers sidestep all of this. Cooperatively scheduled, running in userspace on a single thread. When a fiber hits I/O -- a network call, a database query, waiting for the next token -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No OS scheduling overhead, no extra database connections. The [async][] gem handles this for you: your code yields at I/O boundaries without you changing anything.
+Fibers sidestep all of this. Cooperatively scheduled, running in userspace on a single thread. When a fiber hits I/O -- a network call, a database query, waiting for the next token -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No OS scheduling overhead, and for ordinary Active Record usage on Rails 7.2+, a much smaller database pool. The [async][] gem handles this for you: your code yields at I/O boundaries without you changing anything.
 
 For the full deep dive -- processes, threads, fibers, the GVL, I/O multiplexing -- see [Async Ruby is the Future][async-article].
 
@@ -103,7 +103,7 @@ That was the theory. Here's the actual math from the patch.
 
 A Solid Queue worker needs database connections for three things: polling for jobs, heartbeats, and running jobs. With threads, every thread can query the database at the same time, so each one holds its own connection. That's `threads + 2`: one per thread, plus two for the worker itself.
 
-With fibers on Rails 7.2+, all fibers run on one reactor thread. Only one executes at a time, so the minimum is one shared connection. Active Record 7.2+ makes this work: connections are released after each query instead of held for the fiber's lifetime. That's `1 + 2 = 3` minimum. If your jobs are DB-heavy, increase the pool and fibers will check out separate connections concurrently.
+With fibers on Rails 7.2+, all fibers run on one reactor thread. The pool savings come from ordinary Active Record query paths releasing connections between DB operations instead of holding them for the fiber's lifetime. In practice, that means the minimum is often `1 + 2 = 3`: one execution connection, plus two for the worker itself. If your jobs are DB-heavy, use long transactions, or pin connections with APIs like `ActiveRecord::Base.connection`, increase the pool and fibers will check out separate connections concurrently.
 
 Same concurrency, wildly different connection costs:
 
