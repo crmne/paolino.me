@@ -243,7 +243,7 @@ sequenceDiagram
     R->>F2: Finally runs
 </div>
 
-This is not a bug. It's the tradeoff of cooperative scheduling. Fibers are designed for I/O-bound work. CPU-bound work should go on a thread, where the OS can preempt it.
+This is not a bug. It's the current tradeoff of cooperative scheduling. Fibers are designed for I/O-bound work; CPU-bound work belongs on a thread, where the OS can preempt it.
 
 With [my fiber-mode patch for Solid Queue][sq-article], this is a configuration choice:
 
@@ -372,7 +372,7 @@ When you configure `fibers: 100` with the patch, that's not "unlimited fibers." 
 
 In plain Ruby, more threads can be reasonable. In Solid Queue thread mode, `threads: 200` means more than "allow 200 jobs to wait on I/O."
 
-**Kernel threads are the expensive unit.** [Samuel Williams' benchmarks][fiber-bench] show fibers allocate 20x faster (~3μs vs ~80μs), switch 10x faster (~0.1μs vs ~1.3μs), and achieve 15x higher throughput (~80,000 vs ~5,000 requests/second). The OS can schedule thousands of threads, but scheduler entries, stack reservations, wakeups, and GVL coordination make that a poor default concurrency knob.
+**Kernel threads are the expensive unit.** Fibers don't make I/O complete faster; they let you wait on far more of it at once for a fraction of the cost. [Samuel Williams' benchmarks][fiber-bench] show fibers allocate 20x faster (~3μs vs ~80μs) and switch 10x faster (~0.1μs vs ~1.3μs) than threads. The OS can schedule thousands of threads, but scheduler entries, stack reservations, wakeups, and GVL coordination make that a poor default concurrency knob.
 
 **Solid Queue currently enforces a database-pool guard.** Today it expects `threads + 2` database connections per process, so 200 threads across 2 processes won't boot unless the pool is at least 404. That guard may be conservative for I/O-heavy jobs; [there's an open issue][sq-736] about making it advisory or bypassable. But it is still a guard you hit today.
 
