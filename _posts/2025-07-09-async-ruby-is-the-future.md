@@ -41,12 +41,12 @@ Your 26th user? They're waiting in line. Not because your server is busy, but be
 
 ### 2. Resource Multiplication
 
-Each background job worker thread needs its own:
-- Database connection (25 workers = 25 connections minimum)
+Each background job worker thread brings its own:
+- Potential database demand (25 workers can hit the database at once)
 - Stack memory allocation
 - OS thread management overhead
 
-For 1000 concurrent conversations using traditional job queues like SolidQueue or Sidekiq, you'd need 1000 worker threads. Each worker thread holds its database connection for the entire job duration. That's 1000 database connections for threads that are 99% idle, waiting for streaming tokens.
+For 1000 concurrent conversations using traditional job queues like SolidQueue or Sidekiq, you'd need 1000 worker slots. That means 1000 kernel threads across your worker fleet, plus enough database pool capacity for whatever fraction of those jobs can hit the database at the same time. Even when the jobs are 99% idle waiting for streaming tokens, the thread resources are still reserved.
 
 ### 3. Performance Overhead
 
@@ -102,7 +102,7 @@ Each thread:
 - Can be interrupted mid-execution (in Ruby, after 100ms)
 - Blocks individually on I/O operations
 - Requires OS resources and kernel data structures
-- Needs its own resources (like database connections)
+- Can need its own database connection while doing database work
 
 #### Fibers: Cooperative Concurrency
 
@@ -193,7 +193,7 @@ But the real advantage is **scalability**:
 2. **Efficient Scheduling**: No kernel involvement means less overhead
 3. **I/O Multiplexing**: One thread monitors thousands of I/O operations via `epoll`/`kqueue`/`io_uring`
 4. **GVL-Friendly**: Cooperative scheduling works naturally with Ruby's concurrency model
-5. **Resource Sharing**: Database connections and memory pools are naturally shared
+5. **Resource Sizing**: Database pools can be sized to actual database concurrency instead of the number of jobs waiting on I/O
 
 While memory usage between fibers and threads is comparable, fibers don't depend on OS resources. You can create vastly more fibers than threads, switch between them faster, and manage them more efficiently while monitoring thousands of connections -- all from userspace.
 
@@ -202,7 +202,7 @@ While memory usage between fibers and threads is comparable, fibers don't depend
 Remember those four problems? Here's how async addresses each one:
 
 1. **No More Slot Starvation**: Fibers are created on-demand and destroyed immediately. No fixed worker pools.
-2. **Shared Resources**: One process with a few pooled database connections can handle thousands of conversations.
+2. **Shared Resources**: One process with a correctly sized database pool can handle thousands of mostly-waiting conversations.
 3. **Improved Performance**: 20x faster to create, 10x faster to switch, 15x less scheduling overhead (synthetic upper bound).
 4. **Massively Improved Scalability**: 10,000+ concurrent fibers? No problem. The OS doesn't even know they exist.
 

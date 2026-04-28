@@ -142,7 +142,7 @@ This is the part that makes thread-based Ruby less different from fiber-based Ru
 
 The GVL means only one thread can execute Ruby code at a time. Threads run in parallel only during I/O, when the GVL is released. So if your workload is I/O-bound -- HTTP calls, database queries, LLM streaming -- threads give you I/O concurrency, not parallelism.
 
-Fibers give you the same I/O concurrency. One fiber yields at I/O, another picks up. The difference: fibers do it without OS scheduling overhead, without the memory cost of a thread stack, and without needing a database connection per concurrent job.
+Fibers give you the same I/O concurrency. One fiber yields at I/O, another picks up. The difference: fibers do it without OS scheduling overhead, without the memory cost of a thread stack, and without making job concurrency itself imply one worker thread or one database slot per job.
 
 If threads only help with I/O anyway, why pay their overhead?
 
@@ -268,9 +268,13 @@ user = User.find(42)  # yields while waiting for PostgreSQL
 
 The fiber yields. Other fibers run. When PostgreSQL responds, the reactor resumes the fiber. Your code doesn't know the difference.
 
-### Connection sharing
+### Pool size follows database work
 
-With threads, every thread can query the database at the same time. Each one needs its own connection. With fibers, the important difference is that ordinary Active Record query paths can release connections between DB operations, so a much smaller pool is often enough. If you need more concurrent DB access, increase the pool and fibers will check out separate connections concurrently. The reactor never preempts a fiber -- it only switches when a fiber yields at an I/O boundary:
+A database connection is busy until its query finishes. While PostgreSQL works, Ruby can run something else -- another thread, or another fiber on the reactor -- but that connection stays checked out.
+
+For an LLM job, most of the wall time is not database time. Read a row, call an API, stream tokens, write a status update. The database touches are short. The long waits are external HTTP. So 100 jobs in flight does not mean 100 jobs hitting PostgreSQL at the same instant.
+
+The reactor never preempts a fiber -- it only switches when a fiber yields at an I/O boundary:
 
 <div class="mermaid">
 sequenceDiagram
@@ -303,15 +307,15 @@ sequenceDiagram
     F2->>R: Done
 </div>
 
-Active Record 7.2+ makes this work: ordinary query paths can release connections between DB operations instead of holding them for the fiber's lifetime. Check out, query, return. The minimum pool size is often 3 per process (1 execution + 2 for worker overhead), but jobs that hold transactions, use connection-local session state, or explicitly pin connections need more. For DB-heavy workloads, bump the pool size.
+Read this as a timeline. Fiber A uses the only connection for its query. While PostgreSQL works, Fiber B waits on HTTP. After Fiber A returns the connection, Fiber B can use it for its update. If both fibers tried to query at the same time, one would wait unless the pool had another connection.
+
+Active Record follows the same checkout rules in both cases. The current Solid Queue difference is a guardrail: thread mode expects `threads + 2` connections per process, so you don't run 50 execution threads against a 5-connection pool. Fiber mode can use a smaller baseline because `fibers: 100` means "allow 100 jobs to wait," not "create 100 execution threads." In my patch, I/O-heavy workers often start at 3 connections per process (1 execution + 2 worker overhead). If the jobs are DB-heavy, raise it.
 
 ## What happens when a fiber starts a transaction
 
-If fibers share a connection, can one fiber's transaction leak into another?
+A transaction changes the timeline. The connection cannot be returned after each statement, because the transaction state lives on that connection.
 
-No. Active Record handles this correctly.
-
-When a fiber starts a transaction, it holds the connection for the entire duration -- from `BEGIN` to `COMMIT` or `ROLLBACK`. The connection is not released mid-transaction. Other fibers that need the database wait for the connection to be returned.
+When a fiber starts a transaction, it keeps its checked-out connection for the entire duration -- from `BEGIN` to `COMMIT` or `ROLLBACK`. The connection is not released mid-transaction. Other fibers that need the database wait for the connection to be returned.
 
 <div class="mermaid">
 sequenceDiagram
@@ -343,7 +347,7 @@ sequenceDiagram
     F2->>R: Done
 </div>
 
-Under fiber isolation (`config.active_support.isolation_level = :fiber`), Active Record tracks connection ownership per fiber. The connection gets a real `Monitor` lock. No other fiber can touch it during a transaction.
+Under fiber isolation (`config.active_support.isolation_level = :fiber`), Active Support's execution state is fiber-scoped, so Active Record's lease is associated with the current fiber instead of the surrounding thread. The connection still gets a real `Monitor` lock. No other fiber can touch it during a transaction.
 
 Safe. No interleaving. Fiber B just waits.
 
@@ -471,7 +475,7 @@ flowchart TD
     style I fill:#e8a87c,color:#fff
 </div>
 
-- **I/O-bound work** (LLM streaming, HTTP calls, webhooks, email delivery): **fibers.** Low overhead, high concurrency, shared database connections.
+- **I/O-bound work** (LLM streaming, HTTP calls, webhooks, email delivery): **fibers.** Low overhead, high concurrency, database connections sized to database work rather than waiting jobs.
 - **CPU-bound work** (image processing, data crunching, PDF generation): **threads.** The OS can preempt them, and C extensions can release the GVL for parallelism.
 - **CPU parallelism with Rails**: **processes.** Each one gets its own GVL, its own memory, its own everything. Puma already does this.
 - **CPU parallelism without Rails**: **Ractors** (when they graduate from experimental). Lighter than processes, true parallelism, but strict isolation means most gems don't work.
