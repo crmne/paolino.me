@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "kamal-backup: Scheduled Rails Backups for Kamal Apps"
-date: 2026-04-30
+date: 2026-05-05
 description: "One Kamal accessory for encrypted Rails database and Active Storage backups, restore drills, and redacted evidence for security reviews."
 tags: [Ruby, Rails, Kamal, Backups, Open Source]
 image: /images/kamal-backup.png
