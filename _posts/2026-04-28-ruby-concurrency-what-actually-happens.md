@@ -46,7 +46,7 @@ Think of your computer as an office building.
 
 **Ractors** sit between processes and threads: offices that share a mailroom but not their filing cabinets. Each Ractor has its own GVL, so threads in different Ractors can execute Ruby code truly in parallel, but they can only pass notes to each other -- no shared mutable objects. You communicate via message passing, copying or moving data between them. Every Ruby process has a "main Ractor" where all your code runs by default. Creating additional Ractors is opt-in.
 
-**Threads** live inside a process and share its memory: workers sharing the same office, accessing the same filing cabinets, coordinating to avoid collisions. The OS preemptively schedules them, meaning it can pause any thread at any time and switch to another. You don't control when this happens. The GVL prevents threads from executing Ruby code in parallel, but it releases the lock during I/O. So two threads can wait on two different network calls simultaneously, but they can't crunch numbers at the same time.
+**Threads** live inside a process and share its memory: workers sharing the same office, accessing the same filing cabinets, coordinating to avoid collisions. In CRuby, they are native threads, with the GVL deciding which one can execute Ruby code at a time. You don't control when Ruby switches between them. The GVL releases during I/O, so two threads can wait on two different network calls simultaneously, but they can't crunch numbers at the same time.
 
 **Fibers** live inside a thread and are cooperatively scheduled: multiple tasks juggled by one worker at their desk. When they're waiting for something -- a phone call, a fax, a response -- they set it aside and pick up the next task. A fiber runs until it explicitly yields. When it hits I/O -- a network call, a database query, reading a file -- it yields to the reactor, and another fiber picks up. No OS thread context switch for the fiber itself, no preemption. One thread can run thousands of fibers.
 
@@ -68,39 +68,39 @@ Creation and switching benchmarks are from [Samuel Williams' fiber-vs-thread per
 
 This is where most of the confusion lives. Let me show you what actually happens.
 
-### Preemptive scheduling (threads)
+### Thread scheduling
 
-The OS controls when threads switch. Your code has no say. A thread could be paused mid-calculation, mid-assignment, mid-anything.
+CRuby threads are native threads, but the GVL decides which one can run Ruby code. Your code has no say. A thread can be paused mid-calculation, mid-assignment, mid-anything.
 
 <div class="mermaid">
 sequenceDiagram
-    participant OS as OS Scheduler
+    participant VM as CRuby / OS
     participant T1 as Thread 1
     participant T2 as Thread 2
     participant LLM as LLM API
 
-    OS->>T1: Run
+    VM->>T1: Run
     T1->>LLM: Send request
     Note over T1: Blocks in I/O (parked)
-    OS->>T2: Run
+    VM->>T2: Run
     T2->>LLM: Send request
     Note over T2: Blocks in I/O (parked)
-    Note over OS: Both threads parked
+    Note over VM: Both threads parked
     LLM-->>T1: Response ready
     LLM-->>T2: Response ready
-    OS->>T1: Wake and run
+    VM->>T1: Wake and run
     Note over T1: Processing response
-    OS->>OS: Time slice expired
-    OS->>T2: Preempt T1, run T2
+    VM->>VM: Time slice expired
+    VM->>T2: Preempt T1, run T2
     Note over T2: Processing response
-    OS->>OS: Time slice expired
-    OS->>T1: Resume T1
+    VM->>VM: Time slice expired
+    VM->>T1: Resume T1
     Note over T1: Finish response
-    OS->>T2: Resume T2
+    VM->>T2: Resume T2
     Note over T2: Finish response
 </div>
 
-The OS can preempt runnable threads on a timer, but a thread blocked in I/O is parked until the socket is ready. That part matters: threads do not spin uselessly while waiting for tokens. The preemption happens when a thread is runnable -- including in the middle of response processing, object allocation, assignment, or any other Ruby code.
+CRuby can switch runnable threads on a time slice, but a thread blocked in I/O is parked until the socket is ready. That part matters: threads do not spin uselessly while waiting for tokens. The switch happens when a thread is runnable -- including in the middle of response processing, object allocation, assignment, or any other Ruby code.
 
 For two threads doing I/O, this works fine. The overhead is noise. For 200 threads mostly waiting for LLM tokens, the problem is the one-operation-per-thread shape: 200 kernel threads, 200 stack reservations, 200 scheduler entries, and usually 200 copies of whatever per-thread application resources the worker holds.
 
@@ -142,7 +142,7 @@ This is the part that makes thread-based Ruby less different from fiber-based Ru
 
 The GVL means only one thread can execute Ruby code at a time. Threads run in parallel only during I/O, when the GVL is released. So if your workload is I/O-bound -- HTTP calls, database queries, LLM streaming -- threads give you I/O concurrency, not parallelism.
 
-Fibers give you the same I/O concurrency. One fiber yields at I/O, another picks up. The difference: fibers do it without OS scheduling overhead, without the memory cost of a thread stack, and without making job concurrency itself imply one worker thread or one database slot per job.
+Fibers give you the same I/O concurrency. One fiber yields at I/O, another picks up. The difference: fibers do it without kernel thread overhead, without the memory cost of a thread stack, and without making job concurrency itself imply one worker thread or one database slot per job.
 
 If threads only help with I/O anyway, why pay their overhead?
 
@@ -243,7 +243,7 @@ sequenceDiagram
     R->>F2: Finally runs
 </div>
 
-This is not a bug. It's the current tradeoff of cooperative scheduling. Fibers are designed for I/O-bound work; CPU-bound work belongs on a thread, where the OS can preempt it.
+This is not a bug. It's the current tradeoff of cooperative scheduling. Fibers are designed for I/O-bound work; CPU-bound work belongs on a thread, where CRuby can preempt it.
 
 With [my fiber-mode patch for Solid Queue][sq-article], this is a configuration choice:
 
@@ -376,7 +376,7 @@ When you configure `fibers: 100` with the patch, that's not "unlimited fibers." 
 
 In plain Ruby, more threads can be reasonable. In Solid Queue thread mode, `threads: 200` means more than "allow 200 jobs to wait on I/O."
 
-**Kernel threads are the expensive unit.** Fibers don't make I/O complete faster; they let you wait on far more of it at once for a fraction of the cost. [Samuel Williams' benchmarks][fiber-bench] show fibers allocate 20x faster (~3μs vs ~80μs) and switch 10x faster (~0.1μs vs ~1.3μs) than threads. The OS can schedule thousands of threads, but scheduler entries, stack reservations, wakeups, and GVL coordination make that a poor default concurrency knob.
+**Kernel threads are the expensive unit.** Fibers don't make I/O complete faster; they let you wait on far more of it at once for a fraction of the cost. [Samuel Williams' benchmarks][fiber-bench] show fibers allocate 20x faster (~3μs vs ~80μs) and switch 10x faster (~0.1μs vs ~1.3μs) than threads. The OS can manage thousands of threads, but scheduler state, stack reservations, wakeups, and GVL coordination make that a poor default concurrency knob.
 
 **Solid Queue currently enforces a database-pool guard.** Today it expects `threads + 2` database connections per process, so 200 threads across 2 processes won't boot unless the pool is at least 404. That guard may be conservative for I/O-heavy jobs; [there's an open issue][sq-736] about making it advisory or bypassable. But it is still a guard you hit today.
 
@@ -476,7 +476,7 @@ flowchart TD
 </div>
 
 - **I/O-bound work** (LLM streaming, HTTP calls, webhooks, email delivery): **fibers.** Low overhead, high concurrency, database connections sized to database work rather than waiting jobs.
-- **CPU-bound work** (image processing, data crunching, PDF generation): **threads.** The OS can preempt them, and C extensions can release the GVL for parallelism.
+- **CPU-bound work** (image processing, data crunching, PDF generation): **threads.** CRuby can preempt them, and C extensions can release the GVL for parallelism.
 - **CPU parallelism with Rails**: **processes.** Each one gets its own GVL, its own memory, its own everything. Puma already does this.
 - **CPU parallelism without Rails**: **Ractors** (when they graduate from experimental). Lighter than processes, true parallelism, but strict isolation means most gems don't work.
 - **All of them at once**: that's what a well-configured Rails app does. Puma forks processes. Each process runs threads. Fibers run inside those threads for I/O-heavy jobs. They coexist.

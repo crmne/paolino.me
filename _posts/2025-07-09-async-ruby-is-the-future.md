@@ -59,7 +59,7 @@ When you're handling thousands of streaming connections, these microseconds add 
 
 ### 4. Scalability Challenges
 
-Try creating 10,000 threads and the OS scheduler starts to struggle. The overhead becomes crushing. Yet modern AI apps need to handle thousands of concurrent conversations.
+Try creating 10,000 threads and the kernel thread overhead starts to dominate. Yet modern AI apps need to handle thousands of concurrent conversations.
 
 These aren't separate issues. They're all symptoms of the same mismatch: LLM communication is fundamentally different from traditional background jobs.
 

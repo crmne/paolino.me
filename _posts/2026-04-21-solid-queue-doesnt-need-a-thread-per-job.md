@@ -21,9 +21,9 @@ So I [opened a PR][pr].
 
 If you already know this, [skip ahead to the config](#the-switch).
 
-Solid Queue runs each job on its own thread. Those threads can all query the database concurrently, so the worker has to be configured for that worst case, plus stack memory and OS scheduler overhead. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
+Solid Queue runs each job on its own thread. Those threads can all query the database concurrently, so the worker has to be configured for that worst case, plus stack memory and kernel thread overhead. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
 
-Fibers sidestep much of this. Cooperatively scheduled, running in userspace on a single thread. When a fiber hits I/O -- a network call, a database query, waiting for the next token -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No OS scheduling overhead, and database pool sizing follows actual database concurrency rather than the number of jobs waiting on I/O. Rails 7.2+ helps ordinary Active Record code release connections after query operations, but that behavior is not fiber-specific. The [async][] gem handles the yielding for you: your code yields at I/O boundaries without you changing anything.
+Fibers sidestep much of this. Cooperatively scheduled, running in userspace on a single thread. When a fiber hits I/O -- a network call, a database query, waiting for the next token -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No kernel thread overhead per job, and database pool sizing follows actual database concurrency rather than the number of jobs waiting on I/O. Rails 7.2+ helps ordinary Active Record code release connections after query operations, but that behavior is not fiber-specific. The [async][] gem handles the yielding for you: your code yields at I/O boundaries without you changing anything.
 
 For the full deep dive -- processes, threads, fibers, the GVL, I/O multiplexing -- see [Async Ruby is the Future][async-article].
 
@@ -89,7 +89,7 @@ def schedule_pending_executions(semaphore)
 end
 ```
 
-Each job runs as a fiber. When it hits I/O, it yields. The reactor picks up another fiber. One thread, hundreds of jobs, switching at I/O boundaries instead of waiting for the OS to preempt.
+Each job runs as a fiber. When it hits I/O, it yields. The reactor picks up another fiber. One thread, hundreds of jobs, switching at I/O boundaries instead of depending on thread preemption.
 
 CPU-bound work gets nothing from fibers. They don't parallelize computation. But most of what job queues do is wait on I/O, and that's exactly where fibers win. If a CPU-bound fiber blocks the reactor, Solid Queue's supervisor still runs fine on its own process.
 
