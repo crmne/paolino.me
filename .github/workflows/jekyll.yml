@@ -151,6 +151,14 @@ jobs:
           fi
 
           sudo fc-cache -fv
+      - name: Install Mermaid CLI
+        run: |
+          if command -v mmdc >/dev/null 2>&1; then
+            echo "Mermaid CLI already available: $(mmdc --version)"
+          else
+            npm install -g @mermaid-js/mermaid-cli
+            echo "Installed Mermaid CLI: $(mmdc --version)"
+          fi
       - name: Sync draft campaigns to SendFox
         run: bundle exec ruby scripts/sendfox_campaigns_cli.rb publish
         env:
