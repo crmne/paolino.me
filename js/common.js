@@ -94,14 +94,22 @@ $(document).ready(function() {
   /* =======================
   // Masonry Grid Layout
   ======================= */
-  var $grid = $('.grid').masonry({
-    itemSelector: '.grid__post',
-    percentPosition: true
-  });
+  var $grid = $('.grid');
+  var hasMasonry = $grid.length && $.fn.masonry;
+  var hasImagesLoaded = $.fn.imagesLoaded;
 
-  $grid.imagesLoaded().progress(function () {
-    $grid.masonry('layout');
-  });
+  if (hasMasonry) {
+    $grid.masonry({
+      itemSelector: '.grid__post',
+      percentPosition: true
+    });
+
+    if (hasImagesLoaded) {
+      $grid.imagesLoaded().progress(function () {
+        $grid.masonry('layout');
+      });
+    }
+  }
 
 
   // =====================
@@ -141,16 +149,19 @@ $(document).ready(function() {
         return;
       }
 
-      $('.grid').append(posts).masonry('appended', posts);
-      $grid.imagesLoaded().progress(function() {
-        $grid.masonry('layout');
-      });
+      $('.grid').append(posts);
 
-      if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        setTimeout(function() {
-          $('.fadein').addClass('inview');
-        }, 50);
+      if (hasMasonry) {
+        $grid.masonry('appended', posts);
+
+        if (hasImagesLoaded) {
+          $grid.imagesLoaded().progress(function() {
+            $grid.masonry('layout');
+          });
+        }
       }
+
+      initFadeIn(posts);
 
       pagination_next_page_number++;
       pagination_next_url = paginationPagePath(pagination_next_page_number);
@@ -171,9 +182,11 @@ $(document).ready(function() {
   /* =======================
   // Responsive Videos
   ======================= */
-  $(".post__content, .page__content").fitVids({
-    customSelector: ['iframe[src*="ted.com"]', 'iframe[src*="player.twitch.tv"]', 'iframe[src*="facebook.com"]']
-  });
+  if ($.fn.fitVids) {
+    $(".post__content, .page__content").fitVids({
+      customSelector: ['iframe[src*="ted.com"]', 'iframe[src*="player.twitch.tv"]', 'iframe[src*="facebook.com"]']
+    });
+  }
 
 
   /* =======================
@@ -186,11 +199,30 @@ $(document).ready(function() {
   /* =================================
   // Fade In
   ================================= */
-  if(! /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    $('.fadein').viewportChecker({
-      classToAdd: 'inview',
-      offset: 100
-    });
+  initFadeIn();
+
+  function initFadeIn(elements) {
+    var $fadeElements = elements ? elements.filter('.fadein').add(elements.find('.fadein')) : $('.fadein');
+
+    if (!$fadeElements.length) {
+      window.__fadeinReady = true;
+      return;
+    }
+
+    if ($.fn.viewportChecker) {
+      try {
+        $fadeElements.viewportChecker({
+          classToAdd: 'inview',
+          offset: 100
+        });
+      } catch (error) {
+        $fadeElements.addClass('inview');
+      }
+    } else {
+      $fadeElements.addClass('inview');
+    }
+
+    window.__fadeinReady = true;
   }
 
 
