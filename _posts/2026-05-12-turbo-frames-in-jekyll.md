@@ -32,13 +32,13 @@ Or use a CDN:
 <script type="module" src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.23/dist/turbo.es2017-esm.js"></script>
 ```
 
-There is even already a [`jekyll-turbo`](https://rubygems.org/gems/jekyll-turbo/versions/0.1.0) gem that does roughly this: inject Turbo into your generated HTML.
+A [`jekyll-turbo`](https://rubygems.org/gems/jekyll-turbo/versions/0.1.0) gem already does roughly this: inject Turbo into your generated HTML.
 
-That is useful. It is also not the interesting part.
+That is useful. But not the interesting part.
 
 Turbo Drive is the default mode: click a link, fetch the next page, replace the document body, keep some browser state. It can make ordinary sites feel faster with almost no work.
 
-But for a docs site, Turbo Drive is still too broad. I did not want to replace the whole body. I wanted to replace one part of the page: the document content.
+But for a docs site, Turbo Drive is still too broad. I did not want to replace the whole body. Just the document content.
 
 That is where Turbo Frames fit.
 
@@ -106,11 +106,11 @@ This is the core pattern:
 
 That gets you most of the way there.
 
-## Do not Turbo everything
+## Don't Turbo everything
 
 The mistake is to get excited and start targeting every link.
 
-Do not do that.
+Don't do that.
 
 Some links should always be normal:
 
@@ -158,7 +158,7 @@ function enhanceFrameLinks() {
 }
 ```
 
-This is not magic. It is just a careful filter.
+This is not magic. Just a careful filter.
 
 Same-origin HTML pages get frame navigation. Everything risky stays boring.
 
@@ -249,7 +249,7 @@ Turbo expects the response to contain the frame it was targeting. If you click a
 </turbo-frame>
 ```
 
-If it does not, Turbo treats that as an error. That is correct. It protected you from replacing your docs content with a random page that was never designed for the frame.
+If it does not, Turbo treats that as an error. That is correct. It protects you from replacing your docs content with a random page that was never designed for the frame.
 
 But users should not see a broken frame because one link escaped the docs section.
 
