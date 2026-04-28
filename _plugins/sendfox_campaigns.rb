@@ -2,8 +2,11 @@
 
 require "cgi"
 require "digest"
+require "fileutils"
 require "json"
 require "net/http"
+require "open3"
+require "tempfile"
 require "time"
 require "uri"
 
@@ -19,7 +22,9 @@ module Jekyll
         "max_pages" => 5,
         "dry_run" => false,
         "update_existing_draft" => false,
-        "fail_build" => false
+        "fail_build" => false,
+        "mermaid_cli" => nil,
+        "mermaid_output_dir" => "images/sendfox-mermaid"
       }.freeze
 
       CAMPAIGN_MARKER_PREFIX = "SFPOST".freeze
@@ -345,6 +350,7 @@ module Jekyll
         body = convert_plain_code_blocks(body)
         body = remove_inline_rouge_classes(body)
         body = convert_embedded_media(body, post_url)
+        body = convert_mermaid_blocks(body, post, post_url)
         body = unwrap_block_paragraphs(body)
         body = remove_empty_paragraphs(body)
         body = apply_content_spacing(body)
@@ -459,6 +465,7 @@ module Jekyll
         content = convert_blockquotes_to_tables(content)
         content = convert_heading_to_table(content, tag: "h2", font_size: "28px", line_height: "1.25", padding_top: "30px", padding_bottom: "12px")
         content = convert_heading_to_table(content, tag: "h3", font_size: "22px", line_height: "1.3", padding_top: "24px", padding_bottom: "10px")
+        content = convert_content_tables_to_tables(content)
         content = convert_lists_to_tables(content)
         content = convert_paragraphs_to_tables(content)
         content
@@ -547,6 +554,49 @@ module Jekyll
         %(<#{tag} style="#{list_style}">#{list_items}</#{tag}>)
       end
 
+      def convert_content_tables_to_tables(html)
+        html.gsub(%r{<table(?![^>]*\brole=)[^>]*>(.*?)</table>}im) do
+          inner_html = Regexp.last_match(1).to_s
+          table_html = styled_content_table(inner_html)
+          next "" if table_html.empty?
+
+          <<~HTML.chomp
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:4px 0 22px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+              <tr>
+                <td style="padding:0;">#{table_html}</td>
+              </tr>
+            </table>
+          HTML
+        end
+      end
+
+      def styled_content_table(inner_html)
+        rows = inner_html.scan(%r{<tr[^>]*>(.*?)</tr>}im).flatten
+        return "" if rows.empty?
+
+        body = rows.each_with_index.map do |row, row_index|
+          cells = row.scan(%r{<(th|td)[^>]*>(.*?)</\1>}im)
+          next "" if cells.empty?
+
+          cell_html = cells.map do |tag, content|
+            header = tag.downcase == "th" || row_index.zero?
+            cell_style =
+              if header
+                "padding:9px 10px;border:1px solid #e5e7eb;background:#f9fafb;color:#111827;font-size:13px;line-height:1.35;font-weight:700;text-align:left;vertical-align:top;"
+              else
+                "padding:9px 10px;border:1px solid #e5e7eb;color:#111827;font-size:13px;line-height:1.35;text-align:left;vertical-align:top;"
+              end
+            tag_name = header ? "th" : "td"
+
+            %(<#{tag_name} style="#{cell_style}">#{content.to_s.strip}</#{tag_name}>)
+          end.join
+
+          %(<tr>#{cell_html}</tr>)
+        end.join
+
+        %(<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;">#{body}</table>)
+      end
+
       def convert_embedded_media(html, post_url)
         content = html.dup
 
@@ -576,6 +626,127 @@ module Jekyll
         end
 
         content
+      end
+
+      def convert_mermaid_blocks(html, post, post_url)
+        index = 0
+
+        html.gsub(%r{<div\b(?=[^>]*\bclass=(["'])[^"']*\bmermaid\b[^"']*\1)[^>]*>\s*(.*?)\s*</div>}im) do
+          source = CGI.unescapeHTML(Regexp.last_match(2).to_s).strip
+          next "" if source.empty?
+
+          index += 1
+          image_url = render_mermaid_image(source, post, index)
+
+          if image_url
+            diagram_image_html(image_url, post_url)
+          else
+            email_code_block(source, "mermaid")
+          end
+        end
+      end
+
+      def render_mermaid_image(source, post, index)
+        cli = mermaid_cli_path
+        unless cli
+          log_error("Mermaid CLI not found; falling back to code block")
+          return nil
+        end
+
+        relative_path = mermaid_image_relative_path(source, post, index)
+        source_path = File.join(@site.source, relative_path)
+        destination_path = File.join(@site.dest, relative_path)
+
+        render_mermaid_image_file(cli, source, source_path) unless File.exist?(source_path)
+        return nil unless File.exist?(source_path)
+
+        FileUtils.mkdir_p(File.dirname(destination_path))
+        FileUtils.cp(source_path, destination_path) unless File.expand_path(source_path) == File.expand_path(destination_path)
+
+        absolute_asset_url("/#{relative_path}")
+      rescue StandardError => e
+        log_error("Failed to render Mermaid diagram: #{e.message}")
+        nil
+      end
+
+      def render_mermaid_image_file(cli, source, output_path)
+        FileUtils.mkdir_p(File.dirname(output_path))
+        temporary_output = "#{output_path}.tmp-#{$PROCESS_ID}.png"
+
+        Tempfile.create(["sendfox-mermaid", ".mmd"]) do |input|
+          input.write(source)
+          input.flush
+
+          stdout, stderr, status = Open3.capture3(
+            cli,
+            "-i", input.path,
+            "-o", temporary_output,
+            "-t", "neutral",
+            "-b", "white",
+            "-w", "1200",
+            "-H", "900",
+            "-s", "2",
+            "-q"
+          )
+
+          unless status.success? && File.exist?(temporary_output)
+            log_error("Mermaid CLI failed: #{stderr.strip.empty? ? stdout.strip : stderr.strip}")
+            return nil
+          end
+        end
+
+        FileUtils.mv(temporary_output, output_path)
+      ensure
+        FileUtils.rm_f(temporary_output) if temporary_output
+      end
+
+      def mermaid_cli_path
+        @mermaid_cli_path ||= begin
+          configured = @config["mermaid_cli"].to_s.strip
+          configured = ENV["MERMAID_CLI"].to_s.strip if configured.empty?
+          configured = "mmdc" if configured.empty?
+
+          executable_path(configured)
+        end
+      end
+
+      def executable_path(command)
+        return command if command.include?(File::SEPARATOR) && File.executable?(command)
+
+        ENV.fetch("PATH", "").split(File::PATH_SEPARATOR).each do |directory|
+          path = File.join(directory, command)
+          return path if File.executable?(path)
+        end
+
+        nil
+      end
+
+      def mermaid_image_relative_path(source, post, index)
+        output_dir = @config["mermaid_output_dir"].to_s.strip
+        output_dir = "images/sendfox-mermaid" if output_dir.empty?
+        output_dir = output_dir.sub(%r{\A/+}, "").sub(%r{/+\z}, "")
+        slug = post.url.to_s.sub(%r{/+\z}, "").split("/").last
+        slug = "post" if slug.to_s.strip.empty?
+        digest = Digest::SHA256.hexdigest(source)[0, 12]
+
+        "#{output_dir}/#{slug}-#{index}-#{digest}.png"
+      end
+
+      def diagram_image_html(image_url, post_url)
+        escaped_image = CGI.escapeHTML(image_url)
+        escaped_post_url = CGI.escapeHTML(post_url)
+
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:18px 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="padding:0;">
+                <a href="#{escaped_post_url}" style="text-decoration:none;">
+                  <img src="#{escaped_image}" alt="Diagram" style="display:block;width:100%;height:auto;border:1px solid #e5e7eb;border-radius:10px;background:#ffffff;" />
+                </a>
+              </td>
+            </tr>
+          </table>
+        HTML
       end
 
       def source_url_from_video_tag(video_tag)
