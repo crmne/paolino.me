@@ -47,13 +47,13 @@ Think of your computer as an office building.
 
 **Threads** live inside a process and share its memory: workers sharing the same office, accessing the same filing cabinets, coordinating to avoid collisions. The OS preemptively schedules them, meaning it can pause any thread at any time and switch to another. You don't control when this happens. The GVL prevents threads from executing Ruby code in parallel, but it releases the lock during I/O. So two threads can wait on two different network calls simultaneously, but they can't crunch numbers at the same time.
 
-**Fibers** live inside a thread and are cooperatively scheduled: multiple tasks juggled by one worker at their desk. When they're waiting for something -- a phone call, a fax, a response -- they set it aside and pick up the next task. A fiber runs until it explicitly yields. When it hits I/O -- a network call, a database query, reading a file -- it yields to the reactor, and another fiber picks up. No OS involvement, no preemption. One thread can run thousands of fibers.
+**Fibers** live inside a thread and are cooperatively scheduled: multiple tasks juggled by one worker at their desk. When they're waiting for something -- a phone call, a fax, a response -- they set it aside and pick up the next task. A fiber runs until it explicitly yields. When it hits I/O -- a network call, a database query, reading a file -- it yields to the reactor, and another fiber picks up. No OS thread context switch for the fiber itself, no preemption. One thread can run thousands of fibers.
 
 Here's what that means for cost:
 
 | | Process | Ractor | Thread | Fiber |
 |---|---|---|---|---|
-| Memory | full app copy | ~thread + own GVL | ~8MB virtual | ~4KB initial, grows as needed |
+| Memory | full app copy | ~thread + Ractor state | ~8MB virtual stack reservation | ~4KB initial virtual stack, grows as needed |
 | Creation time | ~ms | ~80μs | ~80μs | ~3μs |
 | Context switch | kernel | kernel (threads within) | ~1.3μs (kernel) | ~0.1μs (userspace) |
 | Isolation | Full (own memory) | Share-nothing (messages) | Shared memory | Shared thread |
@@ -61,7 +61,7 @@ Here's what that means for cost:
 | I/O concurrency | Yes | Yes | Yes | Yes |
 | Rails compatible | Yes | No | Yes | Yes |
 
-Creation and switching benchmarks are from [Samuel Williams' fiber-vs-thread performance comparison][fiber-bench]. Fibers create 20x faster and switch 10x faster than threads. But the real cost difference is in what the OS sees: each thread is a kernel object with scheduler state, each fiber exists entirely in userspace. Ractors give you parallelism too, but can't run Rails. Everything is a tradeoff.
+Creation and switching benchmarks are from [Samuel Williams' fiber-vs-thread performance comparison][fiber-bench]. Fibers create 20x faster and switch 10x faster than threads. The memory row is about virtual address space reserved by the platform/runtime, not resident memory. The benchmark reports actual RSS, where the gap is much smaller than the virtual stack numbers suggest. But the shape is still real: each thread is a kernel object with scheduler state and a stack reservation, while each fiber is scheduled in userspace. Ractors give you parallelism too, but can't run Rails. Everything is a tradeoff.
 
 ## How scheduling works
 
@@ -78,26 +78,32 @@ sequenceDiagram
     participant T2 as Thread 2
     participant LLM as LLM API
 
+    OS->>T1: Run
     T1->>LLM: Send request
-    Note over T1: Waiting... (idle)
-    OS->>OS: Time slice expired
-    OS->>T2: Your turn
+    Note over T1: Blocks in I/O (parked)
+    OS->>T2: Run
     T2->>LLM: Send request
-    Note over T2: Waiting... (idle)
-    OS->>OS: Time slice expired
-    OS->>T1: Your turn
-    Note over T1: Still waiting...
-    OS->>OS: Time slice expired
-    OS->>T2: Your turn
-    Note over T2: Still waiting...
+    Note over T2: Blocks in I/O (parked)
+    Note over OS: Both threads parked
     LLM-->>T1: Response ready
-    OS->>T1: Your turn (eventually)
-    Note over T1: Finally processes response
+    LLM-->>T2: Response ready
+    OS->>T1: Wake and run
+    Note over T1: Processing response
+    OS->>OS: Time slice expired
+    OS->>T2: Preempt T1, run T2
+    Note over T2: Processing response
+    OS->>OS: Time slice expired
+    OS->>T1: Resume T1
+    Note over T1: Finish response
+    OS->>T2: Resume T2
+    Note over T2: Finish response
 </div>
 
-The OS keeps switching between threads on a timer, even when they have nothing to do. Each switch costs a context save, a context restore, and a trip through the kernel. The thread that got the LLM response might not run immediately -- it has to wait for its next time slice.
+The OS can preempt runnable threads on a timer, but a thread blocked in I/O is parked until the socket is ready. That part matters: threads do not spin uselessly while waiting for tokens. The preemption happens when a thread is runnable -- including in the middle of response processing, object allocation, assignment, or any other Ruby code.
 
-For two threads doing I/O, this works fine. The overhead is noise. For 200 threads mostly sitting idle waiting for LLM tokens, the OS is spending most of its time switching between threads that have nothing to do.
+For two threads doing I/O, this works fine. The overhead is noise. For 200 threads mostly waiting for LLM tokens, the problem is the one-operation-per-thread shape: 200 kernel threads, 200 stack reservations, 200 scheduler entries, and usually 200 copies of whatever per-thread application resources the worker holds.
+
+This is also why a worker limit means different things in Solid Queue's current thread mode and in the fiber mode from my patch. `threads: 25` is both "run 25 jobs at once" and "create 25 kernel threads." If all 25 jobs are streaming tokens, job 26 waits. `fibers: 250` is mostly an admission limit for the reactor: run up to 250 jobs as fibers on the same thread, park the ones waiting on I/O, and resume them when ready. You still need limits because APIs, sockets, memory, and databases have limits. But the cap is no longer tied to one kernel thread per job.
 
 ### Cooperative scheduling (fibers)
 
@@ -127,11 +133,11 @@ sequenceDiagram
     F2->>R: Done
 </div>
 
-No OS involvement. No timer-based switching. When a fiber yields, the reactor checks which fibers have I/O ready and resumes them immediately. When nothing is ready, the reactor sleeps until something is. Zero wasted cycles.
+No OS thread context switch per fiber. No timer-based preemption between fibers. When a fiber yields, the reactor checks which fibers have I/O ready and resumes them. When nothing is ready, the reactor sleeps in the OS until something is. The kernel still does the I/O readiness work; Ruby just avoids one kernel thread per wait.
 
 ## The GVL: why threads and fibers are more similar than you think
 
-Here's the thing about threads in Ruby that most people miss.
+This is the part that makes thread-based Ruby less different from fiber-based Ruby than it first looks.
 
 The GVL means only one thread can execute Ruby code at a time. Threads run in parallel only during I/O, when the GVL is released. So if your workload is I/O-bound -- HTTP calls, database queries, LLM streaming -- threads give you I/O concurrency, not parallelism.
 
@@ -141,7 +147,7 @@ If threads only help with I/O anyway, why pay their overhead?
 
 There is one case where threads win: CPU-bound work that releases the GVL. Some C extensions (image processing, cryptographic operations) release the GVL while doing heavy computation. Multiple threads can then run those C extensions in parallel. Fibers can't do that. They share a thread.
 
-For actual Ruby-level CPU parallelism, you need processes or [Ractors](#why-not-ractors). Processes are production-ready and Rails-compatible. Ractors are faster but still experimental.
+For actual Ruby-level CPU parallelism, you need processes or [Ractors](#why-not-ractors). Processes are production-ready and Rails-compatible. Ractors are lighter than processes, but still experimental.
 
 ## What happens when a fiber hits I/O
 
@@ -149,7 +155,7 @@ This is the happy path and the most common question.
 
 ```ruby
 # Inside a fiber
-response = Net::HTTP.get("api.openai.com", "/v1/completions")
+response = Net::HTTP.get(URI("https://api.example.com/v1/completions"))
 ```
 
 Here's the full chain:
@@ -180,7 +186,7 @@ async def handle_request():  # must be async because it calls get_user
     user = await get_user(1)  # must await
 ```
 
-You can't use `requests` in async Python. You need `aiohttp`. You can't use `psycopg2`. You need `asyncpg`. The entire ecosystem splits in half: sync libraries and async libraries, doing the same thing differently.
+You can't use `requests` in async Python without blocking the event loop. You need `aiohttp`, `httpx` in async mode, or a thread wrapper. You can't use the blocking `psycopg2` API as async I/O; you need `asyncpg` or Psycopg's async API. The ecosystem splits: sync libraries and async libraries, doing the same thing differently.
 
 **JavaScript:**
 
@@ -201,7 +207,7 @@ async function handleRequest() {  // must be async
 ```ruby
 # Ruby: no color
 def get_user(id)
-  response = Net::HTTP.get(URI("/users/#{id}"))  # just a normal call
+  response = Net::HTTP.get(URI("https://api.example.com/users/#{id}"))  # just a normal call
   JSON.parse(response)                            # just a normal call
 end
 
@@ -210,7 +216,7 @@ def handle_request
 end
 ```
 
-Same `Net::HTTP`. Same `pg`. Same everything. The fiber scheduler intercepts I/O at the Ruby runtime level, below your code. Your methods don't know and don't care whether they're running in a thread or a fiber.
+Same `Net::HTTP`. Same `pg`. Same call stack, as long as the library uses scheduler-aware Ruby I/O. The fiber scheduler intercepts I/O at the Ruby runtime level, below your code. Your methods don't know and don't care whether they're running in a thread or a fiber.
 
 ## What happens when a fiber does CPU-bound work
 
@@ -238,7 +244,7 @@ sequenceDiagram
 
 This is not a bug. It's the tradeoff of cooperative scheduling. Fibers are designed for I/O-bound work. CPU-bound work should go on a thread, where the OS can preempt it.
 
-With [Solid Queue's fiber mode][sq-article], this is a configuration choice:
+With [my fiber-mode patch for Solid Queue][sq-article], this is a configuration choice:
 
 ```yaml
 workers:
@@ -300,7 +306,7 @@ Active Record 7.2+ makes this work: ordinary query paths can release connections
 
 ## What happens when a fiber starts a transaction
 
-This is the question that worries people the most. If fibers share a connection, can one fiber's transaction leak into another?
+If fibers share a connection, can one fiber's transaction leak into another?
 
 No. Active Record handles this correctly.
 
@@ -346,9 +352,9 @@ For the target workload -- LLM streaming, HTTP calls -- database touches are sho
 
 Fibers aren't free. Each one uses memory (~4KB), and each one might hold open connections to external services. If you spawn 10,000 fibers that all hit the same API, you're opening 10,000 connections to that API. The API will not be happy.
 
-This is [the point that f9ae8221b made on Reddit][reddit-thread]: async doesn't eliminate resource limits, it just changes where they show up. With threads, the limit is explicit: 25 threads, 25 concurrent jobs. With fibers, the limit is implicit: you keep going until something else breaks.
+Async doesn't eliminate resource limits; it changes where they show up. With threads, the limit is explicit: 25 threads, 25 concurrent jobs. With fibers, the limit is implicit: you keep going until something else breaks.
 
-The fix is a semaphore. Solid Queue's `FiberPool` uses one:
+The fix is a semaphore. The `FiberPool` in my Solid Queue patch uses one:
 
 ```ruby
 semaphore = Async::Semaphore.new(size)
@@ -359,21 +365,19 @@ semaphore.async do
 end
 ```
 
-When you configure `fibers: 100` in Solid Queue, that's not "unlimited fibers." It's a semaphore capping concurrency at 100. You control the ceiling.
+When you configure `fibers: 100` with the patch, that's not "unlimited fibers." It's a semaphore capping concurrency at 100. You control the ceiling.
 
-## "Why not just use more threads?"
+## "Why not just configure more Solid Queue threads?"
 
-Every time I write about fibers, someone asks this. If 25 threads isn't enough, why not 200? Or 1,000?
+In plain Ruby, more threads can be reasonable. In Solid Queue thread mode, `threads: 200` means more than "allow 200 jobs to wait on I/O."
 
-Three reasons.
+**Kernel threads are the expensive unit.** [Samuel Williams' benchmarks][fiber-bench] show fibers allocate 20x faster (~3μs vs ~80μs), switch 10x faster (~0.1μs vs ~1.3μs), and achieve 15x higher throughput (~80,000 vs ~5,000 requests/second). The OS can schedule thousands of threads, but scheduler entries, stack reservations, wakeups, and GVL coordination make that a poor default concurrency knob.
 
-**OS overhead scales badly.** [Samuel Williams' benchmarks][fiber-bench] show fibers allocate 20x faster (~3μs vs ~80μs), switch 10x faster (~0.1μs vs ~1.3μs), and achieve 15x higher throughput (~80,000 vs ~5,000 requests/second). The OS scheduler was designed for dozens of threads, not thousands.
+**Solid Queue currently enforces a database-pool guard.** Today it expects `threads + 2` database connections per process, so 200 threads across 2 processes won't boot unless the pool is at least 404. That guard may be conservative for I/O-heavy jobs; [there's an open issue][sq-736] about making it advisory or bypassable. But it is still a guard you hit today.
 
-**Each thread needs a database connection.** With Solid Queue, that's `threads + 2` connections per process. 200 threads across 2 processes means 404 connections. PostgreSQL's default max is 100.
+**A blocked job still occupies its worker thread.** The OS can park an LLM streaming thread until the socket is ready, but in Solid Queue thread mode it still consumes one of the configured thread workers. If all 25 are streaming tokens, job 26 waits.
 
-**Threads are preempted even when idle.** An LLM streaming job spends 99% of its time waiting for tokens. The OS doesn't know that. It keeps switching to the thread, checking if it has work, switching away. Thousands of threads means thousands of pointless context switches.
-
-Fibers don't have any of these problems. They yield voluntarily, share database connections, and use 250x less memory.
+Fibers make the Solid Queue limit mean "how many jobs may wait at once" instead of "how many kernel threads should exist." They still need limits, but the limit is no longer one kernel thread per waiting job.
 
 ## "Why not Ractors?"
 
@@ -394,29 +398,27 @@ Each Ractor has its own GVL, so they can execute Ruby code truly in parallel acr
 
 When Ractors win, they win big. Fibonacci(38) five times: 0.68s with Ractors vs 2.26s sequential. 3.3x speedup. Real parallelism.
 
-When they lose, they lose badly. JSON parsing 5 million documents: Ractors are **2.5x slower than sequential**. The Ruby VM's string interning table requires a global lock, and JSON parsing hammers it. The parallelism gain is wiped out by lock contention.
+But they are not a practical answer for Rails jobs yet:
 
-And the practical issues:
-
-- **Still experimental in Ruby 4.0.** The goal is to remove the experimental flag in Ruby 4.1, but it's not there yet.
-- **Most gems don't work.** Any gem using mutable constants, global variables, or class variables raises `Ractor::IsolationError`. That's most gems.
+- **Still experimental in Ruby 4.0.** Creating a Ractor still emits the experimental API warning.
+- **Many gems don't work without changes.** Gems that rely on mutable constants, global variables, class variables, or shared process state can hit `Ractor::IsolationError`.
 - **No Rails integration.** ActiveRecord, ActionCable, the router, the logger -- Rails is built on shared mutable state. None of it runs inside a Ractor.
 - **No Ractor-based job queue exists.**
-- **74 open issues** in the Ruby bug tracker as of early 2025, including segfaults and deadlocks.
+- **Still active bug surface.** The Ruby bug tracker still has Ractor-related issues, including recent crash reports.
 
 For I/O concurrency, Ractors don't help at all. Each Ractor still has threads constrained by its own GVL. Fibers within those threads still do the actual I/O multiplexing. Ractors add CPU parallelism, which is not what LLM streaming needs.
 
-If you need CPU parallelism in Ruby today, use processes. Puma already does this with workers. When Ractors graduate from experimental and the gem ecosystem catches up, they'll be a lighter-weight alternative to processes for CPU-bound work. That day hasn't come yet.
+For Rails jobs that need CPU parallelism today, processes are still the boring answer. Puma already uses that model for web workers. Ractors may become useful for isolated CPU-heavy Ruby work, but they are not the answer to this Solid Queue I/O problem.
 
 ## "Isn't this just what JavaScript does?"
 
 No. I showed the [code comparison above](#what-happens-when-a-fiber-hits-io). JavaScript's async/await is a colored concurrency model: the `async` keyword spreads upward through every caller. Ruby's fibers are colorless: your existing code works unchanged, and the scheduler handles yields below your code.
 
-There's a deeper difference too. JavaScript runs on a single-threaded event loop. Ruby fibers run on top of a multi-threaded runtime. You can have multiple threads, each running its own reactor with its own fibers. You can mix fibers and threads in the same application. JavaScript can't do that.
+There's a deeper difference too. JavaScript async/await runs on an event loop. Ruby fibers run on top of a multi-threaded runtime. You can have multiple Ruby threads, each running its own reactor with its own fibers, and mix fibers and threads in the same application. Node can run JavaScript in parallel with `worker_threads`, but that's a worker/isolate model, not the same thing as putting multiple reactors inside ordinary application threads.
 
 ## "Isn't this just what Go does?"
 
-Closer. Goroutines are lightweight, cooperatively scheduled, and the runtime multiplexes them across OS threads. Conceptually similar to Ruby fibers.
+Closer. Goroutines are lightweight, runtime-scheduled, and multiplexed across OS threads. Conceptually similar to Ruby fibers, but Go's scheduler can also preempt goroutines.
 
 Two differences:
 
@@ -446,7 +448,7 @@ end
 
 Two lines of wrapping. Your application code inside doesn't change. Your models don't change. Your gems don't change. Nothing gets a new keyword.
 
-In Python, adopting async means rewriting every function signature in the call chain to `async def`, adding `await` to every call, and replacing your libraries. `requests` becomes `aiohttp`. `psycopg2` becomes `asyncpg`. Your test framework changes. Your middleware changes. It's a rewrite.
+In Python, adopting async means rewriting every function signature in the call chain to `async def`, adding `await` to every call, and replacing or wrapping blocking libraries. `requests` becomes `aiohttp` or async `httpx`. Blocking database APIs become async database APIs. Your test framework changes. Your middleware changes. It's a rewrite.
 
 Two lines of wrapping vs. rewriting your stack. That's not even the same conversation.
 
@@ -475,7 +477,7 @@ flowchart TD
 - **All of them at once**: that's what a well-configured Rails app does. Puma forks processes. Each process runs threads. Fibers run inside those threads for I/O-heavy jobs. They coexist.
 
 ```yaml
-# Solid Queue: all three working together
+# Solid Queue with the fiber-mode patch: all three working together
 workers:
   - queues: [ chat, turbo ]
     fibers: 50        # I/O-bound: fibers
@@ -489,13 +491,13 @@ No single model is universally better. The right answer is matching the model to
 
 ---
 
-This covers every "what happens when" question I've gotten so far. If I missed yours, [open an issue][bench] or [find me on Twitter][@paolino].
+This covers every "what happens when" question I've gotten so far. If I missed yours, [open an issue][bench] or [find me on Twitter][@paolino]; I'll either update this post or write a follow-up.
 
 [async-article]: /async-ruby-is-the-future/
 [sq-article]: /solid-queue-doesnt-need-a-thread-per-job/
 [async]: https://github.com/socketry/async
 [pg gem]: https://github.com/ged/ruby-pg
-[reddit-thread]: https://www.reddit.com/r/rails/comments/1lvhaf4/async_ruby_is_the_future_of_ai_apps_and_its/
+[sq-736]: https://github.com/rails/solid_queue/issues/736
 [hn-thread]: https://news.ycombinator.com/item?id=44516555
 [function-color]: https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
 [fiber-bench]: https://github.com/socketry/performance/tree/adfd780c6b4842b9534edfa15e383e5dfd4b4137/fiber-vs-thread
