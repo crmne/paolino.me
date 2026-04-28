@@ -5,6 +5,7 @@ date: 2026-04-28
 description: "Every 'what happens when' question about Ruby concurrency, answered with diagrams."
 tags: [Ruby, Concurrency, Async, Fibers, Performance]
 image: /images/ruby-concurrency.png
+sendfox_campaign_id: 2798029
 ---
 Since I wrote about [async Ruby][async-article] and [patched Solid Queue to support fibers][sq-article], people keep asking the same questions. What happens when a fiber blocks? Don't you still need threads? What about database transactions? What about Ractors?
 
