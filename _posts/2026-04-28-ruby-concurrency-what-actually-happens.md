@@ -492,7 +492,7 @@ No single model is universally better. The right answer is matching the model to
 
 ---
 
-This covers every "what happens when" question I've gotten so far. If I missed yours, [open an issue][bench] or [find me on Twitter][@paolino]; I'll either update this post or write a follow-up.
+This covers every "what happens when" question I've gotten so far. If I missed yours, [find me on Twitter][@paolino]; I'll either update this post or write a follow-up.
 
 [async-article]: /async-ruby-is-the-future/
 [sq-article]: /solid-queue-doesnt-need-a-thread-per-job/
