@@ -119,9 +119,11 @@ Thread scales linearly. Fiber stays flat. Multiply by the number of worker proce
 
 The patch detects your Rails version and calculates the right pool size automatically.
 
+The benchmarks below use two pool policies. The primary Solid Queue comparison deliberately gives both modes the same pool, `DB_POOL = concurrency + 5` per worker process, so it measures the executor instead of measuring pool starvation. The stress suite uses mode-specific pools to show the operational failure envelope under higher connection demand.
+
 ## The benchmarks
 
-I benchmarked four workloads across every combination of concurrency (5 to 100), process count (1, 2, 6), and execution mode. Five runs each, median reported, total concurrency capped at 60 to keep things fair.
+I reran the benchmark suite on April 28, 2026. The headline Solid Queue comparison covers four workloads across per-process concurrency 5, 10, 25, 50, and 100; process counts 1, 2, and 6; and both execution modes. Three runs per cell, median real run reported, with total concurrency capped at 60 so the main comparison stays about executor behavior.
 
 The workloads:
 
@@ -132,47 +134,40 @@ The workloads:
 
 ### Results
 
-| Workload | Thread Best | Fiber Best | Best Paired Delta |
+| Workload | Best throughput | Avg paired delta | Best paired delta |
 |---|---|---|---|
-| RubyLLM Stream | 6.25 j/s | 6.68 j/s | **+20.2%** |
-| Async HTTP | 432.08 j/s | 512.25 j/s | **+26.0%** |
-| Sleep | 447.78 j/s | 507.19 j/s | **+27.2%** |
-| CPU | 107.42 j/s | 112.47 j/s | +5.1% |
+| RubyLLM Stream | fiber, 7.01 j/s | **+11.9%** | **+21.8%** |
+| Async HTTP | fiber, 492.82 j/s | **+9.5%** | **+25.5%** |
+| Sleep | fiber, 500.50 j/s | **+7.4%** | **+15.9%** |
+| CPU | fiber, 110.02 j/s | +0.6% | +2.4% |
 
-RubyLLM Stream is the workload that matters. It runs an actual [RubyLLM][] chat completion with streaming, database writes, and Turbo broadcasts per token -- the same thing [Chat with Work][] does in production. Fiber wins every single paired experiment. 9 out of 9.
+RubyLLM Stream is the workload that matters. It runs an actual [RubyLLM][] chat completion with streaming, database writes, and Turbo broadcasts per token -- the same thing [Chat with Work][] does in production. Fiber wins every single paired experiment there: 9 out of 9.
 
-The CPU row is the control. Fibers don't help computation, and the number confirms it: essentially flat. That's how you know the I/O gains are real and not measurement noise.
+The CPU row is the control. Fibers don't help computation, and the average confirms it: essentially flat. That's how you know the I/O gains are real and not measurement noise.
 
-That table shows the best runs. Here's the full spread. Some configurations favor threads for synthetic workloads, but look at the medians: fiber wins every I/O workload, and RubyLLM Stream always favors fiber:
+That table shows the best observed point and the paired-cell deltas. Here's the full spread. Some configurations favor threads for synthetic workloads, but the paired averages are the steadier signal: fiber wins the I/O workloads, and RubyLLM Stream always favors fiber.
 
-![Solid Queue fiber over thread throughput ranges across all workloads.](/images/solid-queue-throughput-fiber-vs-thread.png)
+![Solid Queue fiber over thread throughput ranges across all workloads.](/images/solid-queue-headline-fiber-vs-thread.svg)
+
+The newer suite also adds database-shaped workloads. With matched pools, short DB bursts still favor fiber: `db_queries` averages +12.6%, and a read/API/write mix averages +6.9%. The transaction case is the useful caveat: when each job pins a connection for the whole transaction, fiber still averages +3.5%, but the win is less consistent. That's exactly the workload where you should be more careful with pool sizing.
 
 ## Thread mode hit the wall
 
-Those benchmarks cap concurrency at 60. I wanted to see what breaks when you push past that, so I ran a stress suite: 25 to 200 concurrent jobs, 2 and 6 worker processes.
+Those benchmarks cap total concurrency at 60. I wanted to see what breaks when you push past that, so I ran a stress suite: per-process concurrency 25, 50, 100, 150, and 200; process counts 2 and 6; three runs per cell. Read this as a current Solid Queue failure-envelope test, not a universal law about threads and fibers.
 
-Remember the connection math. Threads need `threads + 2` minimum per process. Fibers need 3 minimum. Here's what happens to thread mode:
+The result is stark. Thread mode only completed the smallest cell for each workload. Fiber mode completed every planned cell.
 
-| Concurrent jobs | Processes | DB pool (per process) | Total connections | Result |
-|---|---|---|---|---|
-| 25 | 2 | 27 | 54 | Completed |
-| 50 | 2 | 52 | 104 | **Failed** |
-| 25 | 6 | 27 | 162 | **Failed** |
-| 50 | 6 | 52 | 312 | **Failed** |
+| Workload | Thread cells completed | Fiber cells completed |
+|---|---|---|
+| Sleep | 1/10 | 10/10 |
+| Async HTTP | 1/10 | 10/10 |
+| RubyLLM Stream | 1/10 | 10/10 |
 
-PostgreSQL's default `max_connections` is 100. Thread mode at 50 concurrent jobs with just 2 processes already exceeds it. With 6 processes, even 25 concurrent jobs needs 162 connections. Out of every thread configuration I tested, only one survived: the smallest.
+![Solid Queue stress cell status.](/images/solid-queue-stress-cell-status.svg)
 
-Fiber mode. 3 minimum per process, no matter the concurrency:
+PostgreSQL's default `max_connections` is 100. In this stress run, thread mode at concurrency 50 with 2 processes asked for 110 worker-pool connections. With 6 processes, even concurrency 25 asked for 180. The one surviving thread cell was the smallest: concurrency 25, 2 processes.
 
-| Concurrent jobs | Processes | DB pool (per process) | Total connections | Result |
-|---|---|---|---|---|
-| 25 | 6 | 3 | 18 | Completed |
-| 100 | 6 | 3 | 18 | Completed |
-| 200 | 6 | 3 | 18 | Completed |
-
-Every configuration completed. 18 total connections for 200 concurrent jobs across 6 processes. Thread mode needed 54 just to survive at 25 with 2.
-
-Thread mode doesn't scale with the current pool sizing. Solid Queue sizes the pool to `threads + 2` to avoid connection contention, and database connections are a hard ceiling. Fibers share a smaller pool. You just increase the number.
+Fiber mode in the stress suite used a smaller mode-specific pool: 6 connections per process for 2-process runs, 10 per process for 6-process runs. That is 60 worker-pool connections at concurrency 200 across 6 processes, while thread mode would ask for 1,230. The exact constants are benchmark policy, but the shape is the point: thread mode's pool scales with job concurrency; fiber mode's pool scales with worker process overhead.
 
 ## One backend, two modes
 
@@ -203,9 +198,16 @@ Almost everything uses fibers. LLM streaming, Turbo broadcasts, notifications, m
 
 Instead of running Solid Queue and Async::Job side by side -- two processors, two configurations, two sets of things to monitor -- you run one. I moved [Chat with Work][] to this setup, and Brad Gessler has been running it in production too.
 
-Async::Job is actually faster if you compare raw throughput against Redis. It's not close:
+Async::Job is actually faster if you compare raw throughput against Redis. It is a backend comparison, not a Solid Queue executor comparison, but the ceiling is useful:
 
-![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-throughput-asyncjob-vs-fiber.png)
+| Workload | Solid Queue fiber best | Async::Job best | Delta |
+|---|---|---|---|
+| RubyLLM Stream | 7.01 j/s | 16.94 j/s | +141.7% |
+| Async HTTP | 492.82 j/s | 652.96 j/s | +32.5% |
+| Sleep | 500.50 j/s | 644.98 j/s | +28.9% |
+| CPU | 110.02 j/s | 125.75 j/s | +14.3% |
+
+![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-headline-asyncjob-vs-fiber.svg)
 
 If you want raw speed and don't need persistence, Async::Job is the right call. But if you want job visibility, failure tracking, retries, Mission Control, everything Rails gives you out of the box, fiber mode gets you there. Same concurrency. Flat database connections. You set `fibers: N` and keep building.
 
