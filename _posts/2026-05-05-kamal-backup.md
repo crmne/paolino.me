@@ -130,7 +130,7 @@ bundle exec kamal-backup restore production
 
 `restore local` pulls a production backup down to your laptop. Useful when you want to inspect real data, reproduce a production bug, or prove the backup actually comes back.
 
-`restore production` prompts before it overwrites anything. Destructive restore commands should be boring, not casual.
+`restore production` prompts before it overwrites anything.
 
 ## Restore drills
 
@@ -170,7 +170,7 @@ I went through a security review for [Chat with Work][] this year. The questions
 bundle exec kamal-backup evidence
 ```
 
-Secrets are redacted. The output is meant to land in an internal ops record or a CASA packet. Not a screenshot of a green cron job. An actual evidence packet.
+Secrets are redacted. The output is meant to land in an internal ops record or a CASA packet. Not a screenshot of a green cron job. Actual evidence.
 
 ## Try it
 
