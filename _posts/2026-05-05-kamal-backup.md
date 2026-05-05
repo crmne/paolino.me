@@ -5,6 +5,7 @@ date: 2026-05-05
 description: "One Kamal accessory for encrypted Rails database and Active Storage backups, restore drills, and redacted evidence for security reviews."
 tags: [Ruby, Rails, Kamal, Backups, Open Source]
 image: /images/kamal-backup.png
+sendfox_campaign_id: 2806072
 ---
 I released [kamal-backup](https://kamal-backup.dev) today.
 
