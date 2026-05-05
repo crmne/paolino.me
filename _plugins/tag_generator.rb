@@ -33,6 +33,7 @@ module Jekyll
       self.read_yaml(File.join(base, '_layouts'), 'tag_page.html')
       self.data['tag'] = tag
       self.data['title'] = "Posts tagged with #{tag}"
+      self.data['description'] = "Posts about #{tag} by #{site.config['title']}."
       # Filter posts to only include those with this specific tag
       self.data['posts'] = site.posts.docs.select { |post| post.data['tags'].include?(tag) if post.data['tags'] }
     end

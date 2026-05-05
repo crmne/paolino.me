@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+<article class="post fadein" itemscope itemtype="https://schema.org/BlogPosting">
 <div class="container">
   <div class="row">
     <div class="col col-12 col-d-10 push-d-1 col-m-12 push-m-0">
@@ -12,24 +13,24 @@ layout: default
           {% endfor %}
         </div>
         {% endif %}
-        <h1 class="post-title">{{ page.title | escape }}</h1>
+        <h1 class="post-title" itemprop="headline">{{ page.title | escape }}</h1>
         <div class="post__meta">
-          <div class="post__author">
+          <div class="post__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
             <a href="{{site.baseurl}}/about/" class="article__author-image"
               style="background-image: url({{site.baseurl}}{{site.author.avatar}})"
               aria-label="{{site.author.name}}'s Picture"></a> <a href="{{site.baseurl}}/about/"
-              class="article__author-link">{{site.author.name}}</a>
+              class="article__author-link" itemprop="url"><span itemprop="name">{{site.author.name}}</span></a>
           </div>
-          <span class="article__date"><time datetime="{{ page.date | date_to_xmlschema }}">{% assign date_format =
+          <span class="article__date"><time itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}">{% assign date_format =
               site.minima.date_format | default: "%b %-d, %Y" %}{{ page.date | date: date_format }}</time></span>
+          <meta itemprop="dateModified" content="{% if page.last_modified_at %}{{ page.last_modified_at | date_to_xmlschema }}{% else %}{{ page.date | date_to_xmlschema }}{% endif %}">
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- begin post -->
-<article class="post fadein">
+<!-- begin post body -->
   <div class="container">
     <div class="row">
       {% assign video_url = page.video | default: "" | strip %}
@@ -67,7 +68,7 @@ layout: default
       </div>
       {% endif %}
       <div class="col col-8 col-d-10 push-d-1 push-2 col-m-12 push-m-0">
-        <div class="post__content">
+        <div class="post__content" itemprop="articleBody">
           {{ content }}
         </div>
 

@@ -2,6 +2,7 @@
 layout: page
 title: Thank you for subscribing!
 permalink: /thank-you/
+description: Confirmation page for Carmine Paolino's newsletter subscription.
 nav: false
 sitemap: false
 ---

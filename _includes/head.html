@@ -1,30 +1,41 @@
 <head>
+  {% assign meta_title = page.seo_title | default: page.title | default: site.title %}
+  {% if page.tag and page.title == nil %}
+    {% assign meta_title = "Posts tagged with " | append: page.tag %}
+  {% endif %}
+  {% assign meta_description = page.description | default: site.description %}
+  {% if page.tag and page.description == nil %}
+    {% assign meta_description = "Posts about " | append: page.tag | append: " by " | append: site.title | append: "." %}
+  {% endif %}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
-  <meta name="description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}">
+  <title>{{ meta_title }}</title>
+  <meta name="description" content="{{ meta_description | strip_html | strip_newlines | truncate: 160 }}">
+  {% if page.robots or page.sitemap == false %}
+  <meta name="robots" content="{{ page.robots | default: 'noindex,follow' }}">
+  {% endif %}
   {% assign social_image = site.author.image %}
   {% assign social_image_width = nil %}
   {% assign social_image_height = nil %}
-  {% assign social_image_alt = page.title | default: site.title %}
+  {% assign social_image_alt = meta_title %}
   {% assign social_image_source = page.social_image | default: page.image %}
   {% if social_image_source %}
     {% if social_image_source.path %}
       {% assign social_image = social_image_source.path %}
       {% assign social_image_width = social_image_source.width %}
       {% assign social_image_height = social_image_source.height %}
-      {% assign social_image_alt = social_image_source.alt | default: page.title | default: site.title %}
+      {% assign social_image_alt = social_image_source.alt | default: meta_title %}
     {% else %}
       {% assign social_image = social_image_source %}
-      {% assign social_image_alt = page.title | default: site.title %}
+      {% assign social_image_alt = meta_title %}
     {% endif %}
   {% endif %}
 
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="{% if page.title %}article{% else %}website{% endif %}">
-  <meta property="og:title" content="{% if page.title %}{{ page.title | smartify }}{% else %}{{ site.title | smartify }}{% endif %}">
-  <meta property="og:description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}">
+  <meta property="og:title" content="{{ meta_title | smartify }}">
+  <meta property="og:description" content="{{ meta_description | strip_html | strip_newlines | truncate: 160 }}">
   <meta property="og:url" content="{{ page.url | replace:'index.html','' | absolute_url }}">
   <meta property="og:site_name" content="{{ site.title | smartify }}">
   <meta property="og:image" content="{{ social_image | absolute_url }}">
@@ -38,14 +49,15 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@paolino">
-  <meta name="twitter:title" content="{% if page.title %}{{ page.title | smartify }}{% else %}{{ site.title | smartify }}{% endif %}">
-  <meta name="twitter:description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}">
+  <meta name="twitter:title" content="{{ meta_title | smartify }}">
+  <meta name="twitter:description" content="{{ meta_description | strip_html | strip_newlines | truncate: 160 }}">
   <meta name="twitter:image" content="{{ social_image | absolute_url }}">
   <meta name="twitter:image:alt" content="{{ social_image_alt | smartify }}">
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title | smartify }}" href="{{ '/feed.xml' | relative_url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | smartify }}" href="{{ '/rss.xml' | relative_url }}">
+  {% ai_json_ld %}
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
   <script>
@@ -55,37 +67,6 @@
       document.documentElement.className += ' js-reveal-fallback';
     }, 3000);
   </script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "{% if page.layout == 'post' %}BlogPosting{% else %}WebSite{% endif %}",
-  "headline": "{% if page.title %}{{ page.title | smartify }}{% else %}{{ site.title | smartify }}{% endif %}",
-  "description": "{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_html | strip_newlines }}{% endif %}",
-  "image": "{{ social_image | absolute_url }}",
-  "author": {
-    "@type": "Person",
-    "name": "{{ site.author.name }}"
-  },
-  {% if page.layout == 'post' %}
-  "datePublished": "{{ page.date | date_to_xmlschema }}",
-  "dateModified": "{% if page.last_modified_at %}{{ page.last_modified_at | date_to_xmlschema }}{% else %}{{ page.date | date_to_xmlschema }}{% endif %}",
-  {% endif %}
-  "publisher": {
-    "@type": "Organization",
-    "name": "{{ site.title }}",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ site.url }}{% if site.logo %}{{ site.logo }}{% endif %}"
-    }
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ page.url | replace:'index.html','' | absolute_url }}"
-  }
-}
-</script>
-
-
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://stats.paolino.me/js/pa-x0-nHfaZERodKEdUI5jHT.js"></script>
   <script>

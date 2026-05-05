@@ -2,7 +2,7 @@
 # General Site Settings
 title: &name Carmine Paolino
 logo: # You can add own logo. For example '/images/logo.png'.
-description: &description I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://rubyllm.com">RubyLLM</a>. Co-founded <a href="https://freshflow.ai">Freshflow</a>. Outside tech, I <a href="https://crimsonlake.live">make music</a>, run <a href="https://floppydisco.live">Floppy Disco</a>, and <a href="https://paolino.photography">take photos</a>.
+description: &description I build AI tools at Chat with Work and RubyLLM. Co-founded Freshflow. Outside tech, I make music, run Floppy Disco, and take photos.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -18,7 +18,7 @@ author:
   company_name: "Chat with Work"
   company_url: "https://chatwithwork.com"
   company_logo: "https://chatwithwork.com/logotype.svg"
-  description: *description
+  description: I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://rubyllm.com">RubyLLM</a>. Co-founded <a href="https://freshflow.ai">Freshflow</a>. Outside tech, I <a href="https://crimsonlake.live">make music</a>, run <a href="https://floppydisco.live">Floppy Disco</a>, and <a href="https://paolino.photography">take photos</a>.
   twitter: paolino
 
 #-------------------------------
@@ -37,9 +37,15 @@ contact:
 projects:
 - {name: "Chat with Work", link: "https://chatwithwork.com"}
 - {name: "RubyLLM", link: "https://rubyllm.com"}
+- {name: "RubyLLM Workshops", link: "https://github.com/crmne/ruby_llm-workshop"}
+- {name: "Speaking", link: "https://www.rubyevents.org/profiles/crmne"}
+- {name: "Founder Advisory", link: "mailto:carmine@plenty.is?subject=Founder%20Advisory&body=Hey%20Carmine%2C%0A%0AI%27m%20building%20_________%20and%20I%27m%20stuck%20on%20_________.%0A%0AA%20bit%20about%20where%20we%20are%3A%0A%0A-%20Stage%3A%0A-%20Team%20size%3A%0A-%20Biggest%20question%20right%20now%3A%0A%0ALet%27s%20talk."}
 - {name: "Floppy Disco", link: "https://floppydisco.live"}
 - {name: "Mindscape Productions", link: "https://mindscape.productions"}
 - {name: "Cluster Headache Tracker", link: "https://clusterheadachetracker.com"}
+- {name: "hyprmoncfg", link: "https://hyprmoncfg.dev"}
+- {name: "Jekyll VitePress", link: "https://jekyll-vitepress.dev"}
+- {name: "Kamal Backup", link: "https://kamal-backup.dev"}
 
 #-------------------------------
 # Comment Section (Disqus)
@@ -80,6 +86,203 @@ plugins:
   - jekyll-feed
   - jekyll-twitter-plugin
   - jekyll-og-image
+  - jekyll-ai-visible-content
+
+ai_visible_content:
+  enabled: true
+  entity:
+    type: Person
+    id_slug: carmine-paolino
+    name: *name
+    alternate_names:
+      - paolino
+      - crmne
+    job_title: AI engineer, open-source maintainer, and founder
+    description: an AI engineer, open-source maintainer, and founder building AI tools at Chat with Work and RubyLLM. He previously co-founded Freshflow and also publishes music and photography.
+    image: /images/me-04.jpg
+    knows_about:
+      - Ruby
+      - Ruby on Rails
+      - Jekyll
+      - AI applications
+      - Large language models
+      - LLM APIs
+      - RubyLLM
+      - Open source software
+      - Async Ruby
+      - Developer tooling
+      - Product engineering
+      - Startups
+      - Music technology
+      - House music
+      - Photography
+    same_as:
+      - https://github.com/crmne
+      - https://www.linkedin.com/in/carminepaolino
+      - https://twitter.com/paolino
+      - https://www.instagram.com/crmne/
+      - https://soundcloud.com/crimsonlakemusic
+      - https://paolino.photography
+      - https://crimsonlake.live
+    author_aliases:
+      - paolino
+      - crmne
+    works_for:
+      type: Organization
+      name: Chat with Work
+      url: https://chatwithwork.com
+    occupation:
+      name: AI engineer and open-source maintainer
+      skills: Ruby, Rails, AI applications, LLM APIs, open-source software, Jekyll, PostgreSQL, asynchronous Ruby
+  json_ld:
+    auto_inject: false
+    include_website_schema: true
+    include_breadcrumbs: true
+    include_blog_posting: true
+    include_faq: true
+    include_how_to: true
+    article_body: excerpt
+    compact: false
+  crawlers:
+    allow_gptbot: true
+    allow_perplexitybot: true
+    allow_claudebot: true
+    allow_googlebot: true
+    allow_bingbot: true
+    custom_rules: []
+    generate_robots_txt: true
+  llms_txt:
+    enabled: true
+    title: Carmine Paolino
+    description: *description
+    include_full_text: true
+    sections:
+      - heading: Core Topics
+        content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, product engineering, startups, music, and photography.
+      - heading: Primary Projects
+        content: RubyLLM, Chat with Work, Floppy Disco, Crimson Lake, Paolino Photography, Cluster Headache Tracker, and Jekyll VitePress Theme.
+  linking:
+    enable_entity_links: true
+    apply_to_metadata: false
+    max_links_per_entity_per_post: 1
+    enable_related_posts: true
+    related_posts_limit: 3
+    entity_definitions:
+      rubyllm:
+        name: RubyLLM
+        url: https://rubyllm.com
+        description: Provider-independent Ruby library for building AI applications.
+      ruby:
+        name: Ruby
+        url: https://www.ruby-lang.org/en/
+        description: Programming language used across Carmine Paolino's open-source and product work.
+      chat-with-work:
+        name: Chat with Work
+        url: https://chatwithwork.com
+        description: AI tool for querying work data.
+      freshflow:
+        name: Freshflow
+        url: https://freshflow.ai
+        description: AI demand forecasting for fresh grocery retail.
+      floppy-disco:
+        name: Floppy Disco
+        url: https://floppydisco.live
+        description: Berlin house and disco collective.
+      crimson-lake:
+        name: Crimson Lake
+        url: https://crimsonlake.live
+        description: Carmine Paolino's music project.
+      paolino-photography:
+        name: Paolino Photography
+        url: https://paolino.photography
+        description: Carmine Paolino's photography work.
+      cluster-headache-tracker:
+        name: Cluster Headache Tracker
+        url: https://clusterheadachetracker.com
+        description: Open-source app for tracking cluster headaches.
+      ruby-on-rails:
+        name: Ruby on Rails
+        url: https://rubyonrails.org
+        description: Web application framework for Ruby.
+      rails:
+        name: Rails
+        url: https://rubyonrails.org
+        description: Web application framework for Ruby.
+      jekyll:
+        name: Jekyll
+        url: https://jekyllrb.com
+        description: Static site generator used for this website.
+      jekyll-vitepress-theme:
+        name: Jekyll VitePress Theme
+        url: https://jekyll-vitepress.dev
+        description: Jekyll documentation theme inspired by VitePress.
+      ai-applications:
+        name: AI applications
+        url: /tag/ai/
+        description: Software products and tools built around AI systems.
+      large-language-models:
+        name: Large language models
+        url: /tag/llm/
+        description: LLMs and their use in software products.
+      llm-apis:
+        name: LLM APIs
+        url: /tag/llm/
+        description: Provider APIs and abstractions for large language models.
+      open-source-software:
+        name: Open source software
+        url: /tag/open-source/
+        description: Public software projects and libraries.
+      async-ruby:
+        name: Async Ruby
+        url: /tag/async/
+        description: Concurrent and asynchronous Ruby application architecture.
+      developer-tooling:
+        name: Developer tooling
+        url: /tag/developer-experience/
+        description: Tools that improve software development workflows.
+      product-engineering:
+        name: Product engineering
+        url: /tag/product-strategy/
+        description: Building and operating software products.
+      startups:
+        name: Startups
+        url: /tag/startups/
+        description: Company building, product strategy, and bootstrapping.
+      music-technology:
+        name: Music technology
+        url: https://crimsonlake.live
+        description: Carmine Paolino's work around music and technology.
+      house-music:
+        name: House music
+        url: https://crimsonlake.live
+        description: Carmine Paolino's house and disco music work.
+      photography:
+        name: Photography
+        url: https://paolino.photography
+        description: Carmine Paolino's photography work.
+  ai_resources:
+    enabled: true
+    formats:
+      - json
+      - yaml
+      - markdown
+    max_links_per_page: 5
+    auto_inject: true
+    inject_instruction_block: false
+    base_path: /ai
+  validation:
+    warn_name_inconsistency: true
+    warn_missing_same_as: true
+    warn_missing_dates: true
+    warn_orphan_pages: true
+    warn_missing_descriptions: true
+    fail_build_on_error: false
+    content_only: true
+    exclude_paths:
+      - /thank-you/
+      - /404.html
+    verbose: false
+    max_examples: 5
 
 paginate: 9
 paginate_path: "/page/:num"

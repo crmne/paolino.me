@@ -8,6 +8,7 @@ gem 'jekyll-tagging'
 gem 'jekyll-feed'
 gem 'jekyll-twitter-plugin'
 gem 'jekyll-og-image'
+gem 'jekyll-ai-visible-content'
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 # Ruby 4.0
