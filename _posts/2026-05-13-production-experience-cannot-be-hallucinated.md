@@ -66,7 +66,7 @@ Most articles about RubyLLM are good. Since it became popular, I have seen a few
 
 It was a long article. The replacement appeared in under an hour. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
 
-The method names got real. The experience still didn't.
+The method names got real. The experience didn't.
 
 The new version claimed Puma restarts produce neat RubyLLM streaming errors. They do not. If the worker dies, the Ruby process running the call is gone. It suggested deleting old persisted chat messages as context management. That is destroying conversation history. It described fallback by throwing away the chat and asking another provider the last prompt as a fresh question. That is not conversation fallback. It confused HTTP/SSE buffering with Turbo Streams over ActionCable.
 
