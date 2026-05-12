@@ -14,8 +14,6 @@ The first code sample used `RubyLLM.client`, which does not exist. It called `cl
 
 The problem was not merely wrong information. Wrong information can be corrected. This was sold as experience with RubyLLM in production, which is a much more valuable claim.
 
-It was fabricated experience.
-
 AI slop is not just filling the web with [predictable cadence](https://x.com/jorgemanru/status/2053183727514091820). It is fabricating experience. It is letting people skip the work, skip the scar tissue, and still write in the voice of someone who has been there.
 
 In open source, that turns into a tax. Maintainers build the thing, write the docs, publish the source, keep the examples working, answer the issues, and then have to police hallucinated articles about their own projects before users start debugging ghosts.
@@ -36,17 +34,11 @@ There were no scars. The author had not even run the first example.
 
 This is why fake experience is so dangerous. Bad code fails fast. Fake experience lingers. It gets quoted. It gets summarized. It gets used in meetings by people who do not know enough yet to see the hollow center.
 
-The likely prompt is easy to imagine:
-
-> Write an article about RubyLLM production problems.
-
-That prompt practically writes itself. Streaming failures. Token budgets. Provider fallback. Turbo Streams. Redis circuit breakers. nginx buffering. Load testing.
-
-Those are all plausible. They sit near "LLM production" in the LLM training data. Arrange them with enough confidence and the result smells like lived experience.
+The recipe is familiar. Streaming failures. Token budgets. Provider fallback. Turbo Streams. Redis circuit breakers. nginx buffering. Load testing. They sit near "LLM production" in the LLM training data. Arrange them with enough confidence and the result smells like lived experience.
 
 Production experience is not a smell. It is a thing that happened, and none of these things happened.
 
-## The latest RubyLLM incident
+## What Actually Happened
 
 Here is the short version.
 
@@ -72,9 +64,9 @@ Most articles about RubyLLM are good. Since it became popular, I have seen a few
 
 "I've replaced the article entirely."
 
-It was a long article. Nobody carefully rewrites the whole thing from scratch, verifies it against the documentation and source, adds a real correction notice, and checks the production claims in under an hour. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
+It was a long article. The replacement appeared in under an hour. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
 
-It was still fake experience. Just harder to spot.
+The method names got real. The experience still didn't.
 
 The new version claimed Puma restarts produce neat RubyLLM streaming errors. They do not. If the worker dies, the Ruby process running the call is gone. It suggested deleting old persisted chat messages as context management. That is destroying conversation history. It described fallback by throwing away the chat and asking another provider the last prompt as a fresh question. That is not conversation fallback. It confused HTTP/SSE buffering with Turbo Streams over ActionCable.
 
