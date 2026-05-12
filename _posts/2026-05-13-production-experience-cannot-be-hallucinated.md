@@ -6,9 +6,7 @@ description: "A paid Medium article claimed hard-won production lessons about Ru
 tags: [AI, Ruby, RubyLLM, Open Source, Technical Writing]
 ---
 
-Author of RubyLLM here.
-
-I paid five dollars to read a [Medium article](https://mrrazahussain.medium.com/the-rails-llm-stack-is-finally-ready-for-production-here-is-what-i-learned-shipping-it-ff9d20298c5c) about my own free, open source library. It was sold as hard-won production experience.
+I paid five dollars to read a [Medium article](https://mrrazahussain.medium.com/the-rails-llm-stack-is-finally-ready-for-production-here-is-what-i-learned-shipping-it-ff9d20298c5c) about [my own free, open source library](https://rubyllm.com). It was sold as hard-won production experience.
 
 It was fabricated.
 
@@ -52,7 +50,7 @@ Production experience is not a smell. It is a thing that happened, and none of t
 
 Here is the short version.
 
-Most articles about RubyLLM are good. Some are excellent. However, since RubyLLM became popular, I have seen a couple of confident guides from people who clearly had not even run the code. Usually they disappear into LinkedIn or search results. This one made the pattern impossible to ignore.
+Most articles about RubyLLM are good. Since it became popular, I have seen a few confident guides from people who clearly had not run the code. Usually they disappear into LinkedIn or search results. This one made the pattern impossible to ignore.
 
 [I called it out](/assets/receipts/2026-05-13-production-experience-maintainer-first-correction.png):
 
@@ -72,9 +70,9 @@ Most articles about RubyLLM are good. Some are excellent. However, since RubyLLM
 >
 > I've replaced the article entirely. The new version has been verified against your documentation and source. The fake "production experience" framing is gone. It's now an honest documentation-based guide with a correction notice at the top explaining what happened.
 
-Read that again: "I've replaced the article entirely."
+"I've replaced the article entirely."
 
-It was a long article. Nobody carefully rewrites that whole thing from scratch, verifies it against the documentation and source, adds a real correction notice, and checks the production claims in under an hour. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
+It was a long article. Nobody carefully rewrites the whole thing from scratch, verifies it against the documentation and source, adds a real correction notice, and checks the production claims in under an hour. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
 
 It was still fake experience. Just harder to spot.
 
