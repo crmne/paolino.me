@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Turbo Frames in Jekyll"
-date: 2026-05-12
+date: 2026-05-19
 description: "Turbo can make a static Jekyll site feel like an app, but the trick is not the script tag. It's the frame boundary."
 tags: [Ruby, Jekyll, Turbo, Hotwire, Documentation]
 image: /images/jekyll-vitepress.png
