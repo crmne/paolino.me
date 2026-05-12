@@ -24,9 +24,7 @@ Production. Scale. Security. Reliability.
 
 In the tech world, attach one of these words to a claim and it immediately becomes true. "This does not scale" can kill a project before anyone measures it. "This is not production ready" can sabotage it without a single deploy.
 
-So when an article says "what broke in production", it is bidding for trust. Trust you can only gain by actually paying the price.
-
-That price cannot be hallucinated.
+So when an article says "what broke in production", it is not just offering advice. It is claiming experience, and experience cannot be hallucinated.
 
 [The first version](/assets/receipts/2026-05-13-production-experience-medium-original-article-2026-05-12.md) opened by saying the author had spent three weeks on the wrong side of the problem before getting something stable in production. That is a powerful claim. It tells the reader to relax and inherit the author's scars.
 
@@ -34,7 +32,7 @@ There were no scars. The author had not even run the first example.
 
 This is why fake experience is so dangerous. Bad code fails fast. Fake experience lingers. It gets quoted. It gets summarized. It gets used in meetings by people who do not know enough yet to see the hollow center.
 
-The recipe is familiar. Streaming failures. Token budgets. Provider fallback. Turbo Streams. Redis circuit breakers. nginx buffering. Load testing. They sit near "LLM production" in the LLM training data. Arrange them with enough confidence and the result smells like lived experience.
+The recipe is familiar. Streaming failures. Token budgets. Provider fallback. Turbo Streams. Redis circuit breakers. nginx buffering. Load testing. They sit near "LLM production" in the LLM training data. Arrange them with enough confidence and the result smells real.
 
 Production experience is not a smell. It is a thing that happened, and none of these things happened.
 
@@ -64,7 +62,7 @@ Most articles about RubyLLM are good. Since it became popular, I have seen a few
 
 "I've replaced the article entirely."
 
-It was a long article. The replacement appeared in under an hour. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
+It was a long article. The completely rewritten replacement appeared in a few minutes. The fake method names were replaced with real ones, but the posture stayed the same: "RubyLLM in production", "what tutorials skip", "streaming failures", "provider fallback", "token budgets."
 
 The method names got real. The experience didn't.
 
@@ -74,12 +72,12 @@ Not battle scars. Guesses presented as authority.
 
 [I called the second version what it was: phony](/assets/receipts/2026-05-13-production-experience-maintainer-second-correction.png). [The author then hid responses](/assets/receipts/2026-05-13-production-experience-responses-hidden.png) while keeping the article up.
 
-I reported the article to Medium and contacted the publication with the fabricated APIs, the author's admission, and the hidden corrections. To their credit, the editor replied quickly, apologized, and removed it from the publication. But only the author can take down the original Medium article, so the piece remained available without the maintainer corrections visible next to it.
+I reported the article to Medium and contacted the publication that promoted it with the fabricated APIs, the author's admission, and the hidden corrections. To their credit, the editor replied quickly, apologized, and removed it from the publication. But only the author can take down the original Medium article, so the piece remained available without the maintainer corrections visible next to it.
 
-## Do the work
+## Do Not Counterfeit Experience
 
 Please do write about your favourite software. Critique it too. Tell us maintainers where the API is wrong, the docs are bad, the abstraction leaks. Preferably in an issue so we can actually see it. That feedback is gold.
 
-Do not counterfeit experience. If you're using The Four Magic Words in Tech, the bar is even higher.
+But do not counterfeit experience. If you're using The Four Magic Words in Tech, the bar is even higher.
 
 And if you run a technical publication, please at least check the first example.
