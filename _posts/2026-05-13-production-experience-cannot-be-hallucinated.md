@@ -4,8 +4,8 @@ title: "Production Experience Cannot Be Hallucinated"
 date: 2026-05-13
 description: "A paid Medium article claimed hard-won production lessons about RubyLLM. The code had not even run, and the regenerated version only made the fake experience harder to spot."
 tags: [AI, Ruby, RubyLLM, Open Source, Technical Writing]
+sendfox_campaign_id: 2814932
 ---
-
 I paid five dollars to read a [Medium article](https://mrrazahussain.medium.com/the-rails-llm-stack-is-finally-ready-for-production-here-is-what-i-learned-shipping-it-ff9d20298c5c) about [my own free, open source library](https://rubyllm.com). It was sold as hard-won production experience.
 
 It was fabricated.
