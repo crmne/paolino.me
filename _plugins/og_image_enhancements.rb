@@ -14,6 +14,10 @@ class OgImageEnhancements < Jekyll::Generator
 
     collections.each do |type|
       items_for(site, type).each do |item|
+        # Preserve author-provided media before jekyll-og-image reuses "image"
+        # for generated social preview metadata.
+        item.data["media_image"] ||= media_image_path(item.data["image"])
+
         merged_config = Jekyll::Utils.deep_merge_hashes(og_config, item.data["og_image"] || {})
         next unless og_image_enabled?(merged_config)
 
@@ -80,6 +84,23 @@ class OgImageEnhancements < Jekyll::Generator
     return if path.empty?
     return if path.match?(%r{\A[a-z]+://}i)
     return if path.start_with?("data:")
+
+    path
+  end
+
+  def media_image_path(image)
+    path =
+      case image
+      when Hash
+        image["path"] || image[:path] || image["url"] || image[:url]
+      when String
+        image
+      end
+
+    return if path.nil?
+
+    path = path.to_s.strip
+    return if path.empty?
 
     path
   end

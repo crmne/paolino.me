@@ -37,7 +37,7 @@
                   <h4 class="widget__title">Recent Posts</h4>
                 </div>
                 {% for post in site.posts limit:3 %}
-                {% assign post_image = post.image.path | default: post.image %}
+                {% assign post_image = post.media_image %}
                 <div class="recent-posts">
                   {% if post_image %}
                   <a class="recent-posts__image" href="{{ post.url }}"

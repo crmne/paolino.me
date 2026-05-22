@@ -3,7 +3,7 @@ layout: null
 ---
 [
   {% for post in site.posts %}
-    {% assign post_image = post.image.path | default: post.image | default: site.author.image %}
+    {% assign post_image = post.media_image | default: site.author.image %}
     {
       "title"    : "{{ post.title | escape }}",
       "category" : "{{ post.category }}",

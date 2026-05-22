@@ -34,10 +34,7 @@ layout: default
   <div class="container">
     <div class="row">
       {% assign video_url = page.video | default: "" | strip %}
-      {% assign page_image = nil %}
-      {% if page.image and page.image.path == nil %}
-        {% assign page_image = page.image %}
-      {% endif %}
+      {% assign page_image = page.media_image %}
       {% if video_url != "" %}
       <div class="image-box">
         {% assign youtube_embed_url = video_url %}
@@ -132,8 +129,8 @@ layout: default
         <div class="post__navigation">
           {% if page.previous.url %}
           {% assign previous_image = site.author.image %}
-          {% if page.previous.image and page.previous.image.path == nil %}
-            {% assign previous_image = page.previous.image %}
+          {% if page.previous.media_image %}
+            {% assign previous_image = page.previous.media_image %}
           {% endif %}
           <div class="prev">
             <a class="prev__image" href="{{page.previous.url}}"
@@ -148,8 +145,8 @@ layout: default
 
           {% if page.next.url %}
           {% assign next_image = site.author.image %}
-          {% if page.next.image and page.next.image.path == nil %}
-            {% assign next_image = page.next.image %}
+          {% if page.next.media_image %}
+            {% assign next_image = page.next.media_image %}
           {% endif %}
           <div class="next">
             <a class="next__image" href="{{page.next.url}}"
