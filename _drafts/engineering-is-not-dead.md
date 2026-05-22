@@ -34,8 +34,10 @@ The involvement of AI tells you very little by itself.
 
 The real distinction is whether the result is owned or unowned.
 
-The real distinction is the care, attention, review, test, product design, and engineering the author put into it.
+The real distinction is the care, attention, review, testing, product design, and engineering the author put into it.
 
 How do you signal that your code is owned?
 
-By controlling the quality of the output and being accountable for it. That takes care, taste, engineering skill, and genuine human effort.
+By producing great quality output and being accountable for it. That takes care, taste, engineering skill, and genuine human effort.
+
+Engineering is not dead, and it will never be.
