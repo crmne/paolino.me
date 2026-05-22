@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Engineering Is Not Dead Because Accountability Isn't"
+title: "Engineering Is Not Dead, Because Accountability Isn't"
 date: 2026-05-22
 description: "Models can generate the code. They cannot be accountable for it. The real distinction is whether the result is owned."
 tags: [AI, LLM, Software Development, Taste]
