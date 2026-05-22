@@ -3,14 +3,17 @@ layout: null
 ---
 [
   {% for post in site.posts %}
-    {% assign post_image = post.media_image | default: site.author.image %}
+    {% assign post_image = post.media_image %}
+    {% unless post_image %}
+      {% assign post_image = post.social_image.path %}
+    {% endunless %}
     {
       "title"    : "{{ post.title | escape }}",
       "category" : "{{ post.category }}",
       "tags"     : "{{ post.tags | array_to_sentence_string }}",
       "url"      : "{{ site.baseurl }}{{ post.url }}",
       "date"     : "{{ post.date | date: '%b %-d, %Y' }}",
-      "image"    : "{{ site.baseurl }}{{ post_image }}"
+      "image"    : "{% if post_image %}{{ site.baseurl }}{{ post_image }}{% endif %}"
     } {% unless forloop.last %},{% endunless %}
   {% endfor %}
 ]

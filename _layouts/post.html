@@ -128,13 +128,12 @@ layout: default
       <div class="col col-10 col-d-10 push-d-1 push-1 col-m-12 push-m-0">
         <div class="post__navigation">
           {% if page.previous.url %}
-          {% assign previous_image = site.author.image %}
-          {% if page.previous.media_image %}
-            {% assign previous_image = page.previous.media_image %}
-          {% endif %}
+          {% assign previous_image = page.previous.media_image %}
           <div class="prev">
+            {% if previous_image %}
             <a class="prev__image" href="{{page.previous.url}}"
               style="background-image: url({{site.baseurl}}{{previous_image}})"></a>
+            {% endif %}
             <div class="prev__box">
               <a class="post__nav post__nav__prev" href="{{page.previous.url}}"><ion-icon
                   name="arrow-back-outline"></ion-icon> Previous Page</a>
@@ -144,13 +143,12 @@ layout: default
           {% endif %}
 
           {% if page.next.url %}
-          {% assign next_image = site.author.image %}
-          {% if page.next.media_image %}
-            {% assign next_image = page.next.media_image %}
-          {% endif %}
+          {% assign next_image = page.next.media_image %}
           <div class="next">
+            {% if next_image %}
             <a class="next__image" href="{{page.next.url}}"
               style="background-image: url({{site.baseurl}}{{next_image}})"></a>
+            {% endif %}
             <div class="next__box">
               <a class="post__nav post__nav__next" href="{{page.next.url}}">Next Page <ion-icon
                   name="arrow-forward-outline"></ion-icon></a>

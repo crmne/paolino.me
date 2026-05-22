@@ -9,7 +9,8 @@ $(document).ready(function() {
     searchOpenIcon = $(".nav__icon-search"),
     searchCloseIcon = $(".search__close"),
     searchBox = $(".search"),
-    body = $("body");
+    body = $("body"),
+    searchFocusTimer;
 
 
   /* =======================
@@ -56,6 +57,13 @@ $(document).ready(function() {
     }
   });
 
+  $(document).keydown(function(event) {
+    if ((event.key === "Escape" || event.which === 27) && searchBox.hasClass("is-visible")) {
+      event.preventDefault();
+      searchClose();
+    }
+  });
+
   function menuOpen() {
     searchBox.removeClass("is-visible");
     topNav.addClass("is-visible");
@@ -71,12 +79,33 @@ $(document).ready(function() {
     topNav.removeClass("is-visible");
     searchBox.addClass("is-visible");
     syncScrollLock();
-    $("#js-search-input").trigger("focus");
+    focusSearchInput();
   }
 
   function searchClose() {
+    window.clearTimeout(searchFocusTimer);
     searchBox.removeClass("is-visible");
     syncScrollLock();
+  }
+
+  function focusSearchInput() {
+    var searchInput = document.getElementById("js-search-input");
+
+    if (!searchInput) {
+      return;
+    }
+
+    try {
+      searchInput.focus({ preventScroll: true });
+    } catch (error) {
+      searchInput.focus();
+    }
+
+    searchFocusTimer = window.setTimeout(function() {
+      if (searchBox.hasClass("is-visible")) {
+        searchInput.focus();
+      }
+    }, 150);
   }
 
   function clearSearch() {
