@@ -1191,15 +1191,32 @@ module Jekyll
       end
 
       def primary_post_image_url(post)
-        image = post.data["image"]
-        value =
-          if image.is_a?(Hash)
-            image["path"] || image["url"]
-          else
-            image
-          end
+        value = post.data["media_image"]
+        if value.to_s.strip.empty?
+          value = post_image_value(post.data["image"])
+          value = nil if generated_og_image_path?(value)
+        end
 
         absolute_asset_url(value)
+      end
+
+      def post_image_value(image)
+        if image.is_a?(Hash)
+          image["path"] || image[:path] || image["url"] || image[:url]
+        else
+          image
+        end
+      end
+
+      def generated_og_image_path?(value)
+        path = value.to_s.strip
+        return false if path.empty?
+
+        output_dir = @site.config.dig("og_image", "output_dir").to_s.strip
+        output_dir = "assets/images/og" if output_dir.empty?
+        output_dir = output_dir.sub(%r{\A/+}, "").sub(%r{/+\z}, "")
+
+        path.sub(%r{\A/+}, "").start_with?("#{output_dir}/")
       end
 
       def absolute_post_url(path)
