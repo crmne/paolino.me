@@ -4,8 +4,8 @@ title: "Engineering Is Not Dead Because Accountability Isn't"
 date: 2026-05-22
 description: "Models can generate the code. They cannot be accountable for it. The real distinction is whether the result is owned."
 tags: [AI, LLM, Software Development, Taste]
+sendfox_campaign_id: 2825412
 ---
-
 A lot of people have developed a gag reflex against anything touched by AI.
 
 I understand where that comes from. There is a lot of slop, maintainers are tired of reviewing code from people who do not understand it, and people are tired of [predictable cadence](https://x.com/jorgemanru/status/2053183727514091820).
