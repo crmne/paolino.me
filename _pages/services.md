@@ -59,7 +59,7 @@ I am a second-time founder, so I have been where you are. I coach early-stage fo
 </div>
 
 <div class="services-product" markdown="1">
-Want to know how I work? Check out [Chat with Work](https://chatwithwork.com), my AI agent that sifts through your work data. One click and you are in, no need to sync your company data anywhere.
+Want to know how I work? [RubyLLM](https://rubyllm.com) is open source, so you can read exactly how I build. [Chat with Work](https://chatwithwork.com) is the fully private work AI I built with it.
 </div>
 
 <div class="services-close" markdown="1">
