@@ -39,7 +39,7 @@ projects:
 - {name: "RubyLLM", link: "https://rubyllm.com"}
 - {name: "RubyLLM Workshops", link: "https://github.com/crmne/ruby_llm-workshop"}
 - {name: "Speaking", link: "https://www.rubyevents.org/profiles/crmne"}
-- {name: "Founder Advisory", link: "mailto:carmine@plenty.is?subject=Founder%20Advisory&body=Hey%20Carmine%2C%0A%0AI%27m%20building%20_________%20and%20I%27m%20stuck%20on%20_________.%0A%0AA%20bit%20about%20where%20we%20are%3A%0A%0A-%20Stage%3A%0A-%20Team%20size%3A%0A-%20Biggest%20question%20right%20now%3A%0A%0ALet%27s%20talk."}
+- {name: "Founder Advisory", link: "mailto:carmine@paolino.me?subject=Founder%20Advisory&body=Hey%20Carmine%2C%0A%0AI%27m%20building%20_________%20and%20I%27m%20stuck%20on%20_________.%0A%0AA%20bit%20about%20where%20we%20are%3A%0A%0A-%20Stage%3A%0A-%20Team%20size%3A%0A-%20Biggest%20question%20right%20now%3A%0A%0ALet%27s%20talk."}
 - {name: "Floppy Disco", link: "https://floppydisco.live"}
 - {name: "Mindscape Productions", link: "https://mindscape.productions"}
 - {name: "Cluster Headache Tracker", link: "https://clusterheadachetracker.com"}
