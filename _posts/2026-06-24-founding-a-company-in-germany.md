@@ -4,6 +4,7 @@ title: "Founding a Company in Germany: €9,600, 152 Days, and I Still Can't Sen
 date: 2026-06-24
 description: "I started a company in Germany in late January. By late June I had spent 9,600 euros, registered two companies, and still cannot issue a single invoice of my own. Here is the timeline, with the bill next to every step."
 tags: [Germany, Startups, Bureaucracy, Plenty]
+sendfox_campaign_id: 2916820
 ---
 I started founding my second company in Germany in late January. It is now late June.
 
