@@ -349,8 +349,10 @@ module Jekyll
         body = convert_rouge_blocks(body)
         body = convert_plain_code_blocks(body)
         body = remove_inline_rouge_classes(body)
+        body = remove_style_blocks(body)
         body = convert_embedded_media(body, post_url)
         body = convert_mermaid_blocks(body, post, post_url)
+        body = convert_email_timeline_blocks(body, post_url)
         body = unwrap_block_paragraphs(body)
         body = remove_empty_paragraphs(body)
         body = apply_content_spacing(body)
@@ -450,6 +452,289 @@ module Jekyll
 
       def remove_inline_rouge_classes(html)
         html.gsub(%r{<code class="[^"]*highlighter-rouge[^"]*">}, "<code>")
+      end
+
+      def remove_style_blocks(html)
+        html.to_s.gsub(%r{<style\b[^>]*>.*?</style>}im, "")
+      end
+
+      def convert_email_timeline_blocks(html, post_url)
+        replace_elements_by_class(html, "div", "ftl-tl") do |fragment|
+          email_timeline_html(fragment, post_url)
+        end
+      end
+
+      def replace_elements_by_class(html, tag_name, class_name)
+        content = html.to_s
+        output = +""
+        cursor = 0
+        start_pattern = class_element_start_pattern(tag_name, class_name)
+
+        while (match = start_pattern.match(content, cursor))
+          output << content[cursor...match.begin(0)]
+          finish = matching_closing_tag_index(content, tag_name, match.end(0))
+
+          unless finish
+            output << match[0]
+            cursor = match.end(0)
+            next
+          end
+
+          output << yield(content[match.begin(0)...finish])
+          cursor = finish
+        end
+
+        output << content[cursor..] if cursor < content.length
+        output
+      end
+
+      def first_element_by_class(html, tag_name, class_name)
+        content = html.to_s
+        match = class_element_start_pattern(tag_name, class_name).match(content)
+        return nil unless match
+
+        finish = matching_closing_tag_index(content, tag_name, match.end(0))
+        return nil unless finish
+
+        content[match.begin(0)...finish]
+      end
+
+      def class_element_start_pattern(tag_name, class_name)
+        escaped_tag = Regexp.escape(tag_name)
+        escaped_class = Regexp.escape(class_name)
+
+        %r{<#{escaped_tag}\b(?=[^>]*\bclass=(['"])[^'"]*\b#{escaped_class}\b[^'"]*\1)[^>]*>}im
+      end
+
+      def matching_closing_tag_index(content, tag_name, cursor)
+        token_pattern = %r{</?#{Regexp.escape(tag_name)}\b[^>]*>}im
+        depth = 1
+        scan_at = cursor
+
+        while (match = token_pattern.match(content, scan_at))
+          token = match[0]
+
+          if token.start_with?("</")
+            depth -= 1
+            return match.end(0) if depth.zero?
+          elsif !token.end_with?("/>")
+            depth += 1
+          end
+
+          scan_at = match.end(0)
+        end
+
+        nil
+      end
+
+      def email_timeline_html(fragment, post_url)
+        list_inner = fragment[%r{<ol\b[^>]*>(.*?)</ol>}im, 1].to_s
+        rows = list_inner.scan(%r{<li\b([^>]*)>(.*?)</li>}im).map do |attrs, inner|
+          email_timeline_item_html(attrs, inner, post_url)
+        end.reject(&:empty?).join
+        total = email_timeline_total_html(fragment)
+
+        return "" if rows.empty? && total.empty?
+
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:4px 0 24px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="padding:0;">#{rows}#{total}</td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      def email_timeline_item_html(attrs, inner, post_url)
+        classes = html_classes(attrs)
+        return email_timeline_gap_html(inner) if classes.include?("ftl-gap")
+        return "" unless classes.include?("ftl-row")
+
+        month = html_text(inner[%r{<span\b(?=[^>]*\bclass=(['"])[^'"]*\bftl-cal-m\b[^'"]*\1)[^>]*>(.*?)</span>}im, 2])
+        day_fragment = inner[%r{<span\b(?=[^>]*\bclass=(['"])[^'"]*\bftl-cal-d\b[^'"]*\1)[^>]*>(.*?)</span>}im, 2].to_s
+        today_label = html_text(day_fragment[%r{<small\b[^>]*>(.*?)</small>}im, 1])
+        day = html_text(day_fragment.gsub(%r{<small\b[^>]*>.*?</small>}im, ""))
+        date_label = html_text(inner[%r{<span\b(?=[^>]*\bclass=(['"])[^'"]*\bftl-date\b[^'"]*\1)[^>]*>(.*?)</span>}im, 2])
+        date_label = [month, day].reject(&:empty?).join(" ") if date_label.empty?
+        event = email_timeline_event_html(inner, post_url)
+        money = email_timeline_money_html(inner)
+        highlighted = classes.include?("ftl-today")
+
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td width="60" valign="top" style="width:60px;padding:0 12px 20px 0;">#{email_timeline_calendar_html(month, day, today_label, highlighted)}</td>
+              <td valign="top" style="padding:0 0 20px;font-size:15px;line-height:1.55;color:#111827;#{highlighted ? 'border-left:3px solid #ffe66a;padding-left:12px;' : ''}">
+                <span style="display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:11px;line-height:1.3;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280;margin:0 0 4px;">#{CGI.escapeHTML(date_label)}</span>
+                #{event}
+                #{money}
+              </td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      def email_timeline_gap_html(inner)
+        label = html_text(inner)
+        return "" if label.empty?
+
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td width="60" valign="top" align="center" style="width:60px;padding:0 12px 18px 0;text-align:center;">
+                <span style="display:inline-block;width:7px;height:7px;background:#ffe66a;border-radius:999px;line-height:7px;">&nbsp;</span>
+              </td>
+              <td valign="top" style="padding:0 0 18px;">
+                <span style="display:inline-block;border:1px dashed #d1d5db;background:#ffffff;color:#4b5563;border-radius:999px;padding:4px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:11px;line-height:1.2;letter-spacing:0.04em;text-transform:uppercase;">#{CGI.escapeHTML(label)}</span>
+              </td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      def email_timeline_calendar_html(month, day, today_label, highlighted)
+        border_color = highlighted ? "#17181e" : "#e5e7eb"
+        today_html =
+          if today_label.empty?
+            ""
+          else
+            %(<span style="display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:8px;line-height:1.2;letter-spacing:0.06em;text-transform:uppercase;color:#4b5563;">#{CGI.escapeHTML(today_label)}</span>)
+          end
+
+        <<~HTML.chomp
+          <table role="presentation" width="52" cellspacing="0" cellpadding="0" style="width:52px;border-collapse:collapse;border:1px solid #{border_color};mso-table-lspace:0;mso-table-rspace:0;">
+            <tr>
+              <td align="center" style="padding:4px 2px 3px;background:#ffe66a;color:#111827;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:10px;line-height:1.1;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">#{CGI.escapeHTML(month)}</td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:7px 2px 8px;background:#ffffff;color:#111827;font-family:Georgia,'Times New Roman',serif;font-size:22px;line-height:1;font-weight:700;">#{CGI.escapeHTML(day)}#{today_html}</td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      def email_timeline_event_html(inner, post_url)
+        event = inner[%r{<div\b(?=[^>]*\bclass=(['"])[^'"]*\bftl-ev\b[^'"]*\1)[^>]*>(.*?)</div>}im, 2].to_s
+        event = event.gsub(%r{<span\b(?=[^>]*\bclass=(['"])[^'"]*\bftl-date\b[^'"]*\1)[^>]*>.*?</span>}im, "")
+        event = event.gsub(%r{\A\s*<p\b[^>]*>(.*?)</p>\s*\z}im, '\1')
+        event = event.gsub(%r{</?p\b[^>]*>}i, "")
+        normalize_email_inline_html(event.strip, post_url)
+      end
+
+      def email_timeline_money_html(inner)
+        match = inner.match(%r{<div\b([^>]*)\bclass=(['"])([^'"]*\bftl-money\b[^'"]*)\2([^>]*)>(.*?)</div>}im)
+        return "" unless match
+
+        classes = match[3].to_s.split(/\s+/)
+        amount = html_text(match[5].to_s[%r{<code\b[^>]*>(.*?)</code>}im, 1])
+        return "" if amount.empty?
+
+        label = html_text(match[5].to_s[%r{<span\b(?=[^>]*\bclass=(['"])[^'"]*\bftl-tag\b[^'"]*\1)[^>]*>(.*?)</span>}im, 2])
+        locked = classes.include?("ftl-locked")
+        chip_style =
+          if locked
+            "background:#f3f4f6;border:1px solid #d1d5db;color:#4b5563;"
+          else
+            "background:#fbf6dc;border:1px solid #efe5b0;color:#111827;"
+          end
+        label_html = label.empty? ? "" : %(<td style="padding:0 0 0 8px;color:#6b7280;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:10px;line-height:1.2;letter-spacing:0.06em;text-transform:uppercase;">#{CGI.escapeHTML(label)}</td>)
+
+        <<~HTML.chomp
+          <table role="presentation" cellspacing="0" cellpadding="0" style="margin-top:8px;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;">
+            <tr>
+              <td style="padding:0;">
+                <span style="display:inline-block;#{chip_style}border-radius:3px;padding:3px 8px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.25;font-weight:600;">#{CGI.escapeHTML(amount)}</span>
+              </td>
+              #{label_html}
+            </tr>
+          </table>
+        HTML
+      end
+
+      def email_timeline_total_html(fragment)
+        total = first_element_by_class(fragment, "div", "ftl-total")
+        return "" unless total
+
+        total_inner = element_inner_html(total, "div")
+        rows = total_inner.scan(%r{<div\b([^>]*)>(.*?)</div>}im).map do |attrs, inner|
+          classes = html_classes(attrs)
+          next "" unless classes.include?("ftl-total-row")
+
+          label = html_text(inner[%r{<span\b[^>]*>(.*?)</span>}im, 1])
+          amount = html_text(inner[%r{<code\b[^>]*>(.*?)</code>}im, 1])
+          next "" if label.empty? && amount.empty?
+
+          grand = classes.include?("ftl-grand")
+          zero = classes.include?("ftl-zero")
+          border = grand ? "border-top:1px solid #34353d;" : ""
+          label_color = grand || zero ? "#ffffff" : "#d6d6da"
+          amount_color = grand || zero ? "#ffe66a" : "#ffffff"
+          font_weight = grand ? "700" : "400"
+          padding = grand ? "12px 0 0" : "0 0 8px"
+
+          <<~HTML.chomp
+            <tr>
+              <td style="padding:#{padding};#{border}font-size:14px;line-height:1.45;color:#{label_color};font-weight:#{font_weight};">#{CGI.escapeHTML(label)}</td>
+              <td align="right" style="padding:#{padding};#{border}font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:14px;line-height:1.45;color:#{amount_color};font-weight:700;text-align:right;white-space:nowrap;">#{CGI.escapeHTML(amount)}</td>
+            </tr>
+          HTML
+        end.join
+
+        return "" if rows.empty?
+
+        <<~HTML.chomp
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:6px 0 0;border-collapse:collapse;background:#17181e;mso-table-lspace:0;mso-table-rspace:0;font-size:0;line-height:0;">
+            <tr>
+              <td style="padding:16px 18px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;">#{rows}</table>
+              </td>
+            </tr>
+          </table>
+        HTML
+      end
+
+      def element_inner_html(fragment, tag_name)
+        start = fragment.to_s.index(">")
+        finish = fragment.to_s.rindex("</#{tag_name}>")
+        return "" unless start && finish && finish > start
+
+        fragment[(start + 1)...finish]
+      end
+
+      def normalize_email_inline_html(fragment, post_url)
+        content = fragment.to_s
+        content = content.gsub(%r{<a\b[^>]*\bhref=(['"])(.*?)\1[^>]*>}im) do
+          href = email_link_href(Regexp.last_match(2), post_url)
+          %(<a href="#{CGI.escapeHTML(href)}" style="color:#2563eb;text-decoration:underline;">)
+        end
+        content.gsub(%r{<code\b[^>]*>(.*?)</code>}im) do
+          code = Regexp.last_match(1).to_s
+          %(<code style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:13px;line-height:1.2;font-weight:600;background:#fbf6dc;border:1px solid #efe5b0;color:#111827;padding:1px 5px;border-radius:3px;">#{code}</code>)
+        end
+      end
+
+      def email_link_href(raw_href, post_url)
+        href = raw_href.to_s.strip
+        return post_url if href.empty?
+        return "#{post_url}#{href}" if href.start_with?("#")
+        return href if href.match?(%r{\A(?:https?:|mailto:|tel:)}i)
+
+        absolute_link_url(href) || href
+      end
+
+      def html_classes(attrs)
+        attrs.to_s[/\bclass=(['"])(.*?)\1/im, 2].to_s.split(/\s+/)
+      end
+
+      def html_text(fragment)
+        CGI.unescapeHTML(
+          fragment
+            .to_s
+            .gsub(%r{<br\s*/?>}i, " ")
+            .gsub(%r{<[^>]+>}, "")
+            .gsub(/\s+/, " ")
+            .strip
+        )
       end
 
       def remove_empty_paragraphs(html)

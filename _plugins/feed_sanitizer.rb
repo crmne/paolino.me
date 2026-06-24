@@ -6,6 +6,7 @@ module Jekyll
       return "" if html.nil?
 
       content = html.dup
+      content.gsub!(%r{<style\b[^>]*>.*?</style>}im, "")
 
       content.gsub!(
         %r{<div class="language-([A-Za-z0-9_+\-]+)\s+highlighter-rouge">\s*<div class="highlight">\s*<pre class="highlight">\s*<code>(.*?)</code>\s*</pre>\s*</div>\s*</div>}m

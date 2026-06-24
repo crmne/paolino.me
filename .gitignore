@@ -5,3 +5,4 @@ _site/
 .tweet-cache/
 repomix-output.*
 assets/images/og/
+_site_sendfox_cli/
