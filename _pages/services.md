@@ -44,21 +44,6 @@ I run RubyLLM workshops for engineering teams: a hands-on session building real 
 </figcaption>
 </figure>
 
-{% comment %}
-Aleksey Shustov's testimonial, hidden until we have a photo and his role/company. To show it: add an avatar like Adrian's, fill in the role, and remove this Liquid comment wrapper (the opening tag above and the closing tag after the figure).
-
-<figure class="testimonial">
-<blockquote>
-<p>Thank you for the excellent RubyLLM workshop. I really appreciated the clear structure, the practical usefulness of the content, and your effective communication style.</p>
-</blockquote>
-<figcaption class="testimonial__author">
-<span class="testimonial__meta">
-<span class="testimonial__name">Aleksey Shustov</span>
-</span>
-</figcaption>
-</figure>
-{% endcomment %}
-
 <p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=RubyLLM%20workshop&body=Hey%20Carmine%2C%0A%0AHere%20is%20our%20team%20and%20what%20we%27d%20want%20from%20a%20workshop%3A%0A%0A">Email me about a workshop</a></p>
 
 </div>
