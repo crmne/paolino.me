@@ -49,7 +49,7 @@ I am a second-time founder, so I have been where you are. I coach early-stage fo
 <img class="testimonial__avatar" src="{{ site.baseurl }}/images/john-benedict-lorenzo.png" alt="JB Lorenzo" width="56" height="56" loading="lazy">
 <span class="testimonial__meta">
 <span class="testimonial__name">JB Lorenzo</span>
-<span class="testimonial__role">Co-Founder and CTO, Papayo.ai</span>
+<span class="testimonial__role">Founder, e11s</span>
 </span>
 </figcaption>
 </figure>
