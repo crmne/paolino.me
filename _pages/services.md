@@ -31,6 +31,34 @@ I have built AI models and systems for over a decade. I studied AI at the [Free 
 
 I run RubyLLM workshops for engineering teams: a hands-on session building real AI features in Ruby, with the patterns I use in production. Shaped around your team, not a generic course.
 
+<figure class="testimonial">
+<blockquote>
+<p>Carmine is the person driving AI forward in Ruby, and it shows. His tooling blends simplicity and customizability in a way that feels classically Rails, and his workshop slowly draws you into what building with AI really means today. Can't recommend him enough.</p>
+</blockquote>
+<figcaption class="testimonial__author">
+<img class="testimonial__avatar" src="{{ site.baseurl }}/images/adrian-marin.jpeg" alt="Adrian Marin" width="56" height="56" loading="lazy">
+<span class="testimonial__meta">
+<span class="testimonial__name">Adrian Marin</span>
+<span class="testimonial__role">Founder, Avo</span>
+</span>
+</figcaption>
+</figure>
+
+{% comment %}
+Aleksey Shustov's testimonial, hidden until we have a photo and his role/company. To show it: add an avatar like Adrian's, fill in the role, and remove this Liquid comment wrapper (the opening tag above and the closing tag after the figure).
+
+<figure class="testimonial">
+<blockquote>
+<p>Thank you for the excellent RubyLLM workshop. I really appreciated the clear structure, the practical usefulness of the content, and your effective communication style.</p>
+</blockquote>
+<figcaption class="testimonial__author">
+<span class="testimonial__meta">
+<span class="testimonial__name">Aleksey Shustov</span>
+</span>
+</figcaption>
+</figure>
+{% endcomment %}
+
 <p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=RubyLLM%20workshop&body=Hey%20Carmine%2C%0A%0AHere%20is%20our%20team%20and%20what%20we%27d%20want%20from%20a%20workshop%3A%0A%0A">Email me about a workshop</a></p>
 
 </div>
