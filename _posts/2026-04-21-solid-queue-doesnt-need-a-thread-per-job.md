@@ -2,11 +2,14 @@
 layout: post
 title: "Making the Rails Default Job Queue Fiber-Based"
 date: 2026-04-21
-description: "I tried Async::Job for my LLM apps, hit its limits, and patched Solid Queue to run jobs as fibers instead."
+last_modified_at: 2026-07-31
+description: "I patched Solid Queue to run jobs as fibers. Now it ships in 1.6.0, making the Rails default ready for highly concurrent, cooperative I/O-bound jobs."
 tags: [Ruby, Async, Rails, Solid Queue, Performance, Concurrency, Open Source]
 image: /images/solid-queue-async.webp
 sendfox_campaign_id: 2790538
 ---
+> **Update, July 31, 2026:** [Solid Queue 1.6.0][release] has shipped with fiber worker execution. The default Rails job queue can now run many long-running, cooperative I/O-bound jobs like LLM streaming far more efficiently, without making the queue database pool grow with the number of jobs waiting on I/O. The setup below now uses the official release.
+
 Last year I moved the LLM streaming jobs in [Chat with Work][] to [Async::Job][async-job]. It was fast. Genuinely fast. Fiber-based execution with Redis, thousands of concurrent jobs on a single thread. I was so convinced that I [wrote a whole post][async-article] about why async Ruby is the future for AI apps and recommended it to everyone.
 
 Then I started hitting walls.
@@ -15,31 +18,34 @@ Async::Job doesn't persist jobs. They go into Redis and they're gone. [Mission C
 
 Solid Queue is the default in Rails 8. Every new Rails app ships with it. When someone picks up Rails to build an LLM application and their 25-thread worker pool can only handle 25 concurrent streaming conversations, the answer shouldn't be "swap your entire job backend." It should be "change one line of config."
 
-So I [opened a PR][pr].
+So I [opened a PR][pr]. On July 31, it shipped in Solid Queue 1.6.0.
 
 ## Threads vs fibers, quickly
 
 If you already know this, [skip ahead to the config](#the-switch).
 
-Solid Queue runs each job on its own thread. Those threads can all query the database concurrently, so the worker has to be configured for that worst case, plus stack memory and kernel thread overhead. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
+By default, Solid Queue runs each job on its own thread. Those threads can all query the database concurrently, so conservative pool sizing assumes one connection per execution thread. There is also stack memory and kernel thread overhead. For a job that crunches data for 30 seconds, that's fine -- the thread is busy. For a job that streams an LLM response for 30 seconds but spends 99% of that time waiting for tokens, the thread is just sitting there holding resources.
 
-Fibers sidestep much of this. Cooperatively scheduled, running in userspace on a single thread. When a fiber hits I/O -- a network call, a database query, waiting for the next token -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No kernel thread overhead per job, and database pool sizing follows actual database concurrency rather than the number of jobs waiting on I/O. Rails 7.2+ helps ordinary Active Record code release connections after query operations, but that behavior is not fiber-specific. The [async][] gem handles the yielding for you: your code yields at I/O boundaries without you changing anything.
+Fibers sidestep much of this. They are cooperatively scheduled in userspace on a single thread. When a fiber hits scheduler-aware I/O -- an [Async::HTTP][async-http] request or waiting for the next token through a compatible client -- it steps aside and another fiber picks up. One thread, hundreds of concurrent jobs. No kernel thread overhead per job, and database pools can be sized for simultaneous database work rather than every job waiting on network I/O.
+
+The [async][] gem installs the fiber scheduler. Ruby operations such as `Kernel.sleep`, scheduler-aware `IO`, and fiber-aware libraries yield without changing the job itself. This is not magic around every blocking call: a library or C extension that does not cooperate with the scheduler can still block the reactor thread.
 
 For the full deep dive -- processes, threads, fibers, the GVL, I/O multiplexing -- see [Async Ruby is the Future][async-article].
 
 ## The switch
 
-While the PR gets approved, you can point your Gemfile at the branch:
+Fiber mode ships in Solid Queue 1.6.0. Upgrade Solid Queue and add [async][] as an application dependency:
 
 ```ruby
 # Gemfile
-gem "solid_queue", git: "https://github.com/crmne/solid_queue.git", branch: "async-worker-execution-mode"
+gem "solid_queue", "~> 1.6"
+gem "async" # required for fiber workers
 ```
 
-Then one config change:
+Then switch that worker's execution setting:
 
 ```yaml
-# config/solid_queue.yml
+# config/queue.yml
 production:
   workers:
     - queues: ["*"]
@@ -50,18 +56,22 @@ production:
 
 Your jobs don't change. Your queue doesn't change. The worker runs them as fibers instead of threads.
 
-`threads` or `fibers`. Pick one per worker. One more thing in your Rails app:
+`threads` or `fibers`. Pick one per worker.
+
+**Fiber-scoped Rails isolation is required.** Add this to your Rails application configuration:
 
 ```ruby
 # config/application.rb
 config.active_support.isolation_level = :fiber  # required for fibers
 ```
 
-Fibers share a thread, so they need fiber-scoped state instead of the default thread-scoped state. The patch checks this at boot and tells you if it's wrong.
+Fibers share a thread, so they need fiber-scoped state instead of the default thread-scoped state. Solid Queue validates this at boot and refuses to start fiber workers if the application still uses thread-scoped isolation.
+
+That isolation setting is global to the Rails application, not local to Solid Queue. Also, fiber worker execution is separate from Solid Queue's supervisor `async` mode. The configuration above uses the default `fork` supervisor, so `processes: 2` creates two worker processes and each gets its own fiber reactor. If you start `bin/jobs --mode async`, the workers share the supervisor process and the `processes` setting is ignored.
 
 ## Under the hood
 
-The core of the patch is `FiberPool`. One thread, one [async][] reactor, a semaphore capping concurrency at whatever number you set:
+The core of the implementation is `FiberPool`. It starts its reactor lazily when the first execution is posted, so the pool can be constructed safely before the default supervisor forks. A single thread runs one [async][] reactor, with a semaphore capping concurrency at whatever number you set:
 
 ```ruby
 def start_reactor
@@ -71,8 +81,10 @@ def start_reactor
       boot_queue << :ready
 
       wait_for_executions(semaphore)
-      wait_for_inflight_executions
     end
+  rescue Exception => error
+    register_fatal_error(error)
+    raise
   end
 end
 ```
@@ -80,8 +92,8 @@ end
 When the worker picks up jobs, it hands them to the pool. Each one becomes a fiber:
 
 ```ruby
-def schedule_pending_executions(semaphore)
-  while execution = next_pending_execution
+def wait_for_executions(semaphore)
+  while execution = pending_executions.pop
     semaphore.async(execution) do |_execution_task, scheduled_execution|
       perform_execution(scheduled_execution)
     end
@@ -89,9 +101,9 @@ def schedule_pending_executions(semaphore)
 end
 ```
 
-Each job runs as a fiber. When it hits I/O, it yields. The reactor picks up another fiber. One thread, hundreds of jobs, switching at I/O boundaries instead of depending on thread preemption.
+The worker poller claims only as many jobs as the pool has capacity for and pushes them into a `Thread::Queue`. Its `pop` is fiber-scheduler-aware, so the reactor can run execution fibers while it waits for more work. Each compatible I/O wait yields back to the reactor instead of occupying a dedicated execution thread.
 
-CPU-bound work gets nothing from fibers. They don't parallelize computation. But most of what job queues do is wait on I/O, and that's exactly where fibers win. If a CPU-bound fiber blocks the reactor, Solid Queue's supervisor still runs fine on its own process.
+CPU-bound work gets nothing from fibers. They don't parallelize computation. A CPU-heavy job or blocking call stalls every execution fiber in that worker until it returns. In the default `fork` supervisor mode, the supervisor and other worker processes keep running, but that worker's reactor does not. Put CPU-bound or blocking jobs on a thread worker instead.
 
 ## The database connection math
 
@@ -99,31 +111,49 @@ I [wrote about this last year][async-article]:
 
 > For 1000 concurrent conversations using traditional job queues like SolidQueue or Sidekiq, you'd need 1000 worker slots. That means 1000 kernel threads across your worker fleet, plus enough database pool capacity for whatever fraction of those jobs can hit the database at the same time. Even when the jobs are 99% idle waiting for streaming tokens, the thread resources are still reserved.
 
-That framing is about worker resources, not a special Active Record rule. Active Record 7.2 connection handling is not different for threads and fibers; the important part in the patch is Solid Queue's worker-pool sizing and the amount of simultaneous database work. Here's the actual math from the patch.
+That framing is about worker resources, not a special Active Record rule. The released code's pool-size check is specifically about the **Solid Queue database pool** (`SolidQueue::Record.connection_pool`), not every database your job might use. It estimates connections for polling, heartbeats, and job execution. Size any application database pools touched by the job separately.
 
-A Solid Queue worker needs database connections for three things: polling for jobs, heartbeats, and running jobs. In thread mode, the configured concurrency is `threads`, and Solid Queue's current guard treats each execution thread as potentially needing its own connection, plus two for the worker itself. That's `threads + 2`. Actual Active Record usage may be lower for jobs that only touch the database in short bursts, but the configured pool still has to satisfy the guard.
+Solid Queue 1.6 does not give thread workers the same small pool estimate. It still estimates one execution connection per configured thread, plus one for polling and one for heartbeats. That's `threads + 2`.
 
-With fibers, all job fibers run on one reactor thread, and the patch sizes the execution side for expected database concurrency instead of job concurrency. For the common LLM job shape -- long waits, short database bursts -- the minimum is often `1 + 2 = 3`: one execution connection, plus two for the worker itself. If your jobs are DB-heavy, use long transactions, or pin connections with APIs like `ActiveRecord::Base.connection`, increase the pool and fibers will check out separate connections concurrently, just like threads.
+There is a separate change that makes this easy to confuse: since Solid Queue 1.5, that estimate is advisory. A thread worker can boot with a smaller pool and wait for a connection when the pool is busy, although it can still hit a checkout timeout under sustained contention. But 1.6 did not make the thread and fiber estimates equal.
 
-Same job concurrency, very different configured pool requirements:
+Here is the relevant version history:
 
-| Concurrent jobs | Thread-mode DB pool guard (per process) | Fiber-mode baseline (per process) |
+| Solid Queue version and worker | Queue pool estimate | What happens below it |
 |---|---|---|
-| 10 | 12 | 3 |
-| 25 | 27 | 3 |
-| 50 | 52 | 3 |
-| 100 | 102 | 3 |
-| 200 | 202 | 3 |
+| 1.4.0 thread worker | `threads + 2` | Configuration is invalid; the supervisor aborts |
+| 1.5.x thread worker | `threads + 2` | Warning; the worker still boots |
+| 1.6.0 thread worker | `threads + 2` | Warning; the worker still boots |
+| 1.6.0 fiber worker, Active Record 7.1 | `fibers + 2` | Warning; the worker still boots |
+| 1.6.0 fiber worker, Active Record 7.2+ | `3` | Warning; the worker still boots |
 
-The thread-mode guard scales linearly. The fiber-mode baseline stays flat for I/O-heavy jobs. Multiply by the number of worker processes and the gap gets dramatic: 6 processes with 50 concurrent jobs means 312 configured connections for thread mode, 18 for fiber. PostgreSQL's default `max_connections` is 100.
+So the connection-sizing distinction is **Solid Queue 1.6 fiber workers on Active Record 7.2+ versus every thread worker**. The warning-versus-boot-error distinction is older: it changed between Solid Queue 1.4 and 1.5.
 
-The patch detects your Rails version and calculates the right pool size automatically.
+For fiber workers, the estimate depends on the Active Record version. On Active Record 7.2+, Solid Queue assumes ordinary query paths release connections between queries, so it estimates one execution connection plus two worker connections regardless of the fiber count: `1 + 2 = 3`. On Active Record 7.1, it conservatively estimates one execution connection per fiber, so the estimate is `fibers + 2`.
+
+The three-connection estimate is a starting point, not a guarantee. Long transactions, `ActiveRecord::Base.connection`, `lease_connection`, direct pool checkouts, and long-lived `with_connection` blocks can pin connections across waits. If your jobs do that or generate simultaneous database work, increase the relevant pool.
+
+Here is the exact warning threshold calculated by Solid Queue 1.6 for a worker process at different concurrency levels:
+
+| Concurrent jobs | Thread worker | Fiber worker, Active Record 7.2+ | Fiber worker, Active Record 7.1 |
+|---|---|---|---|
+| 10 | 12 | 3 | 12 |
+| 25 | 27 | 3 | 27 |
+| 50 | 52 | 3 | 52 |
+| 100 | 102 | 3 | 102 |
+| 200 | 202 | 3 | 202 |
+
+On Active Record 7.2+, the thread estimate scales linearly while the fiber estimate stays flat. In the default `fork` mode, multiply the per-process pool by the number of worker processes: 6 processes with 50 execution slots means 312 configured queue connections for thread workers versus 18 for fiber workers. PostgreSQL's default `max_connections` is 100.
+
+Again, Solid Queue only calculates this estimate and warns. It does not configure the pool automatically. In supervisor `async` mode, workers share a process, so their connection needs must be added together rather than applying the per-process table independently.
 
 The benchmarks below use two pool policies. The primary Solid Queue comparison deliberately gives both modes the same pool, `DB_POOL = concurrency + 5` per worker process, so it measures the executor instead of measuring pool starvation. The stress suite uses mode-specific pools to show the operational failure envelope under higher connection demand.
 
 ## The benchmarks
 
-I reran the benchmark suite on April 28, 2026. The headline Solid Queue comparison covers four workloads across per-process concurrency 5, 10, 25, 50, and 100; process counts 1, 2, and 6; and both execution modes. Three runs per cell, median real run reported, with total concurrency capped at 60 so the main comparison stays about executor behavior.
+I reran the benchmark suite on April 28, 2026. These results were produced from the PR branch before the final 1.6.0 implementation was reorganized during review, so treat them as benchmarks of that implementation, not fresh Solid Queue 1.6.0 numbers. The architecture is the same, but a new run is required before attributing the exact deltas to the release tag. I will update this post over the next few weeks with fresh benchmarks against Solid Queue 1.6.0.
+
+The headline Solid Queue comparison covers four workloads across per-process concurrency 5, 10, 25, 50, and 100; process counts 1, 2, and 6; and both execution modes. Three runs per cell, median real run reported, with total concurrency capped at 60 so the main comparison stays about executor behavior.
 
 The workloads:
 
@@ -153,7 +183,7 @@ The newer suite also adds database-shaped workloads. With matched pools, short D
 
 ## Thread mode hit the wall
 
-Those benchmarks cap total concurrency at 60. I wanted to see what breaks when you push past that, so I ran a stress suite: per-process concurrency 25, 50, 100, 150, and 200; process counts 2 and 6; three runs per cell. Read this as a current Solid Queue failure-envelope test, not a universal law about threads and fibers.
+Those benchmarks cap total concurrency at 60. I wanted to see what breaks when you push past that, so I ran a stress suite: per-process concurrency 25, 50, 100, 150, and 200; process counts 2 and 6; three runs per cell. Read this as the April PR implementation's failure-envelope test, not a Solid Queue 1.6.0 result or a universal law about threads and fibers.
 
 The result is stark. Thread mode only completed the smallest cell for each workload. Fiber mode completed every planned cell.
 
@@ -167,11 +197,11 @@ The result is stark. Thread mode only completed the smallest cell for each workl
 
 PostgreSQL's default `max_connections` is 100. In this stress run, thread mode at concurrency 50 with 2 processes asked for 110 worker-pool connections. With 6 processes, even concurrency 25 asked for 180. The one surviving thread cell was the smallest: concurrency 25, 2 processes.
 
-Fiber mode in the stress suite used a smaller mode-specific pool: 6 connections per process for 2-process runs, 10 per process for 6-process runs. That is 60 worker-pool connections at concurrency 200 across 6 processes, while thread mode would ask for 1,230. The exact constants are benchmark policy, but the shape is the point for this worker design: thread mode's required configured pool scales with thread concurrency; fiber mode's baseline scales with worker process overhead plus actual database concurrency.
+Fiber mode in the stress suite used a smaller mode-specific pool: 6 connections per process for 2-process runs, 10 per process for 6-process runs. That is 60 worker-pool connections at concurrency 200 across 6 processes, while the benchmark's thread policy would configure 1,230. The exact constants are benchmark policy, but the shape is the point for this worker design: Solid Queue's thread estimate scales with thread concurrency; the Active Record 7.2+ fiber baseline scales with worker process overhead plus actual database concurrency.
 
 ## One backend, two modes
 
-Fiber mode isn't universally better. CPU-bound jobs get nothing from it. C extensions that aren't fiber-safe won't work. And that's fine -- you don't have to pick one.
+Fiber mode isn't universally better. CPU-bound jobs get nothing from it, and blocking libraries or C extensions that do not cooperate with Ruby's fiber scheduler stall the reactor. And that's fine -- you don't have to pick one.
 
 As Trevor Turk pointed out in the PR discussion, that's the whole point: separately configured worker pools. Here's what [Chat with Work][] actually runs in production:
 
@@ -209,13 +239,14 @@ Async::Job is actually faster if you compare raw throughput against Redis. It is
 
 ![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-headline-asyncjob-vs-fiber.svg)
 
-If you want raw speed and don't need persistence, Async::Job is the right call. But if you want job visibility, failure tracking, retries, Mission Control, everything Rails gives you out of the box, fiber mode gets you there. Same concurrency. Database connections sized to database work, not waiting jobs. You set `fibers: N` and keep building.
+If you want raw speed and don't need persistence, Async::Job is the right call. But if you want job visibility, failure tracking, retries, Mission Control, everything Rails gives you out of the box, fiber mode gets you there. Same concurrency. You can size database connections to database work instead of the number of jobs waiting on network I/O. You set `fibers: N` and keep building.
 
 ---
 
-The PR is [up on GitHub][pr]. The [benchmark suite][bench] is open source. Run your own numbers, or challenge mine.
+Fiber mode is now available in [Solid Queue 1.6.0][release]. The [PR][pr] has the implementation history, and the [benchmark suite][bench] is open source. Run your own numbers, or challenge mine.
 
 [async-article]: /async-ruby-is-the-future/
+[release]: https://github.com/rails/solid_queue/releases/tag/v1.6.0
 [pr]: https://github.com/rails/solid_queue/pull/728
 [RubyLLM]: https://rubyllm.com
 [Chat with Work]: https://chatwithwork.com
