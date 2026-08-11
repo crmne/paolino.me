@@ -7,6 +7,8 @@ tags: [Ruby, JSON Schema, Open Source, Schematist, RubyLLM, AI]
 sendfox_campaign_id: 2990216
 image: /images/schematist.png
 ---
+I want to make Ruby the best language to work with LLMs. Part of that is a great JSON Schema DSL.
+
 [Schematist](https://github.com/crmne/schematist) is a general purpose JSON Schema DSL that emits Draft 2020-12 schemas. Describe an API payload, a config file, a contract between two services, or the structured output you want back from a model. Trapping that inside another gem's namespace was a disservice to anyone looking for a great JSON Schema DSL, so it got its own name.
 
 ```ruby
