@@ -1,11 +1,12 @@
 ---
 layout: page
 title: About
-seo_title: About Carmine Paolino
+seo_title: About Carmine Paolino | Ruby & AI Engineer
 permalink: /about/
 description: Carmine Paolino builds AI tools, Ruby libraries, and product infrastructure. He works on RubyLLM and Chat with Work, and previously co-founded Freshflow.
 entity_type: Person
 image: '/images/me-04.jpg'
+image_alt: Portrait of Carmine Paolino
 ---
 
 I'm Carmine Paolino. I wrote my first scripts at 5 to automate launching my favorite games. I've been hooked ever since.

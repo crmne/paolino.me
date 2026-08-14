@@ -2,9 +2,10 @@
 layout: post
 title: "Ruby Concurrency: What Actually Happens"
 date: 2026-04-28
-description: "Every 'what happens when' question about Ruby concurrency, answered with diagrams."
+description: "A visual guide to Ruby processes, Ractors, threads, fibers, schedulers, blocking I/O, database connections, and concurrency trade-offs."
 tags: [Ruby, Concurrency, Async, Fibers, Performance]
 image: /images/ruby-concurrency.png
+mermaid: true
 sendfox_campaign_id: 2798029
 ---
 Since I wrote about [async Ruby][async-article] and [patched Solid Queue to support fibers][sq-article], people keep asking the same questions. What happens when a fiber blocks? Don't you still need threads? What about database transactions? What about Ractors?
@@ -52,7 +53,7 @@ Think of your computer as an office building.
 
 Here's what that means for cost:
 
-| | Process | Ractor | Thread | Fiber |
+| Metric | Process | Ractor | Thread | Fiber |
 |---|---|---|---|---|
 | Memory | full app copy | ~thread + Ractor state | ~8MB virtual stack reservation | ~4KB initial virtual stack, grows as needed |
 | Creation time | ~ms | ~80μs | ~80μs | ~3μs |

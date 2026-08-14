@@ -2,7 +2,15 @@
   {% assign post_image = post.media_image %}
   {% if post_image %}
   <a class="article__image" href="{{post.url | prepend: site.baseurl}}">
-    <img src="{{site.baseurl}}{{post_image}}" alt="{{post.title}}">
+    <picture>
+      {% if post.responsive_avif_images %}<source type="image/avif" srcset="{% for image in post.responsive_avif_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+        sizes="(max-width: 576px) calc(100vw - 40px), (max-width: 992px) 50vw, 400px">{% endif %}
+    <img src="{{site.baseurl}}{{ post.responsive_image_src | default: post_image }}" alt="{{post.title | escape}}"
+      {% if post.responsive_images %}srcset="{% for image in post.responsive_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+      sizes="(max-width: 576px) calc(100vw - 40px), (max-width: 992px) 50vw, 400px"{% endif %}
+      {% if post.media_image_width and post.media_image_height %}width="{{ post.media_image_width }}" height="{{ post.media_image_height }}"{% endif %}
+      {% if forloop.index == 1 %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">
+    </picture>
   </a>
   {% endif %}
   <div class="article__content">
@@ -25,8 +33,9 @@
     <div class="article__meta">
       <div class="article__author">
         <a href="{{site.baseurl}}/about/" class="article__author-image"
-          style="background-image: url({{site.baseurl}}{{site.author.avatar}})"
-          aria-label="{{site.author.name}}'s Picture"></a> <a href="{{site.baseurl}}/about/"
+          aria-label="About {{site.author.name}}"><img
+            src="{{site.baseurl}}{{ site.author.avatar_responsive | default: site.author.avatar }}"
+            alt="" width="20" height="20" loading="lazy" decoding="async"></a> <a href="{{site.baseurl}}/about/"
           class="article__author-link">{{site.author.name}}</a>
       </div>
       <span class="article__date"><time datetime="{{ post.date | date_to_xmlschema }}">{% assign date_format =

@@ -4,6 +4,9 @@ layout: null
 [
   {% for post in site.posts %}
     {% assign post_image = post.media_image %}
+    {% if post.responsive_image_thumbnail %}
+      {% assign post_image = post.responsive_image_thumbnail %}
+    {% endif %}
     {% unless post_image %}
       {% assign post_image = post.social_image.path %}
     {% endunless %}

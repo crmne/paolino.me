@@ -67,4 +67,11 @@
     font-size: 15px;
     line-height: 21px;
   }
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: $brand-color;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
 }

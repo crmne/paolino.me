@@ -1,8 +1,9 @@
 ---
 layout: post
 title: "RubyLLM::Schema Is Now Schematist: A JSON Schema DSL for Ruby with Full Draft 2020-12 Coverage"
+seo_title: "Schematist: A Complete JSON Schema DSL for Ruby"
 date: 2026-08-11
-description: "RubyLLM::Schema is now Schematist: a general purpose JSON Schema DSL with full Draft 2020-12 coverage, values resolved at render time, and no runtime dependencies."
+description: "Schematist is a Ruby JSON Schema DSL with full Draft 2020-12 coverage, render-time values, standards-compliant output, and no runtime dependencies."
 tags: [Ruby, JSON Schema, Open Source, Schematist, RubyLLM, AI]
 sendfox_campaign_id: 2990216
 image: /images/schematist.png

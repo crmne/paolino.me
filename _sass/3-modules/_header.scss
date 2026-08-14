@@ -110,6 +110,11 @@
   font-size: 21px;
 
   .nav__icon {
+    padding: 0;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    background: transparent;
     cursor: pointer;
     &:first-child {
       margin-right: 15px;
@@ -199,6 +204,9 @@
     text-align: center;
     line-height: 40px;
     color: $dark;
+    padding: 0;
+    border: 0;
+    background: transparent;
     transition: all .25s ease;
     cursor: pointer;
   }

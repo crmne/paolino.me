@@ -37,6 +37,8 @@
     font-size: 30px;
     line-height: 1;
     color: $dark;
+    border: 0;
+    background: transparent;
     transition: color .25s;
     cursor: pointer;
     &:hover {

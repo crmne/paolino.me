@@ -16,9 +16,9 @@ layout: default
         <h1 class="post-title" itemprop="headline">{{ page.title | escape }}</h1>
         <div class="post__meta">
           <div class="post__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-            <a href="{{site.baseurl}}/about/" class="article__author-image"
-              style="background-image: url({{site.baseurl}}{{site.author.avatar}})"
-              aria-label="{{site.author.name}}'s Picture"></a> <a href="{{site.baseurl}}/about/"
+            <a href="{{site.baseurl}}/about/" class="article__author-image" aria-label="About {{site.author.name}}">
+              <img src="{{site.baseurl}}{{ site.author.avatar_responsive | default: site.author.avatar }}" alt="" width="{{ site.author.avatar_width }}" height="{{ site.author.avatar_height }}" decoding="async">
+            </a> <a href="{{site.baseurl}}/about/"
               class="article__author-link" itemprop="url"><span itemprop="name">{{site.author.name}}</span></a>
           </div>
           <span class="article__date"><time itemprop="datePublished" datetime="{{ page.date | date_to_xmlschema }}">{% assign date_format =
@@ -51,7 +51,7 @@ layout: default
         <iframe class="post-image post-video" src="{{ youtube_embed_url }}" title="{{ page.title | escape }}"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
         {% else %}
         <video class="post-image" autoplay muted loop playsinline>
           <source src="{% if video_url contains '://' %}{{video_url}}{% else %}{{site.baseurl}}{{video_url}}{% endif %}" type="video/mp4">
@@ -61,7 +61,15 @@ layout: default
       </div>
       {% elsif page_image %}
       <div class="image-box">
-        <img class="post-image" src="{{ site.baseurl }}{{ page_image }}" alt="{{ page.title | escape }}">
+        <picture>
+          {% if page.responsive_avif_images and page.media_image_animated != true %}<source type="image/avif" srcset="{% for image in page.responsive_avif_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+            sizes="(max-width: 840px) calc(100vw - 40px), 800px">{% endif %}
+        <img class="post-image" src="{{ site.baseurl }}{% if page.media_image_animated %}{{ page_image }}{% else %}{{ page.responsive_image_src | default: page_image }}{% endif %}" alt="{{ page.image_alt | default: page.title | escape }}"
+          {% if page.responsive_images and page.media_image_animated != true %}srcset="{% for image in page.responsive_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+          sizes="(max-width: 840px) calc(100vw - 40px), 800px"{% endif %}
+          {% if page.media_image_width and page.media_image_height %}width="{{ page.media_image_width }}" height="{{ page.media_image_height }}"{% endif %}
+          decoding="async" fetchpriority="high">
+        </picture>
       </div>
       {% endif %}
       <div class="col col-8 col-d-10 push-d-1 push-2 col-m-12 push-m-0">
@@ -71,7 +79,7 @@ layout: default
 
         <div class="widget widget-subscribe">
           <div class="widget__head">
-            <h4 class="widget__title">{{site.newsletter-title}}</h4>
+            <h2 class="widget__title">{{site.newsletter-title}}</h2>
           </div>
           <p class="subscribe-subtitle">I don't post often, but when I do, it tends to be like this. Subscribe so the algorithm doesn't decide for you.</p>
           <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form"
@@ -122,6 +130,8 @@ layout: default
             </li>
           </ul>
         </div>
+
+        {% ai_related_posts limit: 3 %}
       </div>
 
 
@@ -131,13 +141,18 @@ layout: default
           {% assign previous_image = page.previous.media_image %}
           <div class="prev">
             {% if previous_image %}
-            <a class="prev__image" href="{{page.previous.url}}"
-              style="background-image: url({{site.baseurl}}{{previous_image}})"></a>
+            <a class="prev__image" href="{{page.previous.url}}">
+              <img src="{{site.baseurl}}{{ page.previous.responsive_image_src | default: previous_image }}" alt="{{ page.previous.title | escape }}"
+                {% if page.previous.responsive_images %}srcset="{% for image in page.previous.responsive_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+                sizes="(max-width: 768px) calc(100vw - 40px), 50vw"{% endif %}
+                {% if page.previous.media_image_width and page.previous.media_image_height %}width="{{ page.previous.media_image_width }}" height="{{ page.previous.media_image_height }}"{% endif %}
+                loading="lazy" decoding="async">
+            </a>
             {% endif %}
             <div class="prev__box">
               <a class="post__nav post__nav__prev" href="{{page.previous.url}}"><ion-icon
                   name="arrow-back-outline"></ion-icon> Previous Page</a>
-              <h4 class="post__nav__title"><a href="{{page.previous.url}}">{{page.previous.title}}</a></h4>
+              <h3 class="post__nav__title"><a href="{{page.previous.url}}">{{page.previous.title}}</a></h3>
             </div>
           </div>
           {% endif %}
@@ -146,13 +161,18 @@ layout: default
           {% assign next_image = page.next.media_image %}
           <div class="next">
             {% if next_image %}
-            <a class="next__image" href="{{page.next.url}}"
-              style="background-image: url({{site.baseurl}}{{next_image}})"></a>
+            <a class="next__image" href="{{page.next.url}}">
+              <img src="{{site.baseurl}}{{ page.next.responsive_image_src | default: next_image }}" alt="{{ page.next.title | escape }}"
+                {% if page.next.responsive_images %}srcset="{% for image in page.next.responsive_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+                sizes="(max-width: 768px) calc(100vw - 40px), 50vw"{% endif %}
+                {% if page.next.media_image_width and page.next.media_image_height %}width="{{ page.next.media_image_width }}" height="{{ page.next.media_image_height }}"{% endif %}
+                loading="lazy" decoding="async">
+            </a>
             {% endif %}
             <div class="next__box">
               <a class="post__nav post__nav__next" href="{{page.next.url}}">Next Page <ion-icon
                   name="arrow-forward-outline"></ion-icon></a>
-              <h4 class="post__nav__title"><a href="{{page.next.url}}">{{page.next.title}}</a></h4>
+              <h3 class="post__nav__title"><a href="{{page.next.url}}">{{page.next.title}}</a></h3>
             </div>
           </div>
           {% endif %}

@@ -1,5 +1,5 @@
 module Jekyll
-  class TagPageGenerator < Generator
+  class SeoTagPageGenerator < Generator
     safe true
 
     def generate(site)
@@ -15,14 +15,12 @@ module Jekyll
       # Use Jekyll's built-in slugify filter for consistency
       tag_slug = Jekyll::Utils.slugify(tag.to_s, :mode => 'pretty')
 
-      page = TagPage.new(site, site.source, File.join(dir, tag_slug), tag)
-      page.render(site.layouts, site.site_payload)
-      page.write(site.dest)
+      page = SeoTagPage.new(site, site.source, File.join(dir, tag_slug), tag)
       site.pages << page
     end
   end
 
-  class TagPage < Page
+  class SeoTagPage < Page
     def initialize(site, base, dir, tag)
       @site = site
       @base = base
@@ -32,10 +30,22 @@ module Jekyll
       self.process(@name)
       self.read_yaml(File.join(base, '_layouts'), 'tag_page.html')
       self.data['tag'] = tag
-      self.data['title'] = "Posts tagged with #{tag}"
-      self.data['description'] = "Posts about #{tag} by #{site.config['title']}."
       # Filter posts to only include those with this specific tag
       self.data['posts'] = site.posts.docs.select { |post| post.data['tags'].include?(tag) if post.data['tags'] }
+      post_count = self.data['posts'].size
+
+      self.data['title'] = "#{tag} Articles by #{site.config['title']}"
+      self.data['description'] = "Explore #{post_count} #{post_count == 1 ? 'article' : 'articles'} about #{tag}, written by #{site.config['title']}."
+      self.data['nav'] = false
+      self.data['og_type'] = 'website'
+
+      # A one-post archive duplicates the only article without adding useful
+      # search value. Keep it crawlable for readers, but out of the index and
+      # sitemap until the topic has enough depth to become a real collection.
+      if post_count < 2
+        self.data['robots'] = 'noindex,follow,max-image-preview:large'
+        self.data['sitemap'] = false
+      end
     end
   end
 end

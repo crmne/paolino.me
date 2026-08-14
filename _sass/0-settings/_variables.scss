@@ -51,7 +51,7 @@ $base-font-size: 19px;
 $base-font-style: normal;
 $base-font-variant: normal;
 $base-font-weight: normal;
-$base-font-family: "Inter", ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+$base-font-family: "Inter", "Inter Fallback", ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
 $monospace-font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $monospace-font-size: .9em;
 $monospace-line-height: 1.6;
@@ -59,7 +59,7 @@ $base-line-height: 31px;
 
 // Headings
 $heading-font-weight: 700;
-$heading-font-family: 'Lora', Georgia, "Times New Roman", serif;
+$heading-font-family: 'Lora', 'Lora Fallback', Georgia, "Times New Roman", serif;
 
 $font-size-h1:  40px;
 $font-size-h2:  32px;

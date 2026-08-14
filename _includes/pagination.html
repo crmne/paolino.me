@@ -5,7 +5,7 @@
       <div class="col col-12 load-more">
         {% if paginator.next_page %}
         <div class="load-more-section">
-          <button class="load-more-posts button button--primary">Load Posts <ion-icon name="arrow-down-outline"></ion-icon></button>
+          <a class="load-more-posts button button--primary" href="{{ paginator.next_page_path | prepend: site.baseurl }}" rel="next">Load Posts <ion-icon name="arrow-down-outline"></ion-icon></a>
         </div>
         {% endif %}
       </div>

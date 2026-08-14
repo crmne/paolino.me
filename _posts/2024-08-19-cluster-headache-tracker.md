@@ -27,6 +27,7 @@ Here's a demo:
     title="Cluster Headache Tracker Demo"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    loading="lazy"
     allowfullscreen>
   </iframe>
 </p>

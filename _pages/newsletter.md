@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Newsletter
+seo_title: Ruby & AI Newsletter by Carmine Paolino
 permalink: /newsletter/
 description: Subscribe to get new posts about Ruby, AI, and building products.
 page_class: page--newsletter

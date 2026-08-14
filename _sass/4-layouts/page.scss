@@ -26,23 +26,12 @@
 
 .page-image {
   display: block;
+  width: 100%;
+  height: auto;
+  max-height: 720px;
   margin-bottom: 30px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: transparent;
   border-radius: 8px;
   object-fit: contain;
-
-  &:after {
-    content: "";
-    display: table;
-    padding-top: 75%;
-
-    @media only screen and (max-width: $desktop) {
-      padding-top: 65%;
-    }
-  }
 }
 
 /* Newsletter page */

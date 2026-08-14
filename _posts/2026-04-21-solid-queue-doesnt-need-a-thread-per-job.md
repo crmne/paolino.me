@@ -177,7 +177,7 @@ The CPU row is the control. Fibers don't help computation, and the average confi
 
 That table shows the best observed point and the paired-cell deltas. Here's the full spread. Some configurations favor threads for synthetic workloads, but the paired averages are the steadier signal: fiber wins the I/O workloads, and RubyLLM Stream always favors fiber.
 
-![Solid Queue fiber over thread throughput ranges across all workloads.](/images/solid-queue-headline-fiber-vs-thread.svg)
+<img src="/images/solid-queue-headline-fiber-vs-thread.svg" alt="Solid Queue fiber over thread throughput ranges across all workloads." width="831" height="247" loading="lazy" decoding="async">
 
 The newer suite also adds database-shaped workloads. With matched pools, short DB bursts still favor fiber: `db_queries` averages +12.6%, and a read/API/write mix averages +6.9%. The transaction case is the useful caveat: when each job pins a connection for the whole transaction, fiber still averages +3.5%, but the win is less consistent. That's exactly the workload where you should be more careful with pool sizing.
 
@@ -193,7 +193,7 @@ The result is stark. Thread mode only completed the smallest cell for each workl
 | Async HTTP | 1/10 | 10/10 |
 | RubyLLM Stream | 1/10 | 10/10 |
 
-![Solid Queue stress cell status.](/images/solid-queue-stress-cell-status.svg)
+<img src="/images/solid-queue-stress-cell-status.svg" alt="Solid Queue stress cell status." width="407" height="289" loading="lazy" decoding="async">
 
 PostgreSQL's default `max_connections` is 100. In this stress run, thread mode at concurrency 50 with 2 processes asked for 110 worker-pool connections. With 6 processes, even concurrency 25 asked for 180. The one surviving thread cell was the smallest: concurrency 25, 2 processes.
 
@@ -237,7 +237,7 @@ Async::Job is actually faster if you compare raw throughput against Redis. It is
 | Sleep | 500.50 j/s | 644.98 j/s | +28.9% |
 | CPU | 110.02 j/s | 125.75 j/s | +14.3% |
 
-![Async::Job over Solid Queue fiber throughput ranges.](/images/solid-queue-headline-asyncjob-vs-fiber.svg)
+<img src="/images/solid-queue-headline-asyncjob-vs-fiber.svg" alt="Async::Job over Solid Queue fiber throughput ranges." width="831" height="247" loading="lazy" decoding="async">
 
 If you want raw speed and don't need persistence, Async::Job is the right call. But if you want job visibility, failure tracking, retries, Mission Control, everything Rails gives you out of the box, fiber mode gets you there. Same concurrency. You can size database connections to database work instead of the number of jobs waiting on network I/O. You set `fibers: N` and keep building.
 

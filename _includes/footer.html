@@ -13,7 +13,7 @@
             <div class="col col-4 col-d-6 col-t-12">
               <div class="widget widget-about">
                 <div class="widget__head">
-                  <h4 class="widget__title">About Me</h4>
+                  <h2 class="widget__title">About Me</h2>
                 </div>
                 <p class="about__desc">{{site.author.description}}</p>
               </div>
@@ -21,10 +21,10 @@
               {% unless is_newsletter_page %}
               <div class="widget widget-tags">
                 <div class="widget__head">
-                  <h4 class="widget__title">Tags</h4>
+                  <h2 class="widget__title">Tags</h2>
                 </div>
                 <div class="tag__cloud">
-                  {{ site | tag_cloud }}
+                  {% include tag-cloud.html %}
                 </div>
               </div>
               {% endunless %}
@@ -34,14 +34,17 @@
             <div class="col col-4 col-d-6 col-t-12">
               <div class="widget widget-recent">
                 <div class="widget__head">
-                  <h4 class="widget__title">Recent Posts</h4>
+                  <h2 class="widget__title">Recent Posts</h2>
                 </div>
                 {% for post in site.posts limit:3 %}
                 {% assign post_image = post.media_image %}
                 <div class="recent-posts">
                   {% if post_image %}
-                  <a class="recent-posts__image" href="{{ post.url }}"
-                    style="background-image: url({{site.baseurl}}{{post_image}})"></a>
+                  <a class="recent-posts__image" href="{{ post.url }}">
+                    <img src="{{site.baseurl}}{{ post.responsive_image_thumbnail | default: post_image }}" alt="{{ post.title | escape }}"
+                      {% if post.media_image_width and post.media_image_height %}width="{{ post.media_image_width }}" height="{{ post.media_image_height }}"{% endif %}
+                      loading="lazy" decoding="async">
+                  </a>
                   {% else %}
                   {% endif %}
                   <span class="recent-posts__count">{{ forloop.index }}</span>
@@ -49,7 +52,7 @@
                     <div class="recent-posts__date">
                       <time datetime="{{ post.date | date_to_xmlschema }}">{{post.date | date: "%b %-d, %Y"}}</time>
                     </div>
-                    <h6 class="recent-posts__title"><a href="{{ post.url }}">{{ post.title }}</a></h6>
+                    <h3 class="recent-posts__title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
                   </div>
                 </div>
                 {% endfor %}
@@ -60,17 +63,17 @@
               {% if is_newsletter_page and site.tags.size >= 1 %}
               <div class="widget widget-tags">
                 <div class="widget__head">
-                  <h4 class="widget__title">Tags</h4>
+                  <h2 class="widget__title">Tags</h2>
                 </div>
                 <div class="tag__cloud">
-                  {{ site | tag_cloud }}
+                  {% include tag-cloud.html %}
                 </div>
               </div>
               {% else %}
               {% if site.mailchimp %}
               <div class="widget widget-subscribe">
                 <div class="widget__head">
-                  <h4 class="widget__title">{{site.newsletter-title}}</h4>
+                  <h2 class="widget__title">{{site.newsletter-title}}</h2>
                 </div>
                 <p class="subscribe-subtitle">{{site.newsletter-description}}</p>
                 <form class="subscribe-form validate"
@@ -92,7 +95,7 @@
               {% if site.sendfox %}
               <div class="widget widget-subscribe">
                 <div class="widget__head">
-                  <h4 class="widget__title">{{site.newsletter-title}}</h4>
+                  <h2 class="widget__title">{{site.newsletter-title}}</h2>
                 </div>
                 <p class="subscribe-subtitle">{{site.newsletter-description}}</p>
                 <form method="post" action="https://sendfox.com/form/mnn6xq/1wj8v6" class="subscribe-form sendfox-form"

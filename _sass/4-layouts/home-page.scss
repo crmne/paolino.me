@@ -10,7 +10,7 @@
 
 .article__image {
   position: relative;
-  display: inline-block;
+  display: block;
 
   &:hover {
     &:after {
@@ -37,6 +37,9 @@
   }
 
   img {
+    display: block;
+    width: 100%;
+    height: auto;
     border-radius: 8px;
   }
 }
@@ -145,6 +148,14 @@
     background-position: center;
     background-repeat: no-repeat;
     background-color: $dark;
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   &-link {

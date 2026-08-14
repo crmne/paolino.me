@@ -2,7 +2,7 @@
 layout: post
 title: "Production Experience Cannot Be Hallucinated"
 date: 2026-05-13
-description: "A paid Medium article claimed hard-won production lessons about RubyLLM. The code had not even run, and the regenerated version only made the fake experience harder to spot."
+description: "A paid Medium article claimed hard-won RubyLLM production lessons, but its code had never run. Regenerating it only made the fabrication harder to spot."
 tags: [AI, Ruby, RubyLLM, Open Source, Technical Writing]
 sendfox_campaign_id: 2814932
 ---

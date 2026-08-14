@@ -1,10 +1,13 @@
 #-------------------------------
 # General Site Settings
 title: &name Carmine Paolino
+alternate_title: paolino.me
 logo: # You can add own logo. For example '/images/logo.png'.
 description: &description I build AI tools at Chat with Work and RubyLLM. Co-founded Freshflow. Outside tech, I make music, run Floppy Disco, and take photos.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
+lang: en-US
+locale: en_US
 
 
 #-------------------------------
@@ -12,8 +15,12 @@ url: "https://paolino.me" # the base hostname & protocol for your site, e.g. htt
 author:
   name: *name
   url: "https://paolino.me"
-  image: '/images/me-04_small.jpg'
+  image: '/images/me-04.jpg'
+  image_width: 1080
+  image_height: 1080
   avatar: '/images/me-04_small.jpg'
+  avatar_width: 300
+  avatar_height: 300
   picture: '/images/me-04_small.jpg'
   company_name: "Chat with Work"
   company_url: "https://chatwithwork.com"
@@ -82,7 +89,6 @@ permalink: ':title/'
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
-  - jekyll/tagging
   - jekyll-feed
   - jekyll-twitter-plugin
   - jekyll-og-image
@@ -281,11 +287,13 @@ ai_visible_content:
     exclude_paths:
       - /thank-you/
       - /404.html
+      - /tag/*
+      - /page/*
     verbose: false
     max_examples: 5
 
 paginate: 9
-paginate_path: "/page/:num"
+paginate_path: "/page/:num/"
 
 # Pages Path
 defaults:

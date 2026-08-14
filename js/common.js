@@ -1,365 +1,256 @@
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
   'use strict';
 
+  var topNav = document.querySelector('.top-nav');
+  var menuOpenIcon = document.querySelector('.nav__icon-menu');
+  var menuCloseIcon = document.querySelector('.nav__icon-close');
+  var searchOpenIcon = document.querySelector('.nav__icon-search');
+  var searchCloseIcon = document.querySelector('.search__close');
+  var searchBox = document.querySelector('.search');
+  var searchFocusTimer;
 
-  var topNav = $(".top-nav"),
-    menuOpenIcon = $(".nav__icon-menu"),
-    menuCloseIcon = $(".nav__icon-close"),
-    menuList = $(".main-nav"),
-    searchOpenIcon = $(".nav__icon-search"),
-    searchCloseIcon = $(".search__close"),
-    searchBox = $(".search"),
-    body = $("body"),
-    searchFocusTimer;
-
-
-  /* =======================
-  // Hide Header
-  ======================= */
-  header();
-  function header() {
-    var initialScroll;
-    $(window).scroll(function () {
-      var scroll = $(this).scrollTop();
-      if (scroll > initialScroll && initialScroll > 70) {
-        $('.header').addClass('is-hide');
-      } else {
-        $('.header').removeClass('is-hide');
-      }
-      initialScroll = scroll;
-    });
+  function toggleClass(element, className, enabled) {
+    if (element) element.classList.toggle(className, enabled);
   }
 
-
-  /* =======================
-  // Menu and Search
-  ======================= */
-  menuOpenIcon.click(function() {
-    menuOpen();
-  })
-
-  menuCloseIcon.click(function () {
-    menuClose();
-  })
-
-  searchOpenIcon.click(function () {
-    searchOpen();
-  });
-
-  searchCloseIcon.click(function () {
-    clearSearch();
-    searchClose();
-  });
-
-  searchBox.click(function (event) {
-    if (!$(event.target).closest(".search__box").length) {
-      searchClose();
-    }
-  });
-
-  $(document).keydown(function(event) {
-    if ((event.key === "Escape" || event.which === 27) && searchBox.hasClass("is-visible")) {
-      event.preventDefault();
-      searchClose();
-    }
-  });
+  function syncScrollLock() {
+    var hasOverlay = (topNav && topNav.classList.contains('is-visible')) ||
+      (searchBox && searchBox.classList.contains('is-visible'));
+    document.body.classList.toggle('is-locked', Boolean(hasOverlay));
+  }
 
   function menuOpen() {
-    searchBox.removeClass("is-visible");
-    topNav.addClass("is-visible");
+    toggleClass(searchBox, 'is-visible', false);
+    toggleClass(topNav, 'is-visible', true);
     syncScrollLock();
   }
 
   function menuClose() {
-    topNav.removeClass("is-visible");
+    toggleClass(topNav, 'is-visible', false);
     syncScrollLock();
   }
 
+  function focusSearchInput() {
+    var input = document.getElementById('js-search-input');
+    if (!input) return;
+
+    try {
+      input.focus({ preventScroll: true });
+    } catch (error) {
+      input.focus();
+    }
+
+    searchFocusTimer = window.setTimeout(function() {
+      if (searchBox && searchBox.classList.contains('is-visible')) input.focus();
+    }, 150);
+  }
+
   function searchOpen() {
-    topNav.removeClass("is-visible");
-    searchBox.addClass("is-visible");
+    toggleClass(topNav, 'is-visible', false);
+    toggleClass(searchBox, 'is-visible', true);
     syncScrollLock();
+    if (window.initializeSiteSearch) window.initializeSiteSearch();
     focusSearchInput();
   }
 
   function searchClose() {
     window.clearTimeout(searchFocusTimer);
-    searchBox.removeClass("is-visible");
+    toggleClass(searchBox, 'is-visible', false);
     syncScrollLock();
   }
 
-  function focusSearchInput() {
-    var searchInput = document.getElementById("js-search-input");
-
-    if (!searchInput) {
-      return;
-    }
-
-    try {
-      searchInput.focus({ preventScroll: true });
-    } catch (error) {
-      searchInput.focus();
-    }
-
-    searchFocusTimer = window.setTimeout(function() {
-      if (searchBox.hasClass("is-visible")) {
-        searchInput.focus();
-      }
-    }, 150);
-  }
-
   function clearSearch() {
-    var searchInput = $("#js-search-input");
-    searchInput.val("");
-    searchInput.trigger("keyup");
+    var input = document.getElementById('js-search-input');
+    if (!input) return;
+    input.value = '';
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Backspace' }));
   }
 
-  function syncScrollLock() {
-    var hasOverlay = topNav.hasClass("is-visible") || searchBox.hasClass("is-visible");
-    body.toggleClass("is-locked", hasOverlay);
+  if (menuOpenIcon) menuOpenIcon.addEventListener('click', menuOpen);
+  if (menuCloseIcon) menuCloseIcon.addEventListener('click', menuClose);
+  if (searchOpenIcon) searchOpenIcon.addEventListener('click', searchOpen);
+  if (searchCloseIcon) {
+    searchCloseIcon.addEventListener('click', function() {
+      clearSearch();
+      searchClose();
+    });
+  }
+  if (searchBox) {
+    searchBox.addEventListener('click', function(event) {
+      if (!event.target.closest('.search__box')) searchClose();
+    });
+  }
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && searchBox && searchBox.classList.contains('is-visible')) {
+      event.preventDefault();
+      searchClose();
+    }
+  });
+
+  var initialScroll = window.scrollY;
+  var scrollTicking = false;
+  var header = document.querySelector('.header');
+  var topButton = document.querySelector('.top');
+
+  function updateScrollUI() {
+    var scroll = window.scrollY;
+    toggleClass(header, 'is-hide', scroll > initialScroll && initialScroll > 70);
+    toggleClass(topButton, 'is-active', scroll > window.innerHeight);
+    initialScroll = scroll;
+    scrollTicking = false;
   }
 
+  window.addEventListener('scroll', function() {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(updateScrollUI);
+      scrollTicking = true;
+    }
+  }, { passive: true });
 
-  /* =======================
-  // Masonry Grid Layout
-  ======================= */
-  var $grid = $('.grid');
-  var hasMasonry = $grid.length && $.fn.masonry;
-  var hasImagesLoaded = $.fn.imagesLoaded;
+  if (topButton) {
+    topButton.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
-  if (hasMasonry) {
-    $grid.masonry({
+  var grid = document.querySelector('.grid');
+  var masonry = null;
+  if (grid && window.Masonry) {
+    masonry = new Masonry(grid, {
       itemSelector: '.grid__post',
       percentPosition: true
     });
-
-    if (hasImagesLoaded) {
-      $grid.imagesLoaded().progress(function () {
-        $grid.masonry('layout');
-      });
+    if (window.imagesLoaded) {
+      imagesLoaded(grid).on('progress', function() { masonry.layout(); });
     }
   }
 
-
-  // =====================
-  // Ajax Load More
-  // =====================
-  var $load_posts_button = $('.load-more-posts');
-
-  function resetLoadMoreButton() {
-    $load_posts_button.text('Load Posts ').append('<ion-icon name="arrow-down-outline"></ion-icon>');
-  }
+  var loadButton = document.querySelector('.load-more-posts');
+  var loadMoreSection = document.querySelector('.load-more-section');
 
   function paginationPagePath(pageNumber) {
     return pagination_page_path_template.replace('__page__', pageNumber);
   }
 
-  $load_posts_button.click(function(e) {
-    e.preventDefault();
-    var loadMore = $('.load-more-section');
-    var request_next_link = pagination_next_url || paginationPagePath(pagination_next_page_number);
+  function resetLoadMoreButton() {
+    if (!loadButton) return;
+    loadButton.classList.remove('is-disabled');
+    loadButton.setAttribute('aria-disabled', 'false');
+    loadButton.href = pagination_next_url;
+    loadButton.innerHTML = 'Load Posts <ion-icon name="arrow-down-outline"></ion-icon>';
+  }
 
-    if (!request_next_link || !pagination_next_page_number) {
-      loadMore.addClass('hide');
-      return;
-    }
+  if (loadButton) {
+    loadButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      var requestUrl = pagination_next_url || paginationPagePath(pagination_next_page_number);
 
-    $.ajax({
-      url: request_next_link,
-      beforeSend: function() {
-        $load_posts_button.prop('disabled', true);
-        $load_posts_button.text('Loading...');
-      }
-    }).done(function(data) {
-      var posts = $('.grid__post', data);
-
-      if (!posts.length) {
-        loadMore.addClass('hide');
+      if (!requestUrl || !pagination_next_page_number) {
+        toggleClass(loadMoreSection, 'hide', true);
         return;
       }
 
-      $('.grid').append(posts);
+      loadButton.classList.add('is-disabled');
+      loadButton.setAttribute('aria-disabled', 'true');
+      loadButton.textContent = 'Loading...';
 
-      if (hasMasonry) {
-        $grid.masonry('appended', posts);
+      fetch(requestUrl, { credentials: 'same-origin' })
+        .then(function(response) {
+          if (!response.ok) throw new Error('Could not load more posts');
+          return response.text();
+        })
+        .then(function(html) {
+          var page = new DOMParser().parseFromString(html, 'text/html');
+          var posts = Array.from(page.querySelectorAll('.grid__post'));
+          if (!posts.length) {
+            toggleClass(loadMoreSection, 'hide', true);
+            return;
+          }
 
-        if (hasImagesLoaded) {
-          $grid.imagesLoaded().progress(function() {
-            $grid.masonry('layout');
-          });
-        }
-      }
+          posts.forEach(function(post) { grid.appendChild(post); });
+          if (masonry) {
+            masonry.appended(posts);
+            if (window.imagesLoaded) {
+              imagesLoaded(posts).on('progress', function() { masonry.layout(); });
+            }
+          }
 
-      initFadeIn(posts);
-
-      pagination_next_page_number++;
-      pagination_next_url = paginationPagePath(pagination_next_page_number);
-
-      if (pagination_next_page_number > pagination_available_pages_number) {
-        loadMore.addClass('hide');
-      } else {
-        resetLoadMoreButton();
-      }
-    }).fail(function() {
-      resetLoadMoreButton();
-    }).always(function() {
-      $load_posts_button.prop('disabled', false);
-    });
-  });
-
-
-  /* =======================
-  // Responsive Videos
-  ======================= */
-  if ($.fn.fitVids) {
-    $(".post__content, .page__content").fitVids({
-      customSelector: ['iframe[src*="ted.com"]', 'iframe[src*="player.twitch.tv"]', 'iframe[src*="facebook.com"]']
-    });
-  }
-
-
-  /* =======================
-  // Zoom Image
-  ======================= */
-  $(".page img, .post img").attr("data-action", "zoom");
-  $(".page a img, .post a img").removeAttr("data-action", "zoom");
-
-
-  /* =================================
-  // Fade In
-  ================================= */
-  initFadeIn();
-
-  function initFadeIn(elements) {
-    var $fadeElements = elements ? elements.filter('.fadein').add(elements.find('.fadein')) : $('.fadein');
-
-    if (!$fadeElements.length) {
-      window.__fadeinReady = true;
-      return;
-    }
-
-    if ($.fn.viewportChecker) {
-      try {
-        $fadeElements.viewportChecker({
-          classToAdd: 'inview',
-          offset: 100
+          pagination_next_page_number += 1;
+          pagination_next_url = paginationPagePath(pagination_next_page_number);
+          if (pagination_next_page_number > pagination_available_pages_number) {
+            toggleClass(loadMoreSection, 'hide', true);
+          } else {
+            resetLoadMoreButton();
+          }
+        })
+        .catch(resetLoadMoreButton)
+        .finally(function() {
+          loadButton.classList.remove('is-disabled');
+          loadButton.setAttribute('aria-disabled', 'false');
         });
-      } catch (error) {
-        $fadeElements.addClass('inview');
-      }
-    } else {
-      $fadeElements.addClass('inview');
-    }
-
-    window.__fadeinReady = true;
-  }
-
-
-  /* ==================================
-  // If the Author section is disabled
-  =================================== */
-  if (!$(".home section").hasClass("author")) {
-    $(".home .container__inner").addClass("without-author");
-  }
-
-
-  /* =======================
-  // Scroll Top Button
-  ======================= */
-  $(".top").click(function() {
-    $("html, body")
-      .stop()
-      .animate({ scrollTop: 0 }, "slow", "swing");
-  });
-  $(window).scroll(function() {
-    if ($(this).scrollTop() > $(window).height()) {
-      $(".top").addClass("is-active");
-    } else {
-      $(".top").removeClass("is-active");
-    }
-  });
-
-
-  /* =======================
-  // Code Block Copy Button
-  ======================= */
-  initCodeBlockCopy();
-
-  function initCodeBlockCopy() {
-    var codeBlocks = document.querySelectorAll('.post__content .highlighter-rouge .highlight, .page__content .highlighter-rouge .highlight');
-
-    codeBlocks.forEach(function(block) {
-      if (block.querySelector('.code-copy-button')) return;
-
-      var pre = block.querySelector('pre');
-      if (!pre) return;
-
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'code-copy-button';
-      button.setAttribute('aria-label', 'Copy code to clipboard');
-      button.textContent = 'Copy';
-
-      button.addEventListener('click', function() {
-        var code = pre.textContent.replace(/\n$/, '');
-
-        copyTextToClipboard(code)
-          .then(function() {
-            setCopiedState(button);
-          })
-          .catch(function() {
-            button.textContent = 'Failed';
-            button.disabled = true;
-          });
-      });
-
-      block.appendChild(button);
     });
   }
+
+  var home = document.querySelector('.home');
+  if (home && !home.querySelector('section.author')) {
+    var inner = home.querySelector('.container__inner');
+    if (inner) inner.classList.add('without-author');
+  }
+
+  document.querySelectorAll('.post__content .highlighter-rouge .highlight, .page__content .highlighter-rouge .highlight').forEach(function(block) {
+    if (block.querySelector('.code-copy-button')) return;
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy-button';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+    button.textContent = 'Copy';
+
+    button.addEventListener('click', function() {
+      copyTextToClipboard(pre.textContent.replace(/\n$/, ''))
+        .then(function() { setCopiedState(button); })
+        .catch(function() {
+          button.textContent = 'Failed';
+          button.disabled = true;
+        });
+    });
+    block.appendChild(button);
+  });
 
   function setCopiedState(button) {
     button.classList.add('is-copied');
     button.textContent = 'Copied';
-
-    clearTimeout(button.copyTimeoutId);
-    button.copyTimeoutId = setTimeout(function() {
+    window.clearTimeout(button.copyTimeoutId);
+    button.copyTimeoutId = window.setTimeout(function() {
       button.classList.remove('is-copied');
       button.textContent = 'Copy';
     }, 1600);
   }
 
-  function copyTextToClipboard(text) {
+  function copyTextToClipboard(value) {
     if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text);
+      return navigator.clipboard.writeText(value);
     }
 
     return new Promise(function(resolve, reject) {
       var textarea = document.createElement('textarea');
-      textarea.value = text;
+      textarea.value = value;
       textarea.setAttribute('readonly', '');
       textarea.style.position = 'fixed';
       textarea.style.top = '-9999px';
-      textarea.style.left = '-9999px';
-
       document.body.appendChild(textarea);
-      textarea.focus();
       textarea.select();
 
       try {
         var copied = document.execCommand('copy');
         document.body.removeChild(textarea);
-
-        if (!copied) {
-          reject(new Error('Copy command failed'));
-          return;
-        }
-
-        resolve();
+        copied ? resolve() : reject(new Error('Copy command failed'));
       } catch (error) {
         document.body.removeChild(textarea);
         reject(error);
       }
     });
   }
-
 });

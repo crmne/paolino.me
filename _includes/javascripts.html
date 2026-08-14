@@ -1,21 +1,33 @@
-<script src="{{ site.baseurl }}/js/vendors/jquery-3.3.1.min.js"></script>
-<script src="{{ site.baseurl }}/js/vendors/simple-jekyll-search.min.js"></script>
 <script>
-  SimpleJekyllSearch({
-    searchInput: document.getElementById("js-search-input"),
-    resultsContainer: document.getElementById("js-results-container"),
-    json: "{{site.baseurl}}/search.json",
-    searchResultTemplate: '<li class="search-results__item"><a class="search-results__image" href="{url}" style="background-image: url({image})"></a><a class="search-results__link" href="{url}">{title} <span class="search-results-date"> <time datetime="{date}">{date}</time></span></a></li>',
-    noResultsText: '<li class="no-results">No results found</li>'
-  });
+  window.initializeSiteSearch = (function () {
+    var loading = false;
+    return function () {
+      if (loading || window.SimpleJekyllSearch) return;
+      loading = true;
+
+      var script = document.createElement("script");
+      script.src = "{{ site.baseurl }}/js/vendors/simple-jekyll-search.min.js";
+      script.onload = function () {
+        var input = document.getElementById("js-search-input");
+        SimpleJekyllSearch({
+          searchInput: input,
+          resultsContainer: document.getElementById("js-results-container"),
+          json: "{{site.baseurl}}/search.json",
+          searchResultTemplate: '<li class="search-results__item"><a class="search-results__image" href="{url}" style="background-image: url({image})" aria-hidden="true" tabindex="-1"></a><a class="search-results__link" href="{url}">{title} <span class="search-results-date"> <time datetime="{date}">{date}</time></span></a></li>',
+          noResultsText: '<li class="no-results">No results found</li>'
+        });
+        if (input.value) input.dispatchEvent(new KeyboardEvent("keyup", { key: "a" }));
+      };
+      script.onerror = function () { loading = false; };
+      document.head.appendChild(script);
+    };
+  }());
 </script>
-<script src="{{ site.baseurl }}/js/vendors/jquery.fitvids.js"></script>
-<script src="{{ site.baseurl }}/js/vendors/jquery.viewportchecker.min.js"></script>
-<script src="{{ site.baseurl }}/js/vendors/masonry.pkgd.min.js"></script>
-<script src="{{ site.baseurl }}/js/vendors/imagesloaded.pkgd.min.js"></script>
-<script src="{{ site.baseurl }}/js/vendors/transition.js"></script>
-<script src="{{ site.baseurl }}/js/vendors/zoom.min.js"></script>
-<script src="{{ site.baseurl }}/js/common.js"></script>
+{% if page.url == '/' or page.layout == 'tag_page' or paginator %}
+<script defer src="{{ site.baseurl }}/js/vendors/masonry.pkgd.min.js"></script>
+<script defer src="{{ site.baseurl }}/js/vendors/imagesloaded.pkgd.min.js"></script>
+{% endif %}
+<script defer src="{{ site.baseurl }}/js/common.js"></script>
 {% if paginator.next_page_path %}
   {% assign pagination_next_url = paginator.next_page_path | prepend: site.baseurl %}
 {% else %}
@@ -31,11 +43,59 @@
 </script>
 <!-- Ionicons -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script nomodule defer src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 {% if site.sendfox %}
-<script src="https://cdn.sendfox.com/js/form.js"></script>
-{% endif %}
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+<script>
+  (function () {
+    var loaded = false;
+    function loadSendFox() {
+      if (loaded) return;
+      loaded = true;
+      var script = document.createElement("script");
+      script.src = "https://cdn.sendfox.com/js/form.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
+    document.querySelectorAll(".sendfox-form").forEach(function (form) {
+      form.addEventListener("focusin", loadSendFox, { once: true });
+      form.addEventListener("pointerenter", loadSendFox, { once: true });
+      form.addEventListener("touchstart", loadSendFox, { once: true, passive: true });
+    });
+  }());
 </script>
+{% endif %}
+{% if page.mermaid %}
+<script type="module">
+  const diagrams = Array.from(document.querySelectorAll('.mermaid'));
+  let mermaidPromise;
+
+  function loadMermaid() {
+    if (!mermaidPromise) {
+      mermaidPromise = import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
+        .then(({ default: mermaid }) => {
+          mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+          return mermaid;
+        });
+    }
+    return mermaidPromise;
+  }
+
+  async function renderDiagram(diagram) {
+    const mermaid = await loadMermaid();
+    await mermaid.run({ nodes: [diagram] });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        renderDiagram(entry.target);
+      });
+    }, { rootMargin: '0px' });
+    diagrams.forEach((diagram) => observer.observe(diagram));
+  } else {
+    diagrams.forEach(renderDiagram);
+  }
+</script>
+{% endif %}

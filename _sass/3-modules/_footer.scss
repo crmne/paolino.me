@@ -54,6 +54,13 @@
   font-size: 16px;
   line-height: 24px;
   color: rgba($dark, .8);
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: $brand-color;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
 }
 
 //  Widget Tags
@@ -108,9 +115,14 @@
   min-width: 80px;
   height: 80px;
   border-radius: 5px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
   &:hover {
     &::after {
       opacity: 1;

@@ -1,0 +1,18 @@
+{% comment %}
+Only surface topic archives with enough depth to help a reader. One-post tags
+remain linked from their article, but do not consume sitewide internal links.
+{% endcomment %}
+{% for tag in site.tags %}
+  {% assign tag_count = tag[1] | size %}
+  {% if tag_count >= 2 %}
+    {% assign tag_weight = 2 %}
+    {% if tag_count >= 10 %}
+      {% assign tag_weight = 5 %}
+    {% elsif tag_count >= 6 %}
+      {% assign tag_weight = 4 %}
+    {% elsif tag_count >= 4 %}
+      {% assign tag_weight = 3 %}
+    {% endif %}
+    <a href="{{ site.baseurl }}/tag/{{ tag[0] | slugify: 'pretty' }}/" class="set-{{ tag_weight }}">{{ tag[0] }}</a>
+  {% endif %}
+{% endfor %}

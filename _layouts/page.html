@@ -15,11 +15,19 @@ layout: default
 <article class="page fadein{% if page.page_class %} {{ page.page_class }}{% endif %}">
   <div class="container">
     <div class="row">
-      {% assign page_image = page.image.path | default: page.image %}
+      {% assign page_image = page.media_image %}
       {% if page_image %}
       <div class="col col-10 col-d-10 push-d-1 push-1 col-m-12 push-m-0">
         <div class="image-box">
-          <div class="page-image" style="background-image: url({{site.baseurl}}{{page_image}})"></div>
+          <picture>
+            {% if page.responsive_avif_images %}<source type="image/avif" srcset="{% for image in page.responsive_avif_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+              sizes="(max-width: 576px) calc(100vw - 40px), (max-width: 992px) 83vw, 1000px">{% endif %}
+          <img class="page-image" src="{{site.baseurl}}{{ page.responsive_image_src | default: page_image }}" alt="{{ page.image_alt | default: page.title | escape }}"
+            {% if page.responsive_images %}srcset="{% for image in page.responsive_images %}{{ site.baseurl }}{{ image.path }} {{ image.width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+            sizes="(max-width: 576px) calc(100vw - 40px), (max-width: 992px) 83vw, 1000px"{% endif %}
+            {% if page.media_image_width and page.media_image_height %}width="{{ page.media_image_width }}" height="{{ page.media_image_height }}"{% endif %}
+            decoding="async" fetchpriority="high">
+          </picture>
         </div>
       </div>
       {% endif %}

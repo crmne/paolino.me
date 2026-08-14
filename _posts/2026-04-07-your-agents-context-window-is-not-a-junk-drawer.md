@@ -2,7 +2,7 @@
 layout: post
 title: "Your Agent's Context Window Is Not a Junk Drawer"
 date: 2026-04-07
-description: "Strategies to combat context rot."
+description: "Learn why agent context windows degrade, how context rot harms results, and practical strategies for keeping AI agents focused and reliable."
 tags: [AI, LLM, MCP, Agents, Developer Experience]
 image: /images/context-rot.png
 sendfox_campaign_id: 2772798
