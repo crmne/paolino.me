@@ -8,13 +8,13 @@ image: /images/jekyll-vitepress.png
 ---
 I almost made a gem.
 
-While building [Jekyll VitePress Theme](https://jekyll-vitepress.dev), the part that surprised me most was not the CSS. It was navigation.
+While building [Jekyll VitePress Theme](https://jekyll-vitepress.dev), the part that surprised me most wasn't the CSS. It was navigation.
 
-VitePress feels fast because the shell stays put. The top nav, sidebar, outline, theme switcher, search modal, and scroll position do not get torn down every time you click a page. The content changes, the URL changes, the title changes, and the rest of the interface keeps breathing.
+VitePress feels fast because the shell stays put. The top nav, sidebar, outline, theme switcher, search modal, and scroll position don't get torn down every time you click a page. The content changes, the URL changes, the title changes, and the rest of the interface keeps breathing.
 
-Jekyll does not have a client-side router. It renders static HTML files. That is exactly why I like it.
+Jekyll doesn't have a client-side router. It renders static HTML files. That's exactly why I like it.
 
-But static HTML does not mean every click needs to reload the whole document.
+But static HTML doesn't mean every click needs to reload the whole document.
 
 The answer was [Turbo Frames](https://turbo.hotwired.dev/reference/frames).
 
@@ -34,13 +34,13 @@ Or use a CDN:
 
 A [`jekyll-turbo`](https://rubygems.org/gems/jekyll-turbo/versions/0.1.0) gem already does roughly this: inject Turbo into your generated HTML.
 
-That is useful. But not the interesting part.
+That's useful. But not the interesting part.
 
 Turbo Drive is the default mode: click a link, fetch the next page, replace the document body, keep some browser state. It can make ordinary sites feel faster with almost no work.
 
-But for a docs site, Turbo Drive is still too broad. I did not want to replace the whole body. Just the document content.
+But for a docs site, Turbo Drive is still too broad. I didn't want to replace the whole body. Just the document content.
 
-That is where Turbo Frames fit.
+That's where Turbo Frames fit.
 
 ## The frame boundary
 
@@ -118,10 +118,10 @@ Some links should always be normal:
 - downloads
 - anchor links on the same page
 - links with `target="_blank"`
-- links to pages that do not render the same frame
+- links to pages that don't render the same frame
 - anything explicitly marked `data-turbo="false"`
 
-In my theme, I enhance page links with JavaScript too, because Markdown authors should not have to remember Turbo attributes for every internal doc link:
+In my theme, I enhance page links with JavaScript too, because Markdown authors shouldn't have to remember Turbo attributes for every internal doc link:
 
 ```js
 function shouldTargetFrame(link) {
@@ -158,7 +158,7 @@ function enhanceFrameLinks() {
 }
 ```
 
-This is not magic. Just a careful filter.
+This isn't magic. Just a careful filter.
 
 Same-origin HTML pages get frame navigation. Everything risky stays boring.
 
@@ -172,7 +172,7 @@ if (window.Turbo && window.Turbo.session) {
 }
 ```
 
-That tells Turbo: do not intercept every page visit. Only handle the links I explicitly target into a frame.
+That tells Turbo: don't intercept every page visit. Only handle the links I explicitly target into a frame.
 
 Could you leave Drive on? Sure. For a blog, that might be enough. For a documentation app with persistent sidebar state, rebuilt outlines, search overlays, and a bunch of page-specific behavior, I want fewer implicit moving parts.
 
@@ -180,11 +180,11 @@ Fast navigation is good. Predictable navigation is better.
 
 ## The part people forget: page state
 
-When you replace only a frame, the rest of the document does not change.
+When you replace only a frame, the rest of the document doesn't change.
 
-That is the point. It is also the problem.
+That's the point. It's also the problem.
 
-The browser does not automatically update every piece of state you used to get from a full page load. Your nav does not magically know which page is active. Your sidebar does not know which group to highlight. Your "On this page" outline still points at the old headings unless you rebuild it. Any copy buttons, anchors, syntax widgets, or page-specific behavior need to be initialized again.
+The browser doesn't automatically update every piece of state you used to get from a full page load. Your nav doesn't magically know which page is active. Your sidebar doesn't know which group to highlight. Your "On this page" outline still points at the old headings unless you rebuild it. Any copy buttons, anchors, syntax widgets, or page-specific behavior need to be initialized again.
 
 I use a tiny hidden state node inside the frame:
 
@@ -233,11 +233,11 @@ document.addEventListener("turbo:frame-load", (event) => {
 })
 ```
 
-The exact functions are theme-specific. The lifecycle is not.
+The exact functions are theme-specific. The lifecycle isn't.
 
 After a frame navigation, re-sync the stuff outside the frame that depends on the page inside the frame.
 
-That is the whole mental model.
+That's the whole mental model.
 
 ## Missing frames should fail normally
 
@@ -249,9 +249,9 @@ Turbo expects the response to contain the frame it was targeting. If you click a
 </turbo-frame>
 ```
 
-If it does not, Turbo treats that as an error. That is correct. It protects you from replacing your docs content with a random page that was never designed for the frame.
+If it doesn't, Turbo treats that as an error. That's correct. It protects you from replacing your docs content with a random page that was never designed for the frame.
 
-But users should not see a broken frame because one link escaped the docs section.
+But users shouldn't see a broken frame because one link escaped the docs section.
 
 Handle the missing-frame event and fall back to a normal visit:
 
@@ -274,7 +274,7 @@ document.addEventListener("turbo:frame-missing", (event) => {
 
 Now frame navigation is a fast path, not a cliff.
 
-If the page supports the frame, you get the app-like swap. If it does not, the browser does what browsers have done well for 30 years: load the page.
+If the page supports the frame, you get the app-like swap. If it doesn't, the browser does what browsers have done well for 30 years: load the page.
 
 ## So should this be a gem?
 
@@ -289,16 +289,16 @@ A gem can reasonably do this:
 - handle missing-frame fallback
 - dispatch lifecycle events after frame navigation
 
-But a gem cannot know your layout.
+But a gem can't know your layout.
 
-It cannot know which part of your page is the shell and which part is content. It cannot know how your nav marks active links. It cannot know how your search modal, outline, theme switcher, analytics, or code block widgets should reinitialize.
+It can't know which part of your page is the shell and which part is content. It can't know how your nav marks active links. It can't know how your search modal, outline, theme switcher, analytics, or code block widgets should reinitialize.
 
-That is why I think the pattern matters more than the gem.
+That's why I think the pattern matters more than the gem.
 
 `jekyll-turbo` as "load Turbo for me" is fine. A richer gem might be useful too. But the real work is choosing the frame boundary and being honest about what needs to happen after that boundary changes.
 
-Static sites do not need to feel static. They also do not need to become SPAs.
+Static sites don't need to feel static. They also don't need to become SPAs.
 
 Jekyll can render the pages. Turbo can move one frame. Your theme can keep the shell alive.
 
-That is the sweet spot.
+That's the sweet spot.
