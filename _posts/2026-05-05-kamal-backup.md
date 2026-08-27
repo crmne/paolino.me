@@ -7,6 +7,8 @@ tags: [Ruby, Rails, Kamal, Backups, Open Source]
 image: /images/kamal-backup.png
 sendfox_campaign_id: 2806072
 ---
+_Update, August 2026: [kamal-backup 1.0 is out](/kamal-backup-1-0/). The configuration below describes the early releases and is no longer current. Use the [1.0 documentation](https://kamal-backup.dev) when setting it up today._
+
 I released [kamal-backup](https://kamal-backup.dev) today.
 
 I run [Chat with Work][] on Kamal, and I needed backups. There are already Kamal accessories for database backups. None of them also back up Active Storage. None use restic, so encryption, deduplication, and repository checks are on you. None ship a CLI with restores and drills. None produce evidence you can hand a security reviewer.
