@@ -4,8 +4,8 @@ title: "RubyLLM 2.0: Providers, Protocols, and Provider Gems"
 date: 2026-08-27
 description: "OpenAI moves to the Responses API by default, while a new provider architecture and gem generator make external providers first-class."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+sendfox_campaign_id: 3008312
 ---
-
 RubyLLM 2.0 is almost ready. It isn't out yet, but it will be soon, and I have been looking forward to showing you what is in it.
 
 There is a lot in this release. Too much for one enormous announcement, and most of it deserves more than a bullet point. So this is the first in a series of posts about what's coming in RubyLLM 2.0.
