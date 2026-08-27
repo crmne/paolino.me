@@ -6,6 +6,7 @@ date: 2026-08-27
 description: "kamal-backup 1.0 brings exact Rails restores, restore drills, and PostgreSQL, MySQL, MariaDB, SQLite, SFTP, and rclone support to Kamal."
 tags: [Ruby, Rails, Kamal, Backups, Open Source]
 image: /images/kamal-backup.png
+sendfox_campaign_id: 3008757
 ---
 I released [kamal-backup](https://kamal-backup.dev) 1.0 today.
 
