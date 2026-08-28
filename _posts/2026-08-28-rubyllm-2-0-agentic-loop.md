@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "RubyLLM 2.0: The Agentic Loop, Exposed"
-date: 2026-08-27
+date: 2026-08-28
 description: "RubyLLM 2.0 breaks ask into verbs you can drive yourself: stage a message, call the model once, run tools, step, resume mid-round, and cancel from anywhere."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
