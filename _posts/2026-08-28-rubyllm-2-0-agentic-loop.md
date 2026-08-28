@@ -4,8 +4,8 @@ title: "RubyLLM 2.0: The Agentic Loop, Exposed"
 date: 2026-08-28
 description: "RubyLLM 2.0 breaks ask into verbs you can drive yourself: stage a message, call the model once, run tools, step, resume mid-round, and cancel from anywhere."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+sendfox_campaign_id: 3009612
 ---
-
 Strip any agent framework down and you find the same loop: call the model, run the tools it asked for, call the model again, stop when it answers without wanting a tool. In RubyLLM 1.x that loop lived inside `ask`, sealed. In RubyLLM 2.0, you can also make it yours.
 
 ```ruby
