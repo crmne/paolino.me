@@ -10,7 +10,7 @@ Strip any agent framework down and you find the same loop: call the model, run t
 
 ```ruby
 # Run the agentic loop automatically
-chat = RubyLLM.chat(model: "claude-sonnet-4-6")
+response = RubyLLM.chat(model: "claude-sonnet-4-6")
   .with_tools(Weather)
   .ask("What's the weather in Paris?")
 # => #<RubyLLM::Message role: :assistant, content: "Here's the current...
@@ -22,9 +22,9 @@ chat = RubyLLM.chat(model: "claude-sonnet-4-6")
   .with_tools(Weather)
   .ask_later("What's the weather in Paris?")
 
-chat.step until chat.complete?  # generate, run_tools, generate
+chat.step until chat.complete? || chat.awaiting_approval?  # generate, run_tools, generate
 chat.messages.last.content
-=> "Here's the current weather in **Paris, France**:\n\n- 🌡️ **Tempera...
+# => "Here's the current weather in **Paris, France**:\n\n- 🌡️ **Tempera...
 ```
 
 `ask` still works exactly as before: one method call runs the conversation to completion. But now it decomposes into verbs you can call yourself:
@@ -45,9 +45,9 @@ Each verb decides what to do next by reading the persisted messages. That means 
 ```ruby
 class AgentTurnJob < ApplicationJob
   def perform(chat_id)
-    chat = Chat.find(chat_id)
+    chat = Chat.find(chat_id).with_tools(Weather)
     chat.step
-    AgentTurnJob.perform_later(chat_id) unless chat.complete?
+    AgentTurnJob.perform_later(chat_id) unless chat.complete? || chat.awaiting_approval?
   end
 end
 ```
@@ -60,14 +60,14 @@ Batches are the same idea at scale: a batch is `generate` deferred for many chat
 
 ## Cancelable generation
 
-`chat.cancel!` cancels a run from another thread. At the next checkpoint, before a model call, before a tool executes, or between streamed chunks, the run raises `RubyLLM::CancelledError` and clears the flag so the chat can be reused.
+`chat.cancel` cancels a run from another thread. At the next checkpoint, before a model call, before a tool executes, or between streamed chunks, the run raises `RubyLLM::CancelledError` and clears the flag so the chat can be reused.
 
 In Rails, `acts_as_chat` stores the cancellation request on the chat record, so the signal travels through the database. A stop button in your web process halts a background job mid-stream:
 
 ```ruby
 class ChatsController < ApplicationController
   def cancel
-    Chat.find(params[:id]).cancel!
+    Chat.find(params[:id]).cancel
     head :no_content
   end
 end
@@ -80,7 +80,7 @@ No pub/sub channel, no Redis flag, no process signals. The job checks the record
 RubyLLM 1.x let a tool terminate the loop from the inside: return `halt("done")` and the conversation ended. That put control flow inside a return value, and it's gone in 2.0, along with `RubyLLM::Tool::Halt`. Tools return results. Stopping belongs to the caller:
 
 ```ruby
-until chat.complete?
+until chat.complete? || chat.awaiting_approval?
   chat.step
   break if handed_off? # your halt, in your code
 end

@@ -116,6 +116,8 @@ module RubyLLM
         }
       end
 
+      def batch_cost_multiplier(**) = 0.5
+
       class << self
         def capabilities
           Mistral::Capabilities
@@ -175,10 +177,10 @@ For the first time, anyone can download, inspect, or build on the same catalog R
 This is not just a model directory for the documentation. RubyLLM applications use it every day to validate model names, choose protocols, check capabilities, and turn provider usage into real costs. That last part demands precision: if a price, modality, or capability is wrong, the answer your application gets is wrong too. I will cover the cost ledger in another post, but the registry is what makes it possible.
 
 ```ruby
-RubyLLM.models.refresh!
+RubyLLM.models.refresh
 ```
 
-`refresh!` fetches the latest main registry and persists it. New models, prices, context windows, and capabilities can reach your application without waiting for the next gem release.
+`refresh` fetches the latest main registry and persists it. New models, prices, context windows, and capabilities can reach your application without waiting for the next gem release.
 
 Provider gems can ship their own `models.json` too. RubyLLM loads it as a read-only fallback behind the main registry, so installing a provider gem is enough to use its models normally:
 
@@ -186,7 +188,7 @@ Provider gems can ship their own `models.json` too. RubyLLM loads it as a read-o
 RubyLLM.chat(model: 'MiniMax-M3').ask('Hello')
 ```
 
-The global `refresh!` never refreshes or rewrites provider gem catalogs. Their authors update them with `rake models` inside the provider gem.
+The global `refresh` never refreshes or rewrites provider gem catalogs. Their authors update them with `rake models` inside the provider gem.
 
 The important part is that none of this makes the public API more complicated. `RubyLLM.chat`, `embed`, `paint`, and the Rails integration still work the same way. Most people will simply get better provider coverage. The new `protocol:` option is there for the times when you want to choose.
 
