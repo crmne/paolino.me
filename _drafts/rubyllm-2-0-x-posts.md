@@ -180,7 +180,7 @@ The generator writes prepare, backfill, and finish migrations. Optional copy mod
 
 RubyLLM 2.0 is a Ruby AI framework: conversations, tools, agents, audio, video, documents, search, and batches.
 
-Across 40 shared features and seventeen providers, native coverage went from 171 to 397 provider-feature pairs out of 407 offered. The matrix shows the details. Here's the tour.
+Across 40 shared features and seventeen providers, native coverage went from 170 to 395 provider-feature pairs out of 405 offered. The matrix shows the details. Here's the tour.
 
 [link]
 

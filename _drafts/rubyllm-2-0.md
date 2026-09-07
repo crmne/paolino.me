@@ -17,7 +17,7 @@ Here's a tour, with separate posts for the details.
 
 ## More of the Provider APIs
 
-I compared 1.16 and 2.0 across 40 shared features and seventeen providers. Native coverage went from 171 to 397 provider-feature pairs, out of 407 offered in that comparison. That's a count of supported combinations, not 397 different features or a claim that every provider endpoint is covered.
+I compared 1.16 and 2.0 across 40 shared features and seventeen providers. Native coverage went from 170 to 395 provider-feature pairs, out of 405 offered in that comparison. That's a count of supported combinations, not 395 different features or a claim that every provider endpoint is covered.
 
 The [coverage matrix](https://rubyllm.com/next/provider-coverage/) shows what's built in, what needs provider options, and what remains partial. It includes conversations and tools, but also media, documents, search, files, and batches.
 
