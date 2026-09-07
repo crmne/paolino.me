@@ -6,7 +6,7 @@ description: "RubyLLM 2.0 breaks ask into verbs you can drive yourself: stage a 
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 sendfox_campaign_id: 3009612
 ---
-Strip any agent framework down and you find the same loop: call the model, run the tools it asked for, call the model again, stop when it answers without wanting a tool. In RubyLLM 1.x that loop lived inside `ask`, sealed. In RubyLLM 2.0, you can also make it yours.
+Strip any agent framework down and you find the same loop: call the model, run the tools it asked for, call the model again, stop when it answers without wanting a tool. RubyLLM has run that loop inside `ask` since 1.0. In 2.0, you can also control each step.
 
 ```ruby
 # Run the agentic loop automatically
@@ -27,18 +27,18 @@ chat.messages.last.content
 # => "Here's the current weather in **Paris, France**:\n\n- 🌡️ **Tempera...
 ```
 
-`ask` still works exactly as before: one method call runs the conversation to completion. But now it decomposes into verbs you can call yourself:
+`ask` still runs the loop for you, stopping when the answer is ready or a tool needs human approval. You can also call each part yourself:
 
 * `ask_later` stages your message without sending anything.
-* `generate` makes one model call and appends the response. The model's move.
-* `run_tools` executes the pending tool calls and appends their results. Your move. No model call.
-* `step` does whichever move is next: tools if any are unanswered, otherwise a model call.
+* `generate` makes one model call and appends the response.
+* `run_tools` executes pending tool calls and appends their results without calling the model.
+* `step` runs pending tools if any are unanswered, otherwise it calls the model.
 * `complete?` tells you when the conversation is settled: the model answered without calling a tool.
-* `complete` steps until done. `ask` is `ask_later` followed by `complete`.
+* `complete` steps until done or awaiting approval. `ask` is `ask_later` followed by `complete`.
 
-Why bother? Because sometimes you need finer control about what happens between or around steps. Iteration budgets. Batch generation. Human approval before a tool runs. Logging each move. Persisting the conversation and picking it up somewhere else. In 1.x you worked around a sealed loop. In 2.0 the loop is plain Ruby in your code if you want it.
+This lets you set an iteration budget, batch the next generation, wait for approval, or save progress and continue in another job. Your code can check what happened between calls.
 
-## One Move Per Job
+## One Step Per Job
 
 Each verb decides what to do next by reading the persisted messages. That means the loop doesn't need to live in one process, or one machine, or one deploy:
 
@@ -52,9 +52,9 @@ class AgentTurnJob < ApplicationJob
 end
 ```
 
-Every turn is its own job. Your queue gets granular retries, your agents survive restarts, and a long run never monopolizes a worker.
+Each step gets its own job and retry boundary. A long sequence can release the worker between steps; an individual provider request or tool still takes as long as it takes.
 
-The loop is now resumable mid-tool-round too. `run_tools` skips tool calls that already have results, so if a process dies after finishing one tool call of three, reloading the chat and calling `step` executes only the remaining two. On Rails 8.1 and later, you can use ActiveJob Continuations to build on this: checkpoint after each move and an agent run survives a redeploy, resuming from the persisted messages with no cursor to manage.
+The loop is resumable mid-tool-round too. `run_tools` skips calls whose results have been saved. If a process dies after saving one result out of three, reloading the chat and calling `step` executes only the remaining two. If it dies after an external action succeeds but before saving its result, the tool can run again. Use `tool_call.id` as an idempotency key for writes. On Rails 8.1 and later, you can use ActiveJob Continuations to build on this: checkpoint after each move and an agent run survives a redeploy, resuming from the persisted messages with no cursor to manage.
 
 Batches are the same idea at scale: a batch is `generate` deferred for many chats at once, with `run_tools` run locally between rounds.
 
@@ -67,13 +67,13 @@ In Rails, `acts_as_chat` stores the cancellation request on the chat record, so 
 ```ruby
 class ChatsController < ApplicationController
   def cancel
-    Chat.find(params[:id]).cancel
+    current_user.chats.find(params[:id]).cancel
     head :no_content
   end
 end
 ```
 
-No pub/sub channel, no Redis flag, no process signals. The job checks the record it already has and stops.
+The job checks the chat record at cancellation checkpoints. It cannot interrupt arbitrary Ruby code inside a running tool; the next checkpoint observes the request.
 
 ## Halt Is Gone
 
@@ -82,7 +82,7 @@ RubyLLM 1.x let a tool terminate the loop from the inside: return `halt("done")`
 ```ruby
 until chat.complete? || chat.awaiting_approval?
   chat.step
-  break if handed_off? # your halt, in your code
+  break if handed_off? # application-specific stopping condition
 end
 ```
 

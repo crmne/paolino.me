@@ -30,7 +30,7 @@ Mistral, DeepSeek, Perplexity, Ollama, and most self-hosted services all speak s
 
 That was only half the problem. One protocol can be used by many providers, but one provider can also speak many protocols. OpenAI speaks Chat Completions and Responses; Vertex AI speaks Gemini, Claude, Mistral, and open models, all through different API shapes. The old design had no good way to express that.
 
-In 2.0, providers register the protocols they speak and choose one for each model. Here is the actual routing in the Vertex AI provider:
+In 2.0, providers register the protocols they speak and choose one for each model. Here is the chat-routing part of the Vertex AI provider, leaving its other operations out:
 
 ```ruby
 class VertexAI < Provider
@@ -56,7 +56,7 @@ So Claude on Vertex AI speaks Anthropic. `meta/llama-3.3-70b-instruct-maas` spea
 
 OpenAI now has two chat APIs. RubyLLM 2.0 supports both, but defaults to Responses.
 
-That means reasoning models can use tools and extended thinking together, which Chat Completions (in OpenAI) cannot express. It also gives RubyLLM access to newer OpenAI features without adding special cases to the old API.
+Responses gives RubyLLM access to encrypted reasoning content, provider-run tools, and newer OpenAI features. The application can use those features through the same chat API.
 
 If you still need Chat Completions, choose it for one chat:
 
@@ -80,7 +80,7 @@ The same protocol code is useful outside OpenAI. xAI's primary API now looks lik
 
 AWS Bedrock Mantle makes the difference between a provider and a protocol very obvious. You connect to one AWS service, but the API changes with the model.
 
-Claude uses Anthropic's Messages API. Five models use OpenAI's Responses API. The other forty-one use Chat Completions. They all live in the same catalog, behind the same authentication, on the same host.
+Claude uses Anthropic's Messages API. Other models use OpenAI's Responses or Chat Completions formats. They share the same catalog, authentication, and host; the model metadata tells RubyLLM which protocol to use.
 
 Even the model catalogs disagree. Mantle spells some model IDs differently from Bedrock Converse and includes models that Converse does not know about at all.
 
@@ -92,7 +92,7 @@ RubyLLM 2.0 will ship with seventeen providers, up from thirteen in 1.16:
 
 * **Cohere** with native chat, embeddings, reranking, and transcription.
 * **Ollama Cloud** with Ollama's API against its hosted model catalog. No local server required.
-* **ElevenLabs** for speech and transcription.
+* **ElevenLabs** for speech, transcription, and image and video generation.
 * **Deepgram** for speech and transcription.
 
 ## A complete provider in one small file
@@ -104,7 +104,14 @@ module RubyLLM
   module Providers
     class Mistral < Provider
       protocol :chat_completions, ChatCompletions, batches: Mistral::ChatCompletions::Batches
+      protocol :conversations, Conversations
       protocol :files, Protocols::Mistral::Files
+
+      def protocol_for(model, operation: nil, **)
+        return Conversations if operation == :paint
+
+        super
+      end
 
       def api_base
         @config.mistral_api_base || 'https://api.mistral.ai/v1'
@@ -140,7 +147,7 @@ module RubyLLM
 end
 ```
 
-That's the whole file. Most providers are between 35 and 100 lines. The longer ones are doing real provider-specific work, like Google authentication or AWS request signing.
+That's the whole file. Request formatting and parsing live in the protocol classes, so this adapter can concentrate on endpoints, authentication, and choosing the right protocol.
 
 ## Build the next provider yourself
 
@@ -174,7 +181,7 @@ For the first time, anyone can download, inspect, or build on the same catalog R
 
 [models.dev](https://models.dev) is an excellent source, but RubyLLM needs more than a copy of it. Every six hours, RubyLLM rebuilds its registry from models.dev and the providers' own APIs, reconciles aliases, fills gaps, applies the few provider-specific corrections that remain, validates the result, and refuses suspicious regressions before publishing it.
 
-This is not just a model directory for the documentation. RubyLLM applications use it every day to validate model names, choose protocols, check capabilities, and turn provider usage into real costs. That last part demands precision: if a price, modality, or capability is wrong, the answer your application gets is wrong too. I will cover the cost ledger in another post, but the registry is what makes it possible.
+RubyLLM applications use the same registry to validate model names, choose protocols, check capabilities, and price provider usage. That last part demands precision: if a price, modality, or capability is wrong, the answer your application gets is wrong too. I will cover the cost ledger in another post, but the registry is what makes it possible.
 
 ```ruby
 RubyLLM.models.refresh
@@ -184,13 +191,11 @@ RubyLLM.models.refresh
 
 Provider gems can ship their own `models.json` too. RubyLLM loads it as a read-only fallback behind the main registry, so installing a provider gem is enough to use its models normally:
 
-```ruby
-RubyLLM.chat(model: 'MiniMax-M3').ask('Hello')
-```
+The provider gem's models appear in `RubyLLM.models` and can be selected with the normal `model:` and `provider:` keywords.
 
 The global `refresh` never refreshes or rewrites provider gem catalogs. Their authors update them with `rake models` inside the provider gem.
 
-The important part is that none of this makes the public API more complicated. `RubyLLM.chat`, `embed`, `paint`, and the Rails integration still work the same way. Most people will simply get better provider coverage. The new `protocol:` option is there for the times when you want to choose.
+The important part is that none of this makes the public API more complicated. `RubyLLM.chat`, `embed`, `paint`, and the Rails integration still work the same way. Most applications get broader provider coverage through the APIs they already use. The new `protocol:` option is there for the times when you want to choose.
 
 That is the first piece of RubyLLM 2.0. Next up: the agentic loop, and how 2.0 lets you stop it, resume it, and run it one step at a time.
 
