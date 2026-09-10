@@ -3,7 +3,7 @@
 title: &name Carmine Paolino
 alternate_title: paolino.me
 logo: # You can add own logo. For example '/images/logo.png'.
-description: &description I build AI tools at Chat with Work and RubyLLM. Co-founded Freshflow. Outside tech, I make music, run Floppy Disco, and take photos.
+description: &description I build AI tools at Chat with Work and RubyLLM, help organize Berlin.rb, and co-founded Freshflow. I also make music and run Floppy Disco.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 lang: en-US
@@ -25,7 +25,7 @@ author:
   company_name: "Chat with Work"
   company_url: "https://chatwithwork.com"
   company_logo: "https://chatwithwork.com/logotype.svg"
-  description: I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://rubyllm.com">RubyLLM</a>. Co-founded <a href="https://freshflow.ai">Freshflow</a>. Outside tech, I <a href="https://crimsonlake.live">make music</a>, run <a href="https://floppydisco.live">Floppy Disco</a>, and <a href="https://paolino.photography">take photos</a>.
+  description: I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://rubyllm.com">RubyLLM</a>. Co-founded <a href="https://freshflow.ai">Freshflow</a>. I also help organize <a href="https://berlinrb.org">Berlin.rb</a>. Outside tech, I <a href="https://crimsonlake.live">make music</a> and run <a href="https://floppydisco.live">Floppy Disco</a>.
   twitter: paolino
 
 #-------------------------------
@@ -104,7 +104,7 @@ ai_visible_content:
       - paolino
       - crmne
     job_title: AI engineer, open-source maintainer, and founder
-    description: an AI engineer, open-source maintainer, and founder building AI tools at Chat with Work and RubyLLM. He previously co-founded Freshflow and also publishes music and photography.
+    description: an AI engineer, open-source maintainer, and founder building AI tools at Chat with Work and RubyLLM. He helps organize Berlin.rb, previously co-founded Freshflow, and also publishes music.
     image: /images/me-04.jpg
     knows_about:
       - Ruby
@@ -121,14 +121,12 @@ ai_visible_content:
       - Startups
       - Music technology
       - House music
-      - Photography
     same_as:
       - https://github.com/crmne
       - https://www.linkedin.com/in/carminepaolino
       - https://twitter.com/paolino
       - https://www.instagram.com/crmne/
       - https://soundcloud.com/crimsonlakemusic
-      - https://paolino.photography
       - https://crimsonlake.live
     author_aliases:
       - paolino
@@ -164,9 +162,9 @@ ai_visible_content:
     include_full_text: true
     sections:
       - heading: Core Topics
-        content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, product engineering, startups, music, and photography.
+        content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, product engineering, startups, and music.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Floppy Disco, Crimson Lake, Paolino Photography, Cluster Headache Tracker, and Jekyll VitePress Theme.
+        content: RubyLLM, Chat with Work, Floppy Disco, Crimson Lake, Cluster Headache Tracker, and Jekyll VitePress Theme.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
@@ -198,10 +196,6 @@ ai_visible_content:
         name: Crimson Lake
         url: https://crimsonlake.live
         description: Carmine Paolino's music project.
-      paolino-photography:
-        name: Paolino Photography
-        url: https://paolino.photography
-        description: Carmine Paolino's photography work.
       cluster-headache-tracker:
         name: Cluster Headache Tracker
         url: https://clusterheadachetracker.com
@@ -262,10 +256,6 @@ ai_visible_content:
         name: House music
         url: https://crimsonlake.live
         description: Carmine Paolino's house and disco music work.
-      photography:
-        name: Photography
-        url: https://paolino.photography
-        description: Carmine Paolino's photography work.
   ai_resources:
     enabled: true
     formats:

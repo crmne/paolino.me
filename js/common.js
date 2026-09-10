@@ -123,6 +123,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (window.imagesLoaded) {
       imagesLoaded(grid).on('progress', function() { masonry.layout(); });
     }
+    if (document.fonts) {
+      // Web fonts can change card heights after the initial layout.
+      document.fonts.ready.then(function() { masonry.layout(); });
+    }
   }
 
   var loadButton = document.querySelector('.load-more-posts');
