@@ -137,11 +137,27 @@
             </div>
 
             {% if site.projects %}
+            {% assign featured_projects = site.projects | where: 'featured', true %}
             <div class="footer__column">
               <div class="footer__heading">Projects</div>
               <div class="projects__list">
-                {% for project in site.projects %}
+                {% for project in featured_projects %}
                 <a href="{{ project.link }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
+                {% endfor %}
+                <a href="{{ '/projects/' | relative_url }}">All projects &rarr;</a>
+              </div>
+            </div>
+            {% assign work_links = site.projects | where: 'category', 'Work with me' %}
+            <div class="footer__column">
+              <div class="footer__heading">Work with me</div>
+              <div class="projects__list">
+                {% for project in work_links %}
+                {% assign link_prefix = project.link | slice: 0 %}
+                {% if link_prefix == '/' %}
+                <a href="{{ project.link | relative_url }}">{{ project.name | escape }}</a>
+                {% else %}
+                <a href="{{ project.link }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a>
+                {% endif %}
                 {% endfor %}
               </div>
             </div>

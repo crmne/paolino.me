@@ -1,0 +1,46 @@
+---
+layout: page
+title: Projects
+seo_title: Projects by Carmine Paolino | Software, Ruby & Music
+permalink: /projects/
+description: Explore Carmine Paolino's software, Ruby libraries, Omarchy plugins, and community projects, including RubyLLM, Chat with Work, and Berlin.rb.
+page_class: page--projects
+---
+
+<p>I build tools I want to use, from Ruby libraries to native desktop apps and Omarchy plugins. Here's a selection of what I build and maintain, alongside the communities and music projects I'm part of.</p>
+
+{% assign directory_projects = site.projects | where_exp: "project", "project.category != 'Work with me'" %}
+{% assign project_groups = directory_projects | group_by: 'category' %}
+{% for group in project_groups %}
+<section class="project-group" aria-labelledby="projects-{{ group.name | slugify }}">
+  <h2 id="projects-{{ group.name | slugify }}">{{ group.name | escape }}</h2>
+  {% if group.name == 'Omarchy plugins' %}
+  <p>Small additions to the desktop I use every day. Find them on the <a href="https://plugins.omarchy.org/index.html?author=crmne">Omarchy plugin marketplace</a>.</p>
+  {% endif %}
+  <ul class="project-list list-reset" role="list">
+    {% for project in group.items %}
+    {% assign project_id = project.name | slugify %}
+    <li class="project">
+      <a class="project__link" href="{{ project.link | escape }}" aria-labelledby="project-{{ project_id }}">
+        {% if project.image %}
+        <div class="project__media project__media--{{ project.image.style }}{% if project.image.dark %} project__media--dark{% endif %}"
+          {% if project.image.position or project.image.background %}
+          style="{% if project.image.position %}--project-image-position: {{ project.image.position | escape }};{% endif %}{% if project.image.background %}--project-image-background: {{ project.image.background | escape }};{% endif %}"
+          {% endif %}>
+          <img src="{{ project.image.path | relative_url }}" alt="{{ project.image.alt | escape }}"
+            width="{{ project.image.width }}" height="{{ project.image.height }}" loading="lazy" decoding="async">
+        </div>
+        {% endif %}
+        <h3 class="project__name" id="project-{{ project_id }}"><span>{{ project.name | escape }}</span></h3>
+      </a>
+      <p class="project__description">{{ project.description | escape }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}
+
+<div class="projects-close">
+  <p>More experiments and open-source work on <a href="https://github.com/crmne">GitHub</a>.</p>
+  <p>I also work with teams on <a href="{{ '/services/#ai-and-ruby-consulting' | relative_url }}">RubyLLM and AI consulting</a>, and offer <a href="{{ '/services/' | relative_url }}">workshops and founder coaching</a>.</p>
+</div>

@@ -34,25 +34,137 @@ author:
 # Example of adding a new link to the footer - {icon: "ion-logo-github", link: "https://github.com"}
 # Other icons can be found at https://ionicons.com/v4/
 contact:
-- {name: "Twitter", icon: "logo-twitter", link: "https://twitter.com/paolino"}
+- {name: "X", icon: "logo-x", link: "https://x.com/paolino"}
 - {name: "GitHub",  icon: "logo-github", link: "https://github.com/crmne"}
 - {name: "LinkedIn", icon: "logo-linkedin", link: "https://www.linkedin.com/in/carminepaolino"}
 - {name: "Instagram", icon: "logo-instagram", link: "https://www.instagram.com/crmne/"}
 - {name: "SoundCloud", icon: "logo-soundcloud", link: "https://soundcloud.com/crimsonlakemusic"}
 
-# Footer Projects List
+# Project directory and footer highlights
 projects:
-- {name: "Chat with Work", link: "https://chatwithwork.com"}
-- {name: "RubyLLM", link: "https://rubyllm.com"}
-- {name: "RubyLLM Workshops", link: "https://github.com/crmne/ruby_llm-workshop"}
-- {name: "Speaking", link: "https://www.rubyevents.org/profiles/crmne"}
-- {name: "Founder Advisory", link: "mailto:carmine@paolino.me?subject=Founder%20Advisory&body=Hey%20Carmine%2C%0A%0AI%27m%20building%20_________%20and%20I%27m%20stuck%20on%20_________.%0A%0AA%20bit%20about%20where%20we%20are%3A%0A%0A-%20Stage%3A%0A-%20Team%20size%3A%0A-%20Biggest%20question%20right%20now%3A%0A%0ALet%27s%20talk."}
-- {name: "Floppy Disco", link: "https://floppydisco.live"}
-- {name: "Mindscape Productions", link: "https://mindscape.productions"}
-- {name: "Cluster Headache Tracker", link: "https://clusterheadachetracker.com"}
-- {name: "hyprmoncfg", link: "https://hyprmoncfg.dev"}
-- {name: "Jekyll VitePress", link: "https://jekyll-vitepress.dev"}
-- {name: "Kamal Backup", link: "https://kamal-backup.dev"}
+- name: RubyLLM
+  link: https://rubyllm.com
+  image: {path: /assets/images/projects/rubyllm.svg, width: 475, height: 140, alt: "RubyLLM logo", style: logo}
+  category: Libraries & developer tools
+  description: One Ruby interface to the major AI providers. Build agents, chat, structured outputs, and multimodal applications.
+  featured: true
+- name: Chat with Work
+  link: https://chatwithwork.com
+  image: {path: /assets/images/projects/chat-with-work.webp, width: 800, height: 514, alt: "Chat with Work's chat interface", style: screenshot, position: "center top"}
+  category: Apps
+  description: An AI assistant that connects to your work tools so you can ask questions of your actual work data.
+  featured: true
+- name: Fastpotify
+  link: https://fastpotify.rocks
+  image: {path: /assets/images/projects/fastpotify.webp, width: 800, height: 475, alt: "Fastpotify's music library and player", style: screenshot, position: "center top"}
+  category: Apps
+  description: A lightweight native Spotify client for Linux, macOS, and Windows, with local playback and Spotify Connect.
+  featured: true
+- name: ArchSpec
+  link: https://archspecrb.dev
+  image: {path: /assets/images/projects/archspec.webp, width: 800, height: 470, alt: "ArchSpec reporting an architecture violation in the terminal", style: screenshot, position: "center top"}
+  category: Libraries & developer tools
+  description: Executable architecture rules for Ruby and Rails. Check boundaries, dependencies, and conventions on every change.
+  featured: true
+- name: Schematist
+  link: https://github.com/crmne/schematist
+  image: {path: /assets/images/projects/schematist.webp, width: 800, height: 575, alt: "A JSON Schema definition written with Schematist", style: screenshot}
+  category: Libraries & developer tools
+  description: A Ruby DSL for JSON Schema, formerly RubyLLM::Schema. Describe API payloads, configuration, and structured AI outputs.
+  featured: true
+- name: hyprmoncfg
+  link: https://hyprmoncfg.dev
+  image: {path: /assets/images/projects/hyprmoncfg.webp, width: 800, height: 480, alt: "hyprmoncfg's monitor layout editor", style: screenshot, position: "center top"}
+  category: Libraries & developer tools
+  description: Arrange Hyprland monitors and save display profiles without doing coordinate math.
+  featured: true
+- name: Kamal Backup
+  link: https://kamal-backup.dev
+  image: {path: /assets/images/projects/kamal-backup.svg, width: 64, height: 64, alt: "Kamal Backup logo", style: logo}
+  category: Libraries & developer tools
+  description: Scheduled database and file backups for Rails applications deployed with Kamal.
+  featured: true
+- name: FastsApp
+  link: https://fastsapp.rocks
+  image: {path: /assets/images/projects/fastsapp.webp, width: 800, height: 600, alt: "FastsApp showing chats, attachments, and voice messages", style: screenshot, position: "center top"}
+  category: Apps
+  description: A native WhatsApp client for Linux, macOS, and Windows, with chats, voice messages, attachments, and notifications.
+# Not announced yet. When publishing, uncomment the entry, remove its artwork
+# from exclude below, and add its name back to llms_txt Primary Projects.
+# - name: TonePush
+#   link: https://tonepush.rocks
+#   image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 520, alt: "TonePush Editor showing a guitar pedal signal chain", style: screenshot, position: "center top"}
+#   category: Apps
+#   description: Find guitar tones by artist or song, then edit presets on your pedal with the companion desktop editor.
+# - name: RekordFlash
+#   link: https://github.com/crmne/rekordflash-releases
+#   image: {path: /assets/images/projects/rekordflash.webp, width: 800, height: 800, alt: "RekordFlash app icon", style: logo}
+#   category: Apps
+#   description: A native DJ library manager for preparing music and exporting it to standalone Pioneer and AlphaTheta hardware.
+- name: Cluster Headache Tracker
+  link: https://clusterheadachetracker.com
+  image: {path: /assets/images/projects/cluster-headache-tracker.webp, width: 800, height: 800, alt: "Cluster Headache Tracker logo", style: logo, background: "#2b3858"}
+  category: Apps
+  description: A free, open-source app for logging cluster headaches, spotting patterns, and sharing records with your doctor.
+- name: Jekyll VitePress
+  link: https://jekyll-vitepress.dev
+  image: {path: /assets/images/projects/jekyll-vitepress.webp, width: 800, height: 419, alt: "A documentation site built with Jekyll VitePress", style: screenshot}
+  category: Libraries & developer tools
+  description: A documentation theme that brings VitePress-style navigation, search, and polish to Jekyll.
+- name: OmaStats
+  link: https://plugins.omarchy.org/plugin.html?id=crmne.omastats
+  image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats system monitoring graphs and sensor readouts in the Omarchy bar", style: screenshot}
+  category: Omarchy plugins
+  description: System monitoring in the bar, with live graphs for CPU, memory, disks, network, temperatures, and battery.
+- name: Ultimate Guitar Tabs
+  link: https://plugins.omarchy.org/plugin.html?id=crmne.ultimate-guitar
+  image: {path: /assets/images/projects/omarchy-ultimate-guitar.webp, width: 800, height: 450, alt: "Ultimate Guitar Tabs showing a song's tab in an Omarchy panel", style: screenshot}
+  category: Omarchy plugins
+  description: The tab for whatever you're playing, right in the bar. Switch instruments and versions, and auto-scroll while you play.
+- name: Lyrics Synced with Music
+  link: https://plugins.omarchy.org/plugin.html?id=crmne.lyrics
+  image: {path: /assets/images/projects/omarchy-lyrics.webp, width: 800, height: 450, alt: "The Omarchy lyrics panel following a song line by line", style: screenshot}
+  category: Omarchy plugins
+  description: Lyrics that follow your music line by line, with click-to-seek, timing adjustments, and a resizable reader.
+- name: hyprmoncfg for Omarchy
+  link: https://plugins.omarchy.org/plugin.html?id=crmne.hyprmoncfg
+  image: {path: /assets/images/projects/omarchy-hyprmoncfg.webp, width: 800, height: 450, alt: "The hyprmoncfg monitor management panel for Omarchy", style: screenshot}
+  category: Omarchy plugins
+  description: The desktop panel for hyprmoncfg, with a visual layout editor, per-display brightness, and profiles that follow your connected monitors.
+- name: Active Window + Icon
+  link: https://plugins.omarchy.org/plugin.html?id=crmne.active-window
+  image: {path: /assets/images/projects/omarchy-active-window.webp, width: 800, height: 450, alt: "Active Window showing the focused app's icon and appearance controls", style: screenshot}
+  category: Omarchy plugins
+  description: The focused application's title and real desktop icon in the bar, with adjustable sizing, saturation, and an icon-only mode.
+- name: Media Controls + Album Art
+  link: https://plugins.omarchy.org/plugin.html?id=crmne.mpris
+  image: {path: /assets/images/projects/omarchy-mpris.webp, width: 800, height: 450, alt: "Omarchy media controls with album artwork and track details", style: screenshot}
+  category: Omarchy plugins
+  description: Playback controls, live album art, and track details for Spotify and other desktop players, adapting to the space in your bar.
+- name: Berlin.rb
+  link: https://berlinrb.org
+  image: {path: /assets/images/projects/berlin-rb.svg, width: 666, height: 805, alt: "Berlin.rb logo", style: logo}
+  category: Community & music
+  description: A monthly meetup for Berlin's Ruby community. I help organize the talks, demos, and time together.
+- name: Crimson Lake
+  link: https://crimsonlake.live
+  image: {path: /assets/images/projects/crimson-lake.webp, width: 800, height: 800, alt: "Crimson Lake artist portrait", style: portrait, position: "center 10%"}
+  category: Community & music
+  description: My house and disco music, from original productions to DJ sets.
+- name: Floppy Disco
+  link: https://floppydisco.live
+  image: {path: /assets/images/projects/floppy-disco.webp, width: 512, height: 512, alt: "Floppy Disco logo", style: logo}
+  category: Community & music
+  description: The Berlin collective I run, bringing house, disco, and funk to the dancefloor.
+- name: Mindscape Productions
+  link: https://mindscape.productions
+  image: {path: /assets/images/projects/mindscape.webp, width: 512, height: 512, alt: "Mindscape logo", style: logo, dark: true}
+  category: Community & music
+  description: A Berlin community bringing live music, audiovisual performances, and cultural gatherings together.
+- {name: "RubyLLM & AI Consulting", link: "/services/#ai-and-ruby-consulting", category: "Work with me"}
+- {name: "RubyLLM Workshops", link: "https://github.com/crmne/ruby_llm-workshop", category: "Work with me"}
+- {name: "Speaking", link: "https://www.rubyevents.org/profiles/crmne", category: "Work with me"}
+- {name: "Founder Advisory", link: "mailto:carmine@paolino.me?subject=Founder%20Advisory&body=Hey%20Carmine%2C%0A%0AI%27m%20building%20_________%20and%20I%27m%20stuck%20on%20_________.%0A%0AA%20bit%20about%20where%20we%20are%3A%0A%0A-%20Stage%3A%0A-%20Team%20size%3A%0A-%20Biggest%20question%20right%20now%3A%0A%0ALet%27s%20talk.", category: "Work with me"}
 
 #-------------------------------
 # Comment Section (Disqus)
@@ -124,7 +236,7 @@ ai_visible_content:
     same_as:
       - https://github.com/crmne
       - https://www.linkedin.com/in/carminepaolino
-      - https://twitter.com/paolino
+      - https://x.com/paolino
       - https://www.instagram.com/crmne/
       - https://soundcloud.com/crimsonlakemusic
       - https://crimsonlake.live
@@ -164,7 +276,7 @@ ai_visible_content:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, product engineering, startups, and music.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Floppy Disco, Crimson Lake, Cluster Headache Tracker, and Jekyll VitePress Theme.
+        content: RubyLLM, Chat with Work, Fastpotify, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, FastsApp, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
@@ -294,6 +406,12 @@ defaults:
 
 include:
   - _pages
+
+exclude:
+  # Source-only artwork notes and previews for projects awaiting announcement.
+  - assets/images/projects/README.md
+  - assets/images/projects/tonepush.webp
+  - assets/images/projects/rekordflash.webp
 
 # Tags
 tag_page_dir:         tag

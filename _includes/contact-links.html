@@ -3,7 +3,13 @@
     <ul class="contact__list list-reset">
       {% for contact in site.contact %}
       <li class="contact__item">
-        <a class="contact__link" href="{{contact.link}}" target="_blank" rel="noopener"><ion-icon name="{{contact.icon}}"></ion-icon></a>
+        <a class="contact__link" href="{{contact.link}}" target="_blank" rel="noopener" aria-label="{{ contact.name | escape }}">
+          {% if contact.icon == 'logo-x' %}
+            {% include icon-x.html %}
+          {% else %}
+            <ion-icon name="{{contact.icon}}" aria-hidden="true"></ion-icon>
+          {% endif %}
+        </a>
       </li>
       {% endfor %}
     </ul>
