@@ -33,4 +33,4 @@ Use `image.background` to match a logo's solid background to its frame.
 | Berlin.rb | `assets/logo.svg` in [Berlin.rb](https://github.com/crmne/berlinrb.org) |
 | Crimson Lake | Public artist image from [Floppy Disco](https://floppydisco.live/artists/crimson-lake) |
 | Floppy Disco | Public social-preview logo from [Floppy Disco](https://floppydisco.live) |
-| Mindscape | Public social-preview logo from [Mindscape](https://mindscape.productions) |
+| Mindscape | Public social-preview logo from [Mindscape](https://enterthemindscape.org) |

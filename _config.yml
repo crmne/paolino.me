@@ -157,7 +157,7 @@ projects:
   category: Community & music
   description: The Berlin collective I run, bringing house, disco, and funk to the dancefloor.
 - name: Mindscape Productions
-  link: https://mindscape.productions
+  link: https://enterthemindscape.org
   image: {path: /assets/images/projects/mindscape.webp, width: 512, height: 512, alt: "Mindscape logo", style: logo, dark: true}
   category: Community & music
   description: A Berlin community bringing live music, audiovisual performances, and cultural gatherings together.
