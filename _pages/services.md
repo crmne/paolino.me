@@ -17,7 +17,7 @@ That is why I created [Plenty](https://plenty.is), the company behind it all. So
 
 ## AI and Ruby consulting
 
-I created [RubyLLM](https://rubyllm.com), the open-source library for building AI in Ruby. If you are building on it, or adding AI to a Rails app, I can help you ship it cleanly: the fewest moving parts that survive production.
+I created [RubyLLM](https://rubyllm.com), the open-source framework for building AI applications in Ruby. If you are building on it, or adding AI to a Rails app, I can help you ship it cleanly: the fewest moving parts that survive production.
 
 I have built AI models and systems for over a decade. I studied AI at the [Free University of Amsterdam](https://vu.nl/en) and have trained machine learning and deep learning models since 2012: computer vision, recommendation systems, information retrieval, real data science, across [Owlin](https://owlin.com), [OLX](https://www.olx.com), [Capgemini](https://www.capgemini.com), the [Alan Turing Institute](https://www.turing.ac.uk), and my own [Freshflow](https://freshflow.ai). I know what is under the API, not just how to call it.
 
