@@ -3,7 +3,7 @@
 title: &name Carmine Paolino
 alternate_title: paolino.me
 logo: # You can add own logo. For example '/images/logo.png'.
-description: &description I build AI tools at Chat with Work and RubyLLM, help organize Berlin.rb, and co-founded Freshflow. I also make music and run Floppy Disco.
+description: &description I build AI products, frameworks, developer tools, and native apps. Creator of RubyLLM, Berlin.rb organizer, and founder of the Floppy Disco music collective.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 lang: en-US
@@ -25,7 +25,14 @@ author:
   company_name: "Chat with Work"
   company_url: "https://chatwithwork.com"
   company_logo: "https://chatwithwork.com/logotype.svg"
-  description: I build AI tools at <a href="https://chatwithwork.com">Chat with Work</a> and <a href="https://rubyllm.com">RubyLLM</a>. Co-founded <a href="https://freshflow.ai">Freshflow</a>. I also help organize <a href="https://berlinrb.org">Berlin.rb</a>. Outside tech, I <a href="https://crimsonlake.live">make music</a> and run <a href="https://floppydisco.live">Floppy Disco</a>.
+  description: >-
+    I build AI frameworks, products, native apps, and developer tools:
+    <a href="https://rubyllm.com">RubyLLM</a>, <a href="https://chatwithwork.com">Chat with Work</a>,
+    <a href="https://spotifast.rocks">Spotifast</a>, <a href="https://zapfast.rocks">ZapFast</a>,
+    <a href="https://archspecrb.dev">ArchSpec</a>, <a href="https://kamal-backup.dev">Kamal Backup</a>,
+    and <a href="/projects/">more</a>.
+    I help organize <a href="https://berlinrb.org">Berlin.rb</a>, founded <a href="https://floppydisco.live">Floppy Disco</a>,
+    and make house and disco as <a href="https://crimsonlake.live">Crimson Lake</a>.
   twitter: paolino
 
 #-------------------------------
@@ -46,7 +53,7 @@ projects:
   link: https://rubyllm.com
   image: {path: /assets/images/projects/rubyllm.svg, width: 475, height: 140, alt: "RubyLLM logo", style: logo}
   category: Libraries & developer tools
-  description: One Ruby interface to the major AI providers. Build agents, chat, structured outputs, and multimodal applications.
+  description: A Ruby framework for AI applications, with a consistent interface to major providers. Build agents, chat, structured outputs, and multimodal applications.
   featured: true
 - name: Chat with Work
   link: https://chatwithwork.com
@@ -155,7 +162,7 @@ projects:
   link: https://floppydisco.live
   image: {path: /assets/images/projects/floppy-disco.webp, width: 512, height: 512, alt: "Floppy Disco logo", style: logo}
   category: Community & music
-  description: The Berlin collective I run, bringing house, disco, and funk to the dancefloor.
+  description: The Berlin music collective I founded and run, bringing house, disco, and funk to the dancefloor.
 - name: Mindscape Productions
   link: https://enterthemindscape.org
   image: {path: /assets/images/projects/mindscape.webp, width: 512, height: 512, alt: "Mindscape logo", style: logo, dark: true}
@@ -215,8 +222,8 @@ ai_visible_content:
     alternate_names:
       - paolino
       - crmne
-    job_title: AI engineer, open-source maintainer, and founder
-    description: an AI engineer, open-source maintainer, and founder building AI tools at Chat with Work and RubyLLM. He helps organize Berlin.rb, previously co-founded Freshflow, and also publishes music.
+    job_title: Software engineer, founder, and musician
+    description: a software engineer, founder, and musician building AI products, frameworks, developer tools, and native apps through Plenty. He created RubyLLM, helps organize Berlin.rb, founded Floppy Disco, makes music as Crimson Lake, and previously co-founded Freshflow.
     image: /images/me-04.jpg
     knows_about:
       - Ruby
@@ -230,6 +237,8 @@ ai_visible_content:
       - Async Ruby
       - Developer tooling
       - Product engineering
+      - Native desktop applications
+      - Linux
       - Startups
       - Music technology
       - House music
@@ -245,11 +254,11 @@ ai_visible_content:
       - crmne
     works_for:
       type: Organization
-      name: Chat with Work
-      url: https://chatwithwork.com
+      name: Plenty
+      url: https://plenty.is
     occupation:
-      name: AI engineer and open-source maintainer
-      skills: Ruby, Rails, AI applications, LLM APIs, open-source software, Jekyll, PostgreSQL, asynchronous Ruby
+      name: Software engineer and open-source maintainer
+      skills: Ruby, Rails, AI applications, LLM APIs, open-source software, native desktop applications, developer tooling, Linux, Jekyll, PostgreSQL, asynchronous Ruby
   json_ld:
     auto_inject: false
     include_website_schema: true
@@ -274,7 +283,7 @@ ai_visible_content:
     include_full_text: true
     sections:
       - heading: Core Topics
-        content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, product engineering, startups, and music.
+        content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
         content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
@@ -287,7 +296,7 @@ ai_visible_content:
       rubyllm:
         name: RubyLLM
         url: https://rubyllm.com
-        description: Provider-independent Ruby library for building AI applications.
+        description: Ruby framework for building AI applications across model providers.
       ruby:
         name: Ruby
         url: https://www.ruby-lang.org/en/
@@ -352,6 +361,14 @@ ai_visible_content:
         name: Developer tooling
         url: /tag/developer-experience/
         description: Tools that improve software development workflows.
+      native-desktop-applications:
+        name: Native desktop applications
+        url: /projects/#projects-apps
+        description: Native desktop software, including Spotifast and ZapFast.
+      linux:
+        name: Linux
+        url: /tag/linux/
+        description: Linux desktop tools, configuration, and native applications.
       product-engineering:
         name: Product engineering
         url: /tag/product-strategy/

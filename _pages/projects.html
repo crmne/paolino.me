@@ -1,13 +1,13 @@
 ---
 layout: page
 title: Projects
-seo_title: Projects by Carmine Paolino | Software, Ruby & Music
+seo_title: Projects by Carmine Paolino | Software, Open Source & Music
 permalink: /projects/
-description: Explore Carmine Paolino's software, Ruby libraries, Omarchy plugins, and community projects, including RubyLLM, Chat with Work, and Berlin.rb.
+description: Explore Carmine Paolino's AI frameworks, products, developer tools, native apps, and music and community projects, from RubyLLM and Spotifast to Floppy Disco.
 page_class: page--projects
 ---
 
-<p>I build tools I want to use, from Ruby libraries to native desktop apps and Omarchy plugins. Here's a selection of what I build and maintain, alongside the communities and music projects I'm part of.</p>
+<p>I build products, frameworks, and open-source tools across AI, Ruby, and native desktop software. Here's a selection of what I build and maintain, alongside the communities and music projects I organize and contribute to.</p>
 
 {% assign directory_projects = site.projects | where_exp: "project", "project.category != 'Work with me'" %}
 {% assign project_groups = directory_projects | group_by: 'category' %}
@@ -15,7 +15,7 @@ page_class: page--projects
 <section class="project-group" aria-labelledby="projects-{{ group.name | slugify }}">
   <h2 id="projects-{{ group.name | slugify }}">{{ group.name | escape }}</h2>
   {% if group.name == 'Omarchy plugins' %}
-  <p>Small additions to the desktop I use every day. Find them on the <a href="https://plugins.omarchy.org/index.html?author=crmne">Omarchy plugin marketplace</a>.</p>
+  <p>Plugins for the desktop I use every day. Find them on the <a href="https://plugins.omarchy.org/index.html?author=crmne">Omarchy plugin marketplace</a>.</p>
   {% endif %}
   <ul class="project-list list-reset" role="list">
     {% for project in group.items %}
