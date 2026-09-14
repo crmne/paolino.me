@@ -19,8 +19,8 @@ Use `image.background` to match a logo's solid background to its frame.
 | Kamal Backup | `docs/assets/images/logo.svg` in [Kamal Backup](https://github.com/crmne/kamal-backup) |
 | Jekyll VitePress | This site's `images/jekyll-vitepress.png` |
 | Chat with Work | Marketing screenshot `app/assets/images/screenshot-1-light.webp` from Chat with Work |
-| Fastpotify | `docs/screenshot.png` in [Fastpotify](https://github.com/crmne/fastpotify) |
-| FastsApp | `docs/screenshot.png` in [FastsApp](https://github.com/crmne/fastsapp) |
+| Spotifast | `docs/screenshot.png` in [Spotifast](https://github.com/crmne/spotifast) |
+| ZapFast | `docs/screenshot.png` in [ZapFast](https://github.com/crmne/zapfast) |
 | TonePush | `docs/screenshot.png` in [TonePush](https://github.com/crmne/tonepush) |
 | RekordFlash | The app's existing `packaging/macos/icon-1024.png` |
 | Cluster Headache Tracker | `app/assets/images/logo.png` in [Cluster Headache Tracker](https://github.com/crmne/cluster-headache-tracker) |

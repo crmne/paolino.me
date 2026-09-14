@@ -54,9 +54,9 @@ projects:
   category: Apps
   description: An AI assistant that connects to your work tools so you can ask questions of your actual work data.
   featured: true
-- name: Fastpotify
-  link: https://fastpotify.rocks
-  image: {path: /assets/images/projects/fastpotify.webp, width: 800, height: 475, alt: "Fastpotify's music library and player", style: screenshot, position: "center top"}
+- name: Spotifast
+  link: https://spotifast.rocks
+  image: {path: /assets/images/projects/spotifast.webp, width: 800, height: 475, alt: "Spotifast's music library and player", style: screenshot, position: "center top"}
   category: Apps
   description: A lightweight native Spotify client for Linux, macOS, and Windows, with local playback and Spotify Connect.
   featured: true
@@ -84,9 +84,9 @@ projects:
   category: Libraries & developer tools
   description: Scheduled database and file backups for Rails applications deployed with Kamal.
   featured: true
-- name: FastsApp
-  link: https://fastsapp.rocks
-  image: {path: /assets/images/projects/fastsapp.webp, width: 800, height: 600, alt: "FastsApp showing chats, attachments, and voice messages", style: screenshot, position: "center top"}
+- name: ZapFast
+  link: https://zapfast.rocks
+  image: {path: /assets/images/projects/zapfast.webp, width: 800, height: 600, alt: "ZapFast showing chats, attachments, and voice messages", style: screenshot, position: "center top"}
   category: Apps
   description: A native WhatsApp client for Linux, macOS, and Windows, with chats, voice messages, attachments, and notifications.
 # Not announced yet. When publishing, uncomment the entry, remove its artwork
@@ -276,7 +276,7 @@ ai_visible_content:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, product engineering, startups, and music.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Fastpotify, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, FastsApp, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
+        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
