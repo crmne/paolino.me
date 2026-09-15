@@ -25,6 +25,7 @@ Use `image.background` to match a logo's solid background to its frame.
 | RekordFlash | The app's existing `packaging/macos/icon-1024.png` |
 | Cluster Headache Tracker | `app/assets/images/logo.png` in [Cluster Headache Tracker](https://github.com/crmne/cluster-headache-tracker) |
 | OmaStats | `preview.png` in [OmaStats](https://github.com/crmne/omastats) |
+| OmaTasks for Todoist | `preview.png` in [OmaTasks for Todoist](https://github.com/crmne/omatasks) |
 | Ultimate Guitar Tabs | `preview.png` in [Ultimate Guitar Tabs](https://github.com/crmne/omarchy-ultimate-guitar) |
 | Lyrics Synced with Music | `preview.png` in [Lyrics Synced with Music](https://github.com/crmne/omarchy-lyrics) |
 | hyprmoncfg for Omarchy | `preview.png` in [hyprmoncfg for Omarchy](https://github.com/crmne/omarchy-hyprmoncfg) |

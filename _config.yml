@@ -123,6 +123,11 @@ projects:
   image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats system monitoring graphs and sensor readouts in the Omarchy bar", style: screenshot}
   category: Omarchy plugins
   description: System monitoring in the bar, with live graphs for CPU, memory, disks, network, temperatures, and battery.
+- name: OmaTasks for Todoist
+  link: https://github.com/crmne/omatasks
+  image: {path: /assets/images/projects/omatasks.webp, width: 800, height: 450, alt: "OmaTasks showing a compact Todoist task list in an Omarchy panel", style: screenshot}
+  category: Omarchy plugins
+  description: Todoist in the bar, with Today, Inbox, and Upcoming views, Quick Add, task editing, and drag-to-reorder that syncs across your devices.
 - name: Ultimate Guitar Tabs
   link: https://plugins.omarchy.org/plugin.html?id=crmne.ultimate-guitar
   image: {path: /assets/images/projects/omarchy-ultimate-guitar.webp, width: 800, height: 450, alt: "Ultimate Guitar Tabs showing a song's tab in an Omarchy panel", style: screenshot}
@@ -285,7 +290,7 @@ ai_visible_content:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
+        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
