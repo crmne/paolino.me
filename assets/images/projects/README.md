@@ -18,6 +18,7 @@ Use `image.background` to match a logo's solid background to its frame.
 | hyprmoncfg | This site's `images/hyprmoncfg-layout.png` |
 | Kamal Backup | `docs/assets/images/logo.svg` in [Kamal Backup](https://github.com/crmne/kamal-backup) |
 | Jekyll VitePress | This site's `images/jekyll-vitepress.png` |
+| native-packages | `docs/assets/images/logo.svg` in [native-packages](https://github.com/crmne/native-packages) |
 | Chat with Work | Marketing screenshot `app/assets/images/screenshot-1-light.webp` from Chat with Work |
 | Spotifast | `docs/screenshot.png` in [Spotifast](https://github.com/crmne/spotifast) |
 | ZapFast | `docs/screenshot.png` in [ZapFast](https://github.com/crmne/zapfast) |

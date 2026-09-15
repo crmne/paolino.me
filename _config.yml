@@ -118,6 +118,11 @@ projects:
   image: {path: /assets/images/projects/jekyll-vitepress.webp, width: 800, height: 419, alt: "A documentation site built with Jekyll VitePress", style: screenshot}
   category: Libraries & developer tools
   description: A documentation theme that brings VitePress-style navigation, search, and polish to Jekyll.
+- name: native-packages
+  link: https://native-packages.dev
+  image: {path: /assets/images/projects/native-packages.svg, width: 256, height: 256, alt: "native-packages logo", style: logo}
+  category: Libraries & developer tools
+  description: Turn your built application into Linux packages, macOS disk images, and Windows installers, then publish releases.
 - name: OmaStats
   link: https://plugins.omarchy.org/plugin.html?id=crmne.omastats
   image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats system monitoring graphs and sensor readouts in the Omarchy bar", style: screenshot}
@@ -290,7 +295,7 @@ ai_visible_content:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
+        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, native-packages, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
