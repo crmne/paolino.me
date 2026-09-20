@@ -1,8 +1,9 @@
 ---
 layout: page
-title: Services
+title: Work with me
 seo_title: Work with Carmine Paolino
-permalink: /services/
+permalink: /work-with-me/
+redirect_from: /services/
 description: I build with a relentless focus on simplicity. A few times a year I take on AI and Ruby consulting and founder coaching.
 page_class: page--services
 ---

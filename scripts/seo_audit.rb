@@ -16,6 +16,8 @@ canonical_to_file = {}
 title_to_file = {}
 description_to_file = {}
 local_references = []
+redirects_path = File.join(site_dir, "redirects.json")
+redirects = File.file?(redirects_path) ? JSON.parse(File.read(redirects_path)) : {}
 
 def attributes(tag)
   tag.scan(/([:\w-]+)\s*=\s*(["'])(.*?)\2/m).to_h { |name, _quote, value| [name.downcase, CGI.unescapeHTML(value)] }
@@ -53,6 +55,16 @@ html_files = Dir[File.join(site_dir, "**", "*.html")].reject { |file| file.inclu
 html_files.each do |file|
   relative = file.delete_prefix("#{site_dir}/")
   html = File.read(file)
+  page_url = relative == "index.html" ? "/" : "/#{relative.sub(%r{index\.html\z}, '')}"
+  if redirects.key?(page_url)
+    target = redirects.fetch(page_url)
+    refresh = meta_content(html, "http-equiv", "refresh").to_s
+    errors << "#{relative}: redirect canonical does not match target" unless link_href(html, "canonical") == target
+    errors << "#{relative}: missing immediate redirect to target" unless refresh.match?(/\A0;\s*url=#{Regexp.escape(target)}\z/i)
+    local_references << [relative, page_url, target]
+    next
+  end
+
   head = html[%r{<head\b[^>]*>(.*?)</head>}im, 1]
   unless head
     errors << "#{relative}: missing <head>"
@@ -64,6 +76,7 @@ html_files.each do |file|
   robots = meta_content(head, "name", "robots").to_s.downcase
   canonical = link_href(head, "canonical")
   noindex = robots.split(",").map(&:strip).include?("noindex")
+
 
   errors << "#{relative}: missing title" if title.to_s.empty?
   errors << "#{relative}: missing meta description" if description.to_s.empty?
@@ -88,7 +101,6 @@ html_files.each do |file|
     errors << "#{relative}: image #{index + 1} missing intrinsic width/height" unless attrs["width"] && attrs["height"]
   end
 
-  page_url = relative == "index.html" ? "/" : "/#{relative.sub(%r{index\.html\z}, '')}"
   html.scan(/<(?:a|link)\b[^>]*\bhref\s*=\s*(["'])(.*?)\1/im).each do |_quote, href|
     local_references << [relative, page_url, CGI.unescapeHTML(href)]
   end
@@ -164,6 +176,9 @@ sitemap_path = File.join(site_dir, "sitemap.xml")
 if File.file?(sitemap_path)
   sitemap_urls = File.read(sitemap_path).scan(%r{<loc>(.*?)</loc>}).flatten.map { |url| CGI.unescapeHTML(url) }
   errors << "sitemap.xml: duplicate URLs" unless sitemap_urls.uniq.size == sitemap_urls.size
+  redirects.each_key do |path|
+    errors << "sitemap.xml: contains redirect URL #{path}" if sitemap_urls.include?("https://paolino.me#{path}")
+  end
   indexable_pages.each do |relative, canonical|
     next if relative == "404.html"
     next if canonical.include?("/thank-you/")

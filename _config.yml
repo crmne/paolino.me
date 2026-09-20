@@ -123,6 +123,12 @@ projects:
   image: {path: /assets/images/projects/native-packages.svg, width: 256, height: 256, alt: "native-packages logo", style: logo}
   category: Libraries & developer tools
   description: Turn your built application into Linux packages, macOS disk images, and Windows installers, then publish releases.
+- name: Copilot Triage
+  link: https://github.com/marketplace/actions/copilot-triage
+  image: {path: /assets/images/projects/copilot-triage.svg, width: 256, height: 256, alt: "GitHub mark branching into three colored issue labels", style: logo}
+  category: Libraries & developer tools
+  description: A GitHub Action that uses Copilot to label issues and discussions, ask for missing details, and answer questions from your project's documentation. Built with a small Ruby script and cached replies.
+  featured: true
 - name: OmaStats
   link: https://plugins.omarchy.org/plugin.html?id=crmne.omastats
   image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats system monitoring graphs and sensor readouts in the Omarchy bar", style: screenshot}
@@ -178,7 +184,7 @@ projects:
   image: {path: /assets/images/projects/mindscape.webp, width: 512, height: 512, alt: "Mindscape logo", style: logo, dark: true}
   category: Community & music
   description: A Berlin community bringing live music, audiovisual performances, and cultural gatherings together.
-- {name: "RubyLLM & AI Consulting", link: "/services/#ai-and-ruby-consulting", category: "Work with me"}
+- {name: "RubyLLM & AI Consulting", link: "/work-with-me/#ai-and-ruby-consulting", category: "Work with me"}
 - {name: "RubyLLM Workshops", link: "https://github.com/crmne/ruby_llm-workshop", category: "Work with me"}
 - {name: "Speaking", link: "https://www.rubyevents.org/profiles/crmne", category: "Work with me"}
 - {name: "Founder Advisory", link: "mailto:carmine@paolino.me?subject=Founder%20Advisory&body=Hey%20Carmine%2C%0A%0AI%27m%20building%20_________%20and%20I%27m%20stuck%20on%20_________.%0A%0AA%20bit%20about%20where%20we%20are%3A%0A%0A-%20Stage%3A%0A-%20Team%20size%3A%0A-%20Biggest%20question%20right%20now%3A%0A%0ALet%27s%20talk.", category: "Work with me"}
@@ -218,6 +224,7 @@ permalink: ':title/'
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-redirect-from
   - jekyll-feed
   - jekyll-twitter-plugin
   - jekyll-og-image
