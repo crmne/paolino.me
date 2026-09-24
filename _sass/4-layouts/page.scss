@@ -200,10 +200,14 @@
   }
 
   .testimonial {
-    margin: 24px 0 0;
+    margin: 24px 0 44px;
 
     blockquote {
-      margin-bottom: 18px;
+      margin-bottom: 8px;
+
+      p {
+        margin-bottom: 0;
+      }
     }
   }
 
