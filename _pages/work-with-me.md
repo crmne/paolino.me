@@ -32,6 +32,8 @@ I have built AI models and systems for over a decade. I studied AI at the [Free 
 
 I run RubyLLM workshops for engineering teams: a hands-on session building real AI features in Ruby, with the patterns I use in production. Shaped around your team, not a generic course.
 
+<p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=RubyLLM%20workshop&body=Hey%20Carmine%2C%0A%0AHere%20is%20our%20team%20and%20what%20we%27d%20want%20from%20a%20workshop%3A%0A%0A">Email me about a workshop</a></p>
+
 <figure class="testimonial">
 <blockquote>
 <p>Carmine is the person driving AI forward in Ruby, and it shows. His tooling blends simplicity and customizability in a way that feels classically Rails, and his workshop slowly draws you into what building with AI really means today. Can't recommend him enough.</p>
@@ -45,8 +47,6 @@ I run RubyLLM workshops for engineering teams: a hands-on session building real 
 </figcaption>
 </figure>
 
-<p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=RubyLLM%20workshop&body=Hey%20Carmine%2C%0A%0AHere%20is%20our%20team%20and%20what%20we%27d%20want%20from%20a%20workshop%3A%0A%0A">Email me about a workshop</a></p>
-
 </div>
 
 <div class="service" markdown="1">
@@ -54,6 +54,8 @@ I run RubyLLM workshops for engineering teams: a hands-on session building real 
 ## Founder coaching
 
 I am a second-time founder, so I have been where you are. I coach early-stage founders through what is hard: a co-founder relationship starting to fray, a decision you keep circling on. I do not hand you answers. I ask the questions that get you to your own, and to the perspective you could not find by yourself.
+
+<p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=Founder%20coaching&body=Hey%20Carmine%2C%0A%0AHere%20is%20what%20I%27m%20wrestling%20with%3A%0A%0A">Email me about coaching</a></p>
 
 <figure class="testimonial">
 <blockquote>
@@ -67,8 +69,6 @@ I am a second-time founder, so I have been where you are. I coach early-stage fo
 </span>
 </figcaption>
 </figure>
-
-<p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=Founder%20coaching&body=Hey%20Carmine%2C%0A%0AHere%20is%20what%20I%27m%20wrestling%20with%3A%0A%0A">Email me about coaching</a></p>
 
 </div>
 
