@@ -24,6 +24,19 @@ I have built AI models and systems for over a decade. I studied AI at the [Free 
 
 <p class="service__cta"><a class="button button--primary" href="mailto:carmine@paolino.me?subject=AI%20and%20Ruby%20consulting&body=Hey%20Carmine%2C%0A%0AHere%20is%20what%20I%27m%20building%20and%20where%20I%27m%20stuck%3A%0A%0A">Email me about a project</a></p>
 
+<figure class="testimonial">
+<blockquote>
+<p>We brought Carmine in to review our RubyLLM integration, and he led the v2 migration across millions of records. Workarounds we'd built over months—like approval flows, error routing, and prompt caching—became first-class APIs in the gem. Working with him was easy. He communicated clearly, moved fast, and was genuinely open to our feedback, even when it meant changing direction. That tight feedback loop between maintainer and user is rare, and it shows in the API.</p>
+</blockquote>
+<figcaption class="testimonial__author">
+<img class="testimonial__avatar" src="{{ site.baseurl }}/images/spencer-miskoviak.jpeg" alt="Spencer Miskoviak" width="56" height="56" loading="lazy">
+<span class="testimonial__meta">
+<span class="testimonial__name">Spencer Miskoviak</span>
+<span class="testimonial__role">Staff Software Engineer, Tern</span>
+</span>
+</figcaption>
+</figure>
+
 </div>
 
 <div class="service" markdown="1">
