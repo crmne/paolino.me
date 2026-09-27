@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">fastframe</title>
+  <!-- The "ff" monogram, set italic for speed. Its two stems are
+       a pair of rails and the shared crossbar is the sleeper that ties them:
+       egui on rails, written as the name's own initials. Rust orange tile. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="128" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f4683a"/>
+      <stop offset="1" stop-color="#d9412b"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- Upright glyph drawn on a 13-unit stroke, then slanted 10 degrees about
+       the tile centre and nudged so its bounding box sits centred. -->
+  <g fill="none" stroke="#ffffff" stroke-width="13"
+     transform="translate(-1.5 3.25) translate(64 64) skewX(-10) translate(-64 -64)">
+    <path d="M45 104V50a18 18 0 0 1 18-18h1"/>   <!-- first f -->
+    <path d="M81 104V50a18 18 0 0 1 18-18h5"/>   <!-- second f -->
+    <path d="M29 60H101"/>                        <!-- shared crossbar -->
+  </g>
+</svg>

@@ -49,23 +49,45 @@ contact:
 
 # Project directory and footer highlights
 projects:
-- name: RubyLLM
-  link: https://rubyllm.com
-  image: {path: /assets/images/projects/rubyllm.svg, width: 475, height: 140, alt: "RubyLLM logo", style: logo}
-  category: Libraries & developer tools
-  description: A Ruby framework for AI applications, with a consistent interface to major providers. Build agents, chat, structured outputs, and multimodal applications.
-  featured: true
 - name: Chat with Work
   link: https://chatwithwork.com
-  image: {path: /assets/images/projects/chat-with-work.webp, width: 800, height: 514, alt: "Chat with Work's chat interface", style: screenshot, position: "center top"}
+  image: {path: /assets/images/projects/chat-with-work.webp, width: 800, height: 420, alt: "Chat with Work: private AI search for your work, beside a globe with Europe lit", style: screenshot}
   category: Apps
-  description: An AI assistant that connects to your work tools so you can ask questions of your actual work data.
+  description: Private AI search for your work. Ask one question across your connected tools and get answers with sources, hosted in the EU and without a company index.
   featured: true
+- name: Solco
+  link: https://getsolco.com
+  image: {path: /assets/images/projects/solco.webp, width: 800, height: 420, alt: "Solco's \"Stop preparing your tracks\" headline over a beatgridded waveform", style: screenshot}
+  category: Apps
+  description: The DJ library app. Stop preparing your tracks. Solco grids, keys, sorts, and tags every download, then writes the USB your CDJs read. In private alpha.
 - name: Spotifast
   link: https://spotifast.rocks
   image: {path: /assets/images/projects/spotifast.webp, width: 800, height: 475, alt: "Spotifast's music library and player", style: screenshot, position: "center top"}
   category: Apps
   description: A lightweight native Spotify client for Linux, macOS, and Windows, with local playback and Spotify Connect.
+  featured: true
+- name: ZapFast
+  link: https://zapfast.rocks
+  image: {path: /assets/images/projects/zapfast.webp, width: 800, height: 600, alt: "ZapFast showing chats, attachments, and voice messages", style: screenshot, position: "center top"}
+  category: Apps
+  description: A native WhatsApp client for Linux, macOS, and Windows, with chats, voice messages, attachments, and notifications.
+# Not announced yet. When publishing, uncomment the entry, remove its artwork
+# from exclude below, and add its name back to llms_txt Primary Projects.
+# - name: TonePush
+#   link: https://tonepush.rocks
+#   image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 520, alt: "TonePush Editor showing a guitar pedal signal chain", style: screenshot, position: "center top"}
+#   category: Apps
+#   description: Find guitar tones by artist or song, then edit presets on your pedal with the companion desktop editor.
+- name: Cluster Headache Tracker
+  link: https://clusterheadachetracker.com
+  image: {path: /assets/images/projects/cluster-headache-tracker.webp, width: 800, height: 800, alt: "Cluster Headache Tracker logo", style: logo, background: "#2b3858"}
+  category: Apps
+  description: A free, open-source app for logging cluster headaches, spotting patterns, and sharing records with your doctor.
+- name: RubyLLM
+  link: https://rubyllm.com
+  image: {path: /assets/images/projects/rubyllm.svg, width: 475, height: 140, alt: "RubyLLM logo", style: logo}
+  category: Libraries & developer tools
+  description: A Ruby framework for AI applications, with a consistent interface to major providers. Build agents, chat, structured outputs, and multimodal applications.
   featured: true
 - name: ArchSpec
   link: https://archspecrb.dev
@@ -91,28 +113,6 @@ projects:
   category: Libraries & developer tools
   description: Scheduled database and file backups for Rails applications deployed with Kamal.
   featured: true
-- name: ZapFast
-  link: https://zapfast.rocks
-  image: {path: /assets/images/projects/zapfast.webp, width: 800, height: 600, alt: "ZapFast showing chats, attachments, and voice messages", style: screenshot, position: "center top"}
-  category: Apps
-  description: A native WhatsApp client for Linux, macOS, and Windows, with chats, voice messages, attachments, and notifications.
-# Not announced yet. When publishing, uncomment the entry, remove its artwork
-# from exclude below, and add its name back to llms_txt Primary Projects.
-# - name: TonePush
-#   link: https://tonepush.rocks
-#   image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 520, alt: "TonePush Editor showing a guitar pedal signal chain", style: screenshot, position: "center top"}
-#   category: Apps
-#   description: Find guitar tones by artist or song, then edit presets on your pedal with the companion desktop editor.
-# - name: RekordFlash
-#   link: https://github.com/crmne/rekordflash-releases
-#   image: {path: /assets/images/projects/rekordflash.webp, width: 800, height: 800, alt: "RekordFlash app icon", style: logo}
-#   category: Apps
-#   description: A native DJ library manager for preparing music and exporting it to standalone Pioneer and AlphaTheta hardware.
-- name: Cluster Headache Tracker
-  link: https://clusterheadachetracker.com
-  image: {path: /assets/images/projects/cluster-headache-tracker.webp, width: 800, height: 800, alt: "Cluster Headache Tracker logo", style: logo, background: "#2b3858"}
-  category: Apps
-  description: A free, open-source app for logging cluster headaches, spotting patterns, and sharing records with your doctor.
 - name: Jekyll VitePress
   link: https://jekyll-vitepress.dev
   image: {path: /assets/images/projects/jekyll-vitepress.webp, width: 800, height: 419, alt: "A documentation site built with Jekyll VitePress", style: screenshot}
@@ -123,6 +123,11 @@ projects:
   image: {path: /assets/images/projects/native-packages.svg, width: 256, height: 256, alt: "native-packages logo", style: logo}
   category: Libraries & developer tools
   description: Turn your built application into Linux packages, macOS disk images, and Windows installers, then publish releases.
+- name: fastframe
+  link: https://fastframe.dev
+  image: {path: /assets/images/projects/fastframe.svg, width: 128, height: 128, alt: "fastframe logo", style: logo}
+  category: Libraries & developer tools
+  description: egui on rails. The shared Rust foundation of my native desktop apps, with desktop-aware text rendering, themes, a tray, and self-update.
 - name: Copilot Triage
   link: https://github.com/marketplace/actions/copilot-triage
   image: {path: /assets/images/projects/copilot-triage.svg, width: 256, height: 256, alt: "GitHub mark branching into three colored issue labels", style: logo}
@@ -302,7 +307,7 @@ ai_visible_content:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Cluster Headache Tracker, Jekyll VitePress, native-packages, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
+        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Solco, Cluster Headache Tracker, Jekyll VitePress, native-packages, fastframe, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
@@ -445,7 +450,6 @@ exclude:
   # Source-only artwork notes and previews for projects awaiting announcement.
   - assets/images/projects/README.md
   - assets/images/projects/tonepush.webp
-  - assets/images/projects/rekordflash.webp
 
 # Tags
 tag_page_dir:         tag

@@ -19,12 +19,13 @@ Use `image.background` to match a logo's solid background to its frame.
 | Kamal Backup | `docs/assets/images/logo.svg` in [Kamal Backup](https://github.com/crmne/kamal-backup) |
 | Jekyll VitePress | This site's `images/jekyll-vitepress.png` |
 | native-packages | `docs/assets/images/logo.svg` in [native-packages](https://github.com/crmne/native-packages) |
+| fastframe | `docs/assets/images/logo.svg` in [fastframe](https://github.com/crmne/fastframe) |
 | Copilot Triage | GitHub mark from [Primer Octicons](https://github.com/primer/octicons/blob/main/icons/mark-github-16.svg), with original branching labels; [MIT license](octicons-LICENSE.txt) |
-| Chat with Work | Marketing screenshot `app/assets/images/screenshot-1-light.webp` from Chat with Work |
+| Chat with Work | Share image `public/social-banners/og-default@2x.png` from Chat with Work |
 | Spotifast | `docs/screenshot.png` in [Spotifast](https://github.com/crmne/spotifast) |
 | ZapFast | `docs/screenshot.png` in [ZapFast](https://github.com/crmne/zapfast) |
 | TonePush | `docs/screenshot.png` in [TonePush](https://github.com/crmne/tonepush) |
-| RekordFlash | The app's existing `packaging/macos/icon-1024.png` |
+| Solco | Share image `site/og@2x.png` from [getsolco.com](https://getsolco.com) |
 | Cluster Headache Tracker | `app/assets/images/logo.png` in [Cluster Headache Tracker](https://github.com/crmne/cluster-headache-tracker) |
 | OmaStats | `preview.png` in [OmaStats](https://github.com/crmne/omastats) |
 | OmaTasks for Todoist | `preview.png` in [OmaTasks for Todoist](https://github.com/crmne/omatasks) |
