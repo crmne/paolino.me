@@ -85,7 +85,7 @@ projects:
   description: A free, open-source app for logging cluster headaches, spotting patterns, and sharing records with your doctor.
 - name: RubyLLM
   link: https://rubyllm.com
-  image: {path: /assets/images/projects/rubyllm.svg, width: 475, height: 140, alt: "RubyLLM logo", style: logo}
+  image: {path: /assets/images/projects/rubyllm.webp, width: 800, height: 420, alt: "RubyLLM: build AI features the Ruby way", style: screenshot}
   category: Libraries & developer tools
   description: A Ruby framework for AI applications, with a consistent interface to major providers. Build agents, chat, structured outputs, and multimodal applications.
   featured: true

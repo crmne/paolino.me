@@ -12,7 +12,7 @@ Use `image.background` to match a logo's solid background to its frame.
 
 | Asset | Source |
 | --- | --- |
-| RubyLLM | `ruby_llm/docs/assets/images/logotype.svg` in [RubyLLM](https://github.com/crmne/ruby_llm) |
+| RubyLLM | Share image `docs/assets/images/social/index.png` (generated) from [rubyllm.com](https://rubyllm.com) |
 | ArchSpec | This site's `images/archspec-check.png` |
 | Schematist | This site's `images/schematist.png` |
 | hyprmoncfg | This site's `images/hyprmoncfg-layout.png` |
