@@ -71,13 +71,11 @@ projects:
   image: {path: /assets/images/projects/zapfast.webp, width: 800, height: 600, alt: "ZapFast showing chats, attachments, and voice messages", style: screenshot, position: "center top"}
   category: Apps
   description: A native WhatsApp client for Linux, macOS, and Windows, with chats, voice messages, attachments, and notifications.
-# Not announced yet. When publishing, uncomment the entry, remove its artwork
-# from exclude below, and add its name back to llms_txt Primary Projects.
-# - name: TonePush
-#   link: https://tonepush.rocks
-#   image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 520, alt: "TonePush Editor showing a guitar pedal signal chain", style: screenshot, position: "center top"}
-#   category: Apps
-#   description: Find guitar tones by artist or song, then edit presets on your pedal with the companion desktop editor.
+- name: TonePush
+  link: https://tonepush.rocks
+  image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 420, alt: "TonePush: Find the tone. Play it on your pedal, above a chain of effect blocks", style: screenshot}
+  category: Apps
+  description: Guitar tones for your pedal. A catalog website to find presets by artist, song, or original sound and see their signal chains, plus a free, open-source desktop editor that loads them onto your HX Stomp.
 - name: Cluster Headache Tracker
   link: https://clusterheadachetracker.com
   image: {path: /assets/images/projects/cluster-headache-tracker.webp, width: 800, height: 800, alt: "Cluster Headache Tracker logo", style: logo, background: "#2b3858"}
@@ -307,7 +305,7 @@ ai_visible_content:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Solco, Cluster Headache Tracker, Jekyll VitePress, native-packages, fastframe, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
+        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, hyprmoncfg, Kamal Backup, ZapFast, Solco, TonePush, Cluster Headache Tracker, Jekyll VitePress, native-packages, fastframe, Omarchy plugins (OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   linking:
     enable_entity_links: true
     apply_to_metadata: false
@@ -447,9 +445,8 @@ include:
   - _pages
 
 exclude:
-  # Source-only artwork notes and previews for projects awaiting announcement.
+  # Source-only artwork notes.
   - assets/images/projects/README.md
-  - assets/images/projects/tonepush.webp
 
 # Tags
 tag_page_dir:         tag

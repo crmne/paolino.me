@@ -24,7 +24,7 @@ Use `image.background` to match a logo's solid background to its frame.
 | Chat with Work | Share image `public/social-banners/og-default@2x.png` from Chat with Work |
 | Spotifast | `docs/screenshot.png` in [Spotifast](https://github.com/crmne/spotifast) |
 | ZapFast | `docs/screenshot.png` in [ZapFast](https://github.com/crmne/zapfast) |
-| TonePush | `docs/screenshot.png` in [TonePush](https://github.com/crmne/tonepush) |
+| TonePush | Share image `app/assets/images/social/tonepush.png` from [tonepush.rocks](https://tonepush.rocks) |
 | Solco | Share image `site/og@2x.png` from [getsolco.com](https://getsolco.com) |
 | Cluster Headache Tracker | `app/assets/images/logo.png` in [Cluster Headache Tracker](https://github.com/crmne/cluster-headache-tracker) |
 | OmaStats | `preview.png` in [OmaStats](https://github.com/crmne/omastats) |
