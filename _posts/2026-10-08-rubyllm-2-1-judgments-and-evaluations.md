@@ -4,6 +4,7 @@ title: "RubyLLM 2.1: Judgments and Evaluations"
 date: 2026-10-08 14:40:00 +0530
 description: "RubyLLM 2.1 turns fuzzy questions into typed answers your code can branch on, and measures how often your agent gets it right."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Evaluations]
+image: /images/rubyllm-2.1-judgments-and-evaluations.png
 ---
 Ask someone shipping an agent how they know it works, and the answer is often "I tried it and it seemed fine."
 

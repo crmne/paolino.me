@@ -4,6 +4,7 @@ title: "Upgrading a Rails App to RubyLLM 2.0"
 date: 2026-10-07
 description: "Move a Rails app from RubyLLM 1.16 to 2.0: update your calls, migrate in phases, pick rename or copy mode, and clean up once you trust the result."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-upgrading.png
 ---
 
 [RubyLLM 2.0](/rubyllm-2-0/) changes the API and the Rails schema. I put a lot of work into the upgrade path.

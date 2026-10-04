@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Tools That Wait for a Yes"
 date: 2026-10-06
 description: "Mark a tool requires_approval and RubyLLM 2.0 parks the call until a human decides, even across Rails jobs, restarts, and deploys."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-tool-approval.png
 ---
 A support agent should be able to look up an order on its own. Refunding that order is different: before money moves, a person should see the exact call, with the exact arguments, and approve it.
 

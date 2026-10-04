@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Prompts Live in app/prompts"
 date: 2026-11-06
 description: "RubyLLM 2.0 renders ERB prompts from app/prompts anywhere, lets agents find their instructions by convention, and lets Rails engines ship prompts."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-prompt-templates.png
 ---
 
 A two-page prompt inside a Ruby heredoc is hard to work with. The prompt changes often, the class around it rarely does, and every diff is paragraphs of English between `def` and `end`.

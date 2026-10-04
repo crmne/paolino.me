@@ -4,6 +4,7 @@ title: "RubyLLM 2.1: OpenTelemetry Tracing, Without Your Prompts"
 date: 2026-10-12
 description: "RubyLLM 2.1 traces model calls, tools, and workflows with OpenTelemetry in one line, and exports metadata only, never prompts or responses."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, OpenTelemetry, Observability]
+image: /images/rubyllm-2.1-opentelemetry.png
 ---
 ```ruby
 RubyLLM::OpenTelemetry.enable

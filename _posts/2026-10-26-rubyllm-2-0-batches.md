@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Batches"
 date: 2026-10-26
 description: "Work that can wait can be cheaper. RubyLLM 2.0 submits chats and embeddings to provider batch APIs with the API you already use."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-batches.png
 ---
 A user waiting for an answer needs an interactive request. An overnight job classifying ten thousand support tickets can wait. Anthropic, OpenAI, Gemini, Vertex AI, Bedrock, Azure, Mistral, xAI, OpenRouter, and Cohere all have batch APIs, and the major ones charge a lot less for work you're willing to wait for.
 

@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Two Models in Your Rails App, Not Four"
 date: 2026-11-04
 description: "In RubyLLM 2.0 your Rails app keeps Chat and Message. RubyLLM owns its model registry, tool calls, usage, and batches in tables of its own."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-rails.png
 ---
 
 The [1.14 chat UI post](/rubyllm-1-14-chat-ui/) showed what a fresh RubyLLM install put in your app, four models:

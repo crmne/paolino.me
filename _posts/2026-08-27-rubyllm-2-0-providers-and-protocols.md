@@ -5,6 +5,7 @@ date: 2026-08-27
 description: "OpenAI moves to the Responses API by default, while a new provider architecture and gem generator make external providers first-class."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 sendfox_campaign_id: 3008312
+image: /images/rubyllm-2.0-providers.png
 ---
 RubyLLM 2.0 is almost ready. It isn't out yet, but it will be soon, and I have been looking forward to showing you what is in it.
 

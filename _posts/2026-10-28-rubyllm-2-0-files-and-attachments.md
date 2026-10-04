@@ -4,6 +4,7 @@ title: "Files and Attachments in RubyLLM 2.0"
 date: 2026-10-28
 description: "RubyLLM 2.0 uploads a file once and reuses it, moves large attachments to provider storage for you, and lets tools return files."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-files.png
 ---
 
 If a user asks five questions about the same 40 MB PDF, there's no reason to send those 40 MB five times. Upload it once:

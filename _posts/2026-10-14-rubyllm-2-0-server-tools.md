@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Provider Tools for Web Search, Code Execution, and MCP"
 date: 2026-10-14
 description: "with_provider_tools lets the model search the web, run code, and call remote MCP servers on the provider's side, next to your own Ruby tools."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-provider-tools.png
 ---
 Your research assistant needs web search. You can write a search tool, pick a search API, sign up, store another key, and parse its results. Or you can let the model use the search service its provider already runs.
 

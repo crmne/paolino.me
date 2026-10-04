@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Tokens, Costs, and the Usage Ledger"
 date: 2026-10-19
 description: "RubyLLM 2.0 counts every provider attempt, including retries, fallbacks, and cancelled streams, and reports a cost it can't establish as nil."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-cost-and-usage.png
 ---
 ```ruby
 chat = RubyLLM.chat(model: "claude-sonnet-5").with_fallbacks("gpt-5.6")

@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Workflows Without a Workflow Engine"
 date: 2026-11-09
 description: "RubyLLM.workflow names a task and its steps so every model call, tool call, and usage event can be traced back to it. Your control flow stays Ruby."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Observability]
+image: /images/rubyllm-2.0-workflows.png
 ---
 
 A research agent calls a model, searches the web a few times, and hands its notes to a writing agent. The Ruby is short, but the logs show dozens of separate events with nothing tying them to the article they produced.

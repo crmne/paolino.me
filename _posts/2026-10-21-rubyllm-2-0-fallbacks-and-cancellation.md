@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Fallbacks, Cancellation, and Errors"
 date: 2026-10-21
 description: "Fall back to another model when a provider fails, stop a Rails background stream from a button, and keep error policy on the agent in RubyLLM 2.0."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-fallbacks.png
 ---
 Providers go down, and switching the model and redeploying is a slow way to respond. In RubyLLM 2.0 you declare backup models on the chat:
 

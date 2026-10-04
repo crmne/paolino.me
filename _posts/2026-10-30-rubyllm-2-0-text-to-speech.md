@@ -4,6 +4,7 @@ title: "Text to speech in RubyLLM 2.0"
 date: 2026-10-30
 description: "RubyLLM 2.0 adds RubyLLM.speak: pick a voice and format, stream the audio, and pair it with streaming, diarized transcription."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-text-to-speech.png
 ---
 
 ```ruby

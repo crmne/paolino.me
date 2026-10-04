@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Prompt Caching"
 date: 2026-10-23
 description: "Stop paying full price for the same prompt prefix. RubyLLM 2.0 adds with_caching, cache_until_here, and Gemini cache resources."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-prompt-caching.png
 ---
 Look at what an agent sends on each turn. Turn one: system prompt, tool definitions, a 40-page contract, a question. Turn two: the same system prompt, the same tools, the same contract, the first answer, a tool result, a slightly different question. By turn twenty you've paid for that contract twenty times.
 

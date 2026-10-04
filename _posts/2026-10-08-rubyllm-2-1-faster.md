@@ -4,6 +4,7 @@ title: "RubyLLM 2.1 Is Faster: Where the Time Went"
 date: 2026-10-08 14:40:00 +0530
 description: "RubyLLM 2.1 streams, remembers, and connects with far less overhead. What was slow in 2.0, why, and how to measure it yourself."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Performance]
+image: /images/rubyllm-2.1-faster.png
 ---
 RubyLLM 2.1 is out, and it streams a single 2 MB event in 2 milliseconds. RubyLLM 2.0 took 116.
 

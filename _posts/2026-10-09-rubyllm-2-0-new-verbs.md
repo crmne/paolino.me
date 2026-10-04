@@ -4,6 +4,7 @@ title: "Video, OCR, Reranking, and Tokenization in RubyLLM 2.0"
 date: 2026-10-09
 description: "RubyLLM 2.0 adds animate, ocr, rerank, tokenize, and count_tokens: one Ruby method per job, each returning a typed result."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-new-verbs.png
 ---
 
 ```ruby

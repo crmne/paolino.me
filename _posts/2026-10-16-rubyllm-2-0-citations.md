@@ -4,6 +4,7 @@ title: Citations in RubyLLM 2.0
 date: 2026-10-16
 description: "RubyLLM 2.0 turns document, tool, and web citations from every provider into one Citation object you can render as footnotes."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-citations.png
 ---
 
 When a model tells your user "The contract can be terminated with 30 days' notice," the user needs to know where that comes from and which page to check. In RubyLLM 2.0 you ask for citations:

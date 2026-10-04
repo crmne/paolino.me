@@ -4,6 +4,7 @@ title: "RubyLLM 2.0: Own the Transcript"
 date: 2026-11-02
 description: "Rewrite the history the model sees, compact long conversations, inspect the exact request, and read why the model stopped in RubyLLM 2.0."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
+image: /images/rubyllm-2.0-transcript.png
 ---
 A long conversation is full of things the user wants to keep and the model no longer needs to reread on every request. In RubyLLM 2.0 you can rewrite the history you send:
 
