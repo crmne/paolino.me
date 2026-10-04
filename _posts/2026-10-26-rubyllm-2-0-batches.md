@@ -5,9 +5,9 @@ date: 2026-10-26
 description: "Work that can wait can be cheaper. RubyLLM 2.0 submits chats and embeddings to provider batch APIs with the API you already use."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
-A user waiting for an answer needs an interactive request. An overnight job classifying ten thousand support tickets does not. Nobody is watching a spinner, and providers know it: Anthropic, OpenAI, Gemini, Vertex AI, Bedrock, Azure, Mistral, xAI, OpenRouter, and Cohere all have batch APIs, and the major ones charge a lot less for work you're willing to wait for.
+A user waiting for an answer needs an interactive request. An overnight job classifying ten thousand support tickets can wait. Anthropic, OpenAI, Gemini, Vertex AI, Bedrock, Azure, Mistral, xAI, OpenRouter, and Cohere all have batch APIs, and the major ones charge a lot less for work you're willing to wait for.
 
-Most apps leave that money on the table, because every batch API is its own little file format with its own upload, polling, and result-matching ritual.
+Most apps don't use them, because every batch API has its own file format and its own steps for uploading, polling, and matching results.
 
 In RubyLLM 2.0, it's the chat API you already know:
 
@@ -22,11 +22,11 @@ batch = RubyLLM.batch(chats)
 batch.id # save this
 ```
 
-`ask_later` stages the question without sending anything. `RubyLLM.batch` submits all of them to the provider in one go. Instructions, history, tools, and schemas come along. You don't learn a second way to describe a request just because it runs overnight.
+`ask_later` stages the question without sending anything. `RubyLLM.batch` submits all of them to the provider in one go. Instructions, history, tools, and schemas come along, so you don't need a second way to describe a request that runs overnight.
 
 ## Collect the Answers Later
 
-Another process, another day, same batch:
+You can collect the answers from another process, whenever the batch is done:
 
 ```ruby
 batch = RubyLLM::Batch.find(batch_id, provider: :anthropic)
@@ -56,7 +56,7 @@ pending = chats.reject(&:complete?)
 next_batch = RubyLLM.batch(pending) if pending.any?
 ```
 
-That's the [agentic loop, exposed](/rubyllm-2-0-agentic-loop/), at batch prices: `generate` deferred for a thousand chats at once, `run_tools` in between.
+This is the [agentic loop, exposed](/rubyllm-2-0-agentic-loop/) at batch prices: `generate` deferred for a thousand chats at once, with `run_tools` in between.
 
 ## Rails Keeps Track
 
@@ -84,11 +84,11 @@ class BatchPollJob < ApplicationJob
 end
 ```
 
-RubyLLM restores the provider and the chats, then saves each answer through the same callbacks as a normal `ask`. Your broadcasts, your `after_create_commit` hooks, your usage records: all of it fires as if the user had been waiting. Run the job twice and you still get one answer per chat.
+RubyLLM restores the provider and the chats, then saves each answer through the same callbacks as a normal `ask`. Broadcasts, `after_create_commit` hooks, and usage records all run as they would if the user had been waiting. Run the job twice and you still get one answer per chat.
 
 ## Embeddings Batch Too
 
-Backfilling embeddings for a product catalog is the other classic overnight job:
+Backfilling embeddings for a product catalog is another common overnight job:
 
 ```ruby
 requests = products.map do |product|
@@ -110,16 +110,16 @@ Collecting fills in each request's `result`. If you're collecting in another pro
 
 ## The Cost Is the Batch Cost
 
-The savings show up where you'd look for them:
+Batch costs use the same readers as everything else:
 
 ```ruby
 batch.cost.total
 batch.messages.first&.cost&.total
 ```
 
-`batch.cost` is the same `RubyLLM::Cost` you get everywhere else. When the provider reports what the batch cost, RubyLLM uses that. Otherwise it prices each result at batch rates, which on Anthropic, OpenAI, Gemini, Bedrock, Azure, and Mistral means half the interactive price. The total stays `nil` until processing ends, and missing prices stay unknown rather than turning into zero. In Rails, the batch cost survives being looked up from another process.
+`batch.cost` is a `RubyLLM::Cost`. When the provider reports what the batch cost, RubyLLM uses that. Otherwise it prices each result at batch rates, which on Anthropic, OpenAI, Gemini, Bedrock, Azure, and Mistral means half the interactive price. The total stays `nil` until processing ends, and missing prices stay unknown rather than turning into zero. In Rails, the batch cost survives being looked up from another process.
 
-One fix worth knowing: on 2.0.0, batches from OpenAI reasoning models return a `nil` total because of how thinking tokens were priced. [Marc Köhlbrugge](https://github.com/marckohlbrugge) fixed that in 2.1.
+On 2.0.0, batches from OpenAI reasoning models return a `nil` total because of how thinking tokens were priced. [Marc Köhlbrugge](https://github.com/marckohlbrugge) fixed that in 2.1.
 
 ## Where Providers Differ
 
@@ -127,4 +127,4 @@ Use one provider per batch. Anthropic and xAI accept mixed models in one batch; 
 
 Thanks to [@marckohlbrugge](https://github.com/marckohlbrugge), [@thomaswitt](https://github.com/thomaswitt), [@toddkummer](https://github.com/toddkummer), and [@khasinski](https://github.com/khasinski), whose requests and feedback shaped this.
 
-I've always liked that batch APIs exist. I never liked using them. Now the cheap path is one method call away from the interactive one, and for work that can wait, there's no reason to pay full price.
+For work that can wait, I'm glad the cheaper API is now as easy to use as the interactive one.

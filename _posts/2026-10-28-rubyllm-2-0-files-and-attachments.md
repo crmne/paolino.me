@@ -6,7 +6,7 @@ description: "RubyLLM 2.0 uploads a file once and reuses it, moves large attachm
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
 
-If a user asks five questions about the same 40 MB PDF, sending those 40 MB five times is silly. Upload it once:
+If a user asks five questions about the same 40 MB PDF, there's no reason to send those 40 MB five times. Upload it once:
 
 ```ruby
 manual = RubyLLM.upload("manual.pdf", provider: :anthropic)
@@ -20,7 +20,7 @@ RubyLLM.chat(model: "claude-sonnet-5").ask "Which page explains the reset button
 
 The requests point at the provider's copy. `with:` takes an uploaded file exactly like a path or a URL, so the rest of your code doesn't care where the bytes live.
 
-This saves you the transfer, not the tokens. The model still reads the document on every request; [prompt caching](https://rubyllm.com/prompt-caching/) is what makes re-reading it cheap.
+This saves the transfer. The model still reads the document on every request, so you still pay for its tokens; [prompt caching](https://rubyllm.com/prompt-caching/) is what makes re-reading it cheap.
 
 ## One Upload API
 
@@ -41,7 +41,7 @@ OpenAI and Azure want a `purpose:`; IOs want a `filename:`:
 file = RubyLLM.upload(io, provider: :openai, purpose: "user_data", filename: "manual.pdf")
 ```
 
-Leave out `provider:` and RubyLLM uses the provider of your default model. If you store file IDs, store the provider next to them. A file ID means nothing without the provider that issued it:
+Leave out `provider:` and RubyLLM uses the provider of your default model. If you store file IDs, store the provider next to them, because a file ID only works with the provider that issued it:
 
 ```ruby
 file = RubyLLM::UploadedFile.find(record.file_id, provider: record.file_provider)
@@ -82,7 +82,7 @@ end
 
 ## Tools Can Hand Back Files
 
-A tool shouldn't have to describe a chart in words. In 2.0 it can return the chart:
+In 2.0 a tool can return files, so a chart tool can return the chart instead of describing it in words:
 
 ```ruby
 class RevenueChart < RubyLLM::Tool
@@ -96,10 +96,10 @@ class RevenueChart < RubyLLM::Tool
 end
 ```
 
-Strings become the tool result's text and attachments become its files. Return a bare `RubyLLM::Attachment` for a file-only result. A search tool can return the documents it found; a browser tool can return a screenshot of the page it's looking at. Vision models then look at them, which is the whole point.
+Strings become the tool result's text and attachments become its files. Return a bare `RubyLLM::Attachment` for a file-only result. A search tool can return the documents it found; a browser tool can return a screenshot of the page it's looking at, and a vision model can then look at them.
 
 Every provider wants tool files in a different shape. Anthropic and Bedrock take them inside the tool result, Gemini 3 inside the function response, and OpenAI, whose tool results are text-only, gets them in a user message right after the result. You write the return value once; RubyLLM does the translating. If a provider can't take that file type at all, you get `RubyLLM::UnsupportedAttachmentError` rather than a model quietly answering about a file it never saw.
 
-I'm especially looking forward to the tools people build with this. An agent that can look at what its tools produced is a lot less likely to make things up about it.
+I'm looking forward to the tools people build with this. An agent that can see what its tools produced has less reason to make things up about it.
 
 The [files guide](https://rubyllm.com/files/) covers expiration, provider limits, and storage setup, and the [attachments guide](https://rubyllm.com/attachments/) covers everything `with:` accepts.

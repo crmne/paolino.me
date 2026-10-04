@@ -2,7 +2,7 @@
 layout: post
 title: "RubyLLM 2.0: Tokens, Costs, and the Usage Ledger"
 date: 2026-10-19
-description: "RubyLLM 2.0 counts every provider attempt, including retries, fallbacks, and cancelled streams, and keeps unknown costs unknown."
+description: "RubyLLM 2.0 counts every provider attempt, including retries, fallbacks, and cancelled streams, and reports a cost it can't establish as nil."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
 ```ruby
@@ -17,11 +17,11 @@ response.cost.total
 chat.cost.total
 ```
 
-That looks like the API you already had. What changed in 2.0 is what those numbers include.
+The API looks the same as in 1.x. What changed in 2.0 is what those numbers include.
 
 If the request to Claude was retried twice before it went through, all three attempts are in the response's accounting. If Claude gave up and `gpt-5.6` wrote the answer, the response accounts for the Claude attempts and the GPT one. If the user hits stop halfway through a stream and no assistant message is ever saved, the chat still accounts for whatever that stream reported before it stopped.
 
-RubyLLM 2.0 records usage per provider attempt, not per message. Messages are what your user sees. Attempts are what your provider bills.
+RubyLLM 2.0 records usage for each provider attempt, because your provider bills attempts, and one message can take several of them.
 
 ## What Each Total Includes
 
@@ -58,7 +58,7 @@ When a provider bills thinking as output, it's already in `tokens.output`. Don't
 
 ## Unknown Is Not Zero
 
-This is the rule I care about most. If RubyLLM can't establish a number, it returns `nil`:
+If RubyLLM can't establish a number, it returns `nil`:
 
 ```ruby
 chat.tokens.input # the counts the provider reported
@@ -69,7 +69,7 @@ A cost is unknown when the model isn't in the pricing registry (your fine-tune, 
 
 The exception is an attempt that provably wasn't billed. A refused connection, a failed TLS handshake, or a 4xx rejection before the model ran records zero and doesn't blank your totals.
 
-Showing "unknown" in a dashboard is mildly annoying. Showing a fine-tuned model as free for six months is a much worse afternoon when someone finally notices.
+A zero would make an unpriced model look free in your reports until someone noticed. A `nil` tells you the total is incomplete.
 
 Some providers, such as OpenRouter and xAI, report the charge directly. `tokens.reported_cost` keeps that amount and `cost.total` prefers it over a registry estimate.
 
@@ -130,7 +130,7 @@ ActiveSupport::Notifications.subscribe("usage.ruby_llm") do |event|
 end
 ```
 
-It fires for embeddings, images, speech, transcription, moderation, OCR, and reranking too, and for failed attempts that raised before returning anything. You don't need to subscribe for `chat.cost` to work. It's there for when your metrics, your billing system, or your finance team want the same facts.
+It fires for embeddings, images, speech, transcription, moderation, OCR, and reranking too, and for failed attempts that raised before returning anything. You don't need to subscribe for `chat.cost` to work. The event is there for metrics, billing, or finance systems that need the same data.
 
 RubyLLM 2.1 takes the ledger further: one-shot operations get rows of their own, attributed to a user or account, and provider tool counts are stored with each attempt.
 

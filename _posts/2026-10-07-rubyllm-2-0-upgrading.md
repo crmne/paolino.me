@@ -6,13 +6,11 @@ description: "Move a Rails app from RubyLLM 1.16 to 2.0: update your calls, migr
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
 
-[RubyLLM 2.0](/rubyllm-2-0/) changes the API and the Rails schema. That sounds scarier than it is.
+[RubyLLM 2.0](/rubyllm-2-0/) changes the API and the Rails schema. I put a lot of work into the upgrade path.
 
-Your chats and messages keep their IDs and relationships. Nothing gets deleted until you say so. Every migration phase can be retried. And if you want a way back to 1.16 after going live, there's a mode for that.
+Your chats and messages keep their IDs and relationships. Nothing gets deleted until you run cleanup. Every migration phase can be retried. And if you want a way back to 1.16 after going live, copy mode gives you one.
 
-I put a lot of work into this upgrade path. Here's how it goes.
-
-## Two Parts, One of Them Optional
+## Code and Data
 
 There are two jobs: update your Ruby code, and, if you use Rails persistence, migrate your stored records. Plain Ruby apps only do the first one.
 
@@ -20,7 +18,7 @@ Start from a working 1.16 app. If you're on something older, step through the mi
 
 Two things to do while you're still on 1.16:
 
-- Set `config.deprecation_behavior = :raise` in your test environment and fix whatever breaks. I added that in [1.16](/rubyllm-1-16/) for exactly this day.
+- Set `config.deprecation_behavior = :raise` in your test environment and fix whatever breaks. The setting was added in [1.16](/rubyllm-1-16/) to prepare for this upgrade.
 - If you still have `config.use_new_acts_as = false`, switch to the association-based `acts_as` API now. 2.0 only has that one.
 
 Then bring in 2.0, pinned to the 2.0 series:
@@ -37,7 +35,7 @@ The pin matters. The 1.16 upgrade generator, its migration helpers, and the copy
 
 ## Update Your Calls
 
-Most of the code changes are renames. One name per concept, and the old abbreviations are gone:
+Most of the code changes are renames. Each concept now has one name, and the old abbreviations are gone:
 
 | 1.16 | 2.0 |
 |---|---|
@@ -66,7 +64,7 @@ The upgrade guide has the complete table. A few behavior changes deserve a sente
 
 **Finish reasons are Symbols.** `:stop`, `:max_tokens`, `:tool_calls`, and `:content_filter`, normalized across providers. If you compared against `"end_turn"` or `"STOP"`, use the symbols or the readers: `stopped?`, `max_tokens?`, `tool_call_stop?`, `content_filtered?`.
 
-**Switches and setters behave predictably.** `with_thinking`, `with_caching`, `with_citations`, and `with_compaction` take `false` to turn off and reject `nil`. Value setters like `with_temperature` take `nil` to reset.
+**Switches and setters are consistent.** `with_thinking`, `with_caching`, `with_citations`, and `with_compaction` take `false` to turn off and reject `nil`. Value setters like `with_temperature` take `nil` to reset.
 
 **Callbacks add up.** The new `before_` and `after_` callbacks stack. The old `on_*` ones replaced each other.
 
@@ -93,11 +91,11 @@ How different are they? On 100,000 synthetic chats with a million messages, on P
 | Rename | 20 s | 20 s |
 | Copy | 136 s | 4 s |
 
-Rename finishes sooner. Copy keeps you online longer. Those are medians from my [migration benchmark](https://github.com/crmne/ruby_llm_migration_bench), not a promise about your database: longer chats and live writes add work. Rehearse on your own data before choosing.
+Rename finishes sooner, and copy keeps you online for more of the migration. Those are medians from my [migration benchmark](https://github.com/crmne/ruby_llm_migration_bench), not a promise about your database: longer chats and live writes add work. Rehearse on your own data before choosing.
 
 Copy mode has a price beyond disk space. It generates a compatibility concern and initializer that must run in both the 1.16 build and the 2.0 build. Those guards cover Active Record saves, updates, and destroys, but not `update_columns`, bulk SQL, direct deletes, or attachment purges, so review your own persistence code. Copy migrations also need a direct database connection or a session-mode pool, since their advisory locks don't work through transaction-mode pooling.
 
-If you don't need the way back or the shorter pause, use rename. It's simpler.
+If you don't need the way back or the shorter pause, use rename, which is simpler.
 
 ## Generate the Migrations
 
@@ -208,7 +206,7 @@ bin/rails ruby_llm:upgrade:resume
 
 Resume brings over what 1.16 wrote in the meantime and unhides the 2.0 conversations. Wait for it to succeed before reopening. Neither task restarts provider jobs or undoes what tools already did in the outside world.
 
-One database runs one version at a time. This is a way back, not a canary.
+One database runs one version at a time, so you can't use this to run 1.16 and 2.0 side by side as a canary.
 
 ## Clean Up Later
 
@@ -231,12 +229,12 @@ bin/rails db:migrate
 
 Cleanup drops the legacy message columns, `content_raw`, the old token and cost columns, and the progress table. Copy cleanup also drops the original model and tool-call tables, so move any references of your own first, then remove the generated `ruby_llm_upgrade.rb` concern and initializer. 2.0 never updates the legacy columns, so they only get staler from here.
 
-After cleanup has run in every environment, delete the 2.0 upgrade migrations from `db/migrate`. They load helpers that only ship with 2.0, and your schema already records what they did. Now you're ready for the next release.
+After cleanup has run in every environment, delete the 2.0 upgrade migrations from `db/migrate`. They load helpers that only ship with 2.0, and your schema already records what they did.
 
 ## If Something Fails
 
 The migrations have no `down`. A failed phase can be retried once you fix the cause. Copy mode has the rollback and resume tasks above. Abandoning a rename upgrade means restoring the database and the 1.16 build together, which also loses any writes made after the backup, so plan for that.
 
-Changing the gem version back is not a database rollback, no matter how tempting it looks at 2 a.m.
+Changing the gem version back does not roll back the database.
 
 The [complete 2.0 upgrade guide](https://github.com/crmne/ruby_llm/blob/v2.0.0/docs/_reference/upgrading.md) has every rename and every operational detail. Once you're through, your app has two fewer models to maintain, and everything in [What's New in 2.0](https://rubyllm.com/whats-new-in-2-0/) works with the chats and messages you already have.

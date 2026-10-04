@@ -6,7 +6,7 @@ description: "RubyLLM.workflow names a task and its steps so every model call, t
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Observability]
 ---
 
-A research agent calls a model, searches the web a few times, and hands its notes to a writing agent. The Ruby is four lines. The logs are forty unrelated events, and good luck figuring out which ones wrote article 42.
+A research agent calls a model, searches the web a few times, and hands its notes to a writing agent. The Ruby is short, but the logs show dozens of separate events with nothing tying them to the article they produced.
 
 RubyLLM 2.0 lets you name the work:
 
@@ -22,17 +22,15 @@ RubyLLM.workflow("Write article", id: "article-42") do |workflow|
 end
 ```
 
-Every RubyLLM event inside that block now carries `workflow_id` and `workflow_name`. Inside a step, it also carries `workflow_step_id` and `workflow_step_name`. Model calls, tool calls, usage rows for retries, all of it, tagged and groupable.
+Every RubyLLM event inside that block now carries `workflow_id` and `workflow_name`. Inside a step, it also carries `workflow_step_id` and `workflow_step_name`. Model calls, tool calls, and usage rows for retries are all tagged, so you can group them.
 
-The blocks return their normal values. `notes` is a String. Nothing else about your code changed.
+The blocks return their normal values, so `notes` is a String and the rest of your code stays the same.
 
 ## Why Not a Workflow Engine
 
-Every AI framework eventually grows a graph DSL: nodes, edges, a state object, a runtime that executes it all for you. I looked at that and asked what it buys a Ruby developer.
+Many AI frameworks come with a graph DSL: nodes, edges, a state object, and a runtime that executes it for you. In Ruby you already have all the control flow you need: a sequence is method calls, a branch is a `case`, a retry is `retry`. What's missing is a way to see that control flow afterwards, and that's all `RubyLLM.workflow` does.
 
-A sequence is already method calls. A branch is a `case`. A loop is a loop. A retry is `retry`. What you actually lack is not a way to express control flow; it's a way to see it afterwards. So that's all `RubyLLM.workflow` does.
-
-`workflow.step` runs your block and adds context to the events inside it. It doesn't persist progress, schedule anything, or retry. Branches, loops, error handling, and concurrency stay in your code, where you can read them. Want durability? That's what [the agentic loop's verbs](/rubyllm-2-0-agentic-loop/) and your job queue are for.
+`workflow.step` runs your block and adds context to the events inside it. It doesn't persist progress, schedule anything, or retry. Branches, loops, error handling, and concurrency stay in your code, where you can read them. For durability, use [the agentic loop's verbs](/rubyllm-2-0-agentic-loop/) and your job queue.
 
 ## Subscribe Like Any Rails Event
 
@@ -59,7 +57,7 @@ end
 
 If you wrote subscribers for 1.16: tokens moved under `payload[:tokens]`, like everywhere else in 2.0. `payload[:input_tokens]` is gone.
 
-Want cost per article? Subscribe to `usage.ruby_llm`. It fires once for every finished provider attempt, including the retries and cancelled streams that never produced a message, with `status`, `tokens`, and `cost`. Group by `workflow_id` and you have the real cost of a piece of work, not just the cost of the attempts that succeeded.
+For cost per article, subscribe to `usage.ruby_llm`. It fires once for every finished provider attempt, including the retries and cancelled streams that never produced a message, with `status`, `tokens`, and `cost`. Group by `workflow_id` and you have the cost of a piece of work, failed attempts included.
 
 Outside Rails, set `config.instrumenter` to anything that responds to `instrument(name, payload)` and yields to the block. Add `activesupport` and use `ActiveSupport::Notifications` directly, or adapt the events to whatever your app already ships logs and metrics to.
 
@@ -84,13 +82,13 @@ end
 
 Nested events get it as `workflow_metadata`, a separate key, so it never collides with per-call metadata.
 
-## Trees, Not Just Tags
+## Nested Workflows and Steps
 
 Steps nest, and each nested step carries `workflow_step_parent_id`. Workflows nest too: a service object that opens its own `RubyLLM.workflow` keeps its own identity and records `workflow_parent_id` (and `workflow_parent_step_id` when it was called from inside a step). The `workflow.ruby_llm` and `workflow_step.ruby_llm` events wrap each block, so your instrumenter gets timings and exceptions for them like any other event.
 
-Put that together and a subscriber can rebuild the execution tree of a run: this workflow, these steps, these model calls inside them, this much money.
+With these IDs, a subscriber can rebuild the execution tree of a run: the workflow, its steps, the model calls inside them, and what they cost.
 
-Context follows RubyLLM's own concurrent tool execution. Your own concurrency is your call, so open the step inside each task:
+Context follows RubyLLM's own concurrent tool execution. When you run work concurrently yourself, open the step inside each task:
 
 ```ruby
 RubyLLM.workflow("Review code") do |workflow|
@@ -114,12 +112,12 @@ RubyLLM.workflow("Nightly summaries", id: run.workflow_id) do |workflow|
 end
 ```
 
-`run` is your own record that holds the batch and workflow IDs. Same ID, same workflow, two days apart.
+`run` is your own record that holds the batch and workflow IDs. Because the ID is the same, events from both runs belong to the same workflow.
 
 ## Where This Goes
 
-That's the whole API: one method, one block, one `step`. I like features that cost this little to adopt. You wrap code you already have, and your logs start telling you which task each request belonged to.
+The API is `RubyLLM.workflow` and `workflow.step`. You wrap code you already have, and your events record which task each request belonged to.
 
-In 2.1, configure your OpenTelemetry SDK, call `RubyLLM::OpenTelemetry.enable`, and those workflows and steps become spans, so the tree shows up in your tracing tool without a subscriber in sight.
+In 2.1, configure your OpenTelemetry SDK, call `RubyLLM::OpenTelemetry.enable`, and those workflows and steps become spans, so the tree shows up in your tracing tool without writing a subscriber.
 
 The [instrumentation guide](https://rubyllm.com/instrumentation/) lists every event and payload field. One note before you pipe everything into a log aggregator: payloads include message content, tool arguments, and provider responses, so export those only where your policy allows it.

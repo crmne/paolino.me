@@ -5,15 +5,15 @@ date: 2026-11-02
 description: "Rewrite the history the model sees, compact long conversations, inspect the exact request, and read why the model stopped in RubyLLM 2.0."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
-A long conversation is full of things the user wants to keep and the model no longer needs to reread on every request. In RubyLLM 2.0, the history you send is yours to rewrite:
+A long conversation is full of things the user wants to keep and the model no longer needs to reread on every request. In RubyLLM 2.0 you can rewrite the history you send:
 
 ```ruby
 chat.messages = messages_for_model
 ```
 
-That's the whole API. The setter takes `Message` objects, attribute hashes, or records that respond to `to_llm`. Summarize old turns, redact a value, drop the tangent about the user's cat. The next request sends exactly what you put there.
+The setter takes `Message` objects, attribute hashes, or records that respond to `to_llm`. You can summarize old turns, redact values, or drop a tangent, and the next request sends exactly what you put there.
 
-No memory framework deciding what's important on your behalf. You know your app. It doesn't.
+RubyLLM doesn't decide what's important for you. Your app knows that better than a generic memory framework would.
 
 ## Summarize the Old Stuff
 
@@ -37,13 +37,13 @@ if turns.length > 4
 end
 ```
 
-That works because `message.content` is now a String or `nil`, nothing else. Structured output is JSON text with a `parsed` reader, and files live on `message.attachments`. No more unwrapping `RubyLLM::Content` to edit a sentence.
+That works because `message.content` is now a String or `nil`, nothing else. Structured output is JSON text with a `parsed` reader, and files live on `message.attachments`. You no longer unwrap `RubyLLM::Content` to edit text.
 
 Conversations with tools need more care. Every tool call needs its result, and reasoning or provider-tool blocks the protocol replays have to stay with their message. Slice the last four messages blindly and you can cut a call from its result, which providers reject.
 
 ## Two Transcripts in Rails
 
-On a Rails record, `messages=` is Active Record's association writer, and you really don't want to confuse the two. For a temporary model-facing rewrite, go through the RubyLLM chat:
+On a Rails record, `messages=` is Active Record's association writer, which is a different method. For a temporary model-facing rewrite, go through the RubyLLM chat:
 
 ```ruby
 chat_record.to_llm.messages = messages_for_model
@@ -62,7 +62,7 @@ class Conversation < ApplicationRecord
 end
 ```
 
-Your UI renders `messages` with whatever retention and moderation rules you like. RubyLLM persists and sends `llm_messages`. Neither gets in the other's way.
+Your UI renders `messages` with whatever retention and moderation rules you like. RubyLLM persists and sends `llm_messages`.
 
 ## Let the Provider Compact
 
@@ -109,7 +109,7 @@ chat.complete
 
 The hook runs after all of RubyLLM's formatting and provider-option merging, and mutates the payload in place. It speaks the selected protocol's wire format, so a hook written for OpenAI needs revisiting if you move to Anthropic. Nothing it adds is saved as message content.
 
-`render` is also how you test this stuff: assert on the payload, no network, no API key. (In 2.1, responses stop carrying a copy of the request they answered, to save memory, so `render` and `before_request` are *the* way to see what was sent.)
+`render` also lets you test request shaping: assert on the payload without network access or an API key. (In 2.1, responses stop carrying a copy of the request they answered, to save memory, so `render` and `before_request` are how you see what was sent.)
 
 For a fixed field like this one, `with_provider_options(metadata: { review_id: "review-42" })` is simpler. This metadata goes to the provider. Metadata for your own observability belongs on a [workflow](https://rubyllm.com/instrumentation/) instead.
 
@@ -129,7 +129,7 @@ response.content_filtered?
 
 A truncated answer is `:max_tokens` whether the provider said `length`, `max_tokens`, or `MAX_TOKENS`. Anthropic's `end_turn`, Gemini's `STOP`, and the Responses API's `completed` are all `:stop`. Reasons RubyLLM doesn't map, like Anthropic's `pause_turn`, come through as symbols in the provider's spelling. A failed request raises instead of returning a reason. Persisted messages have the same predicates when the table has a `finish_reason` column.
 
-So a cut-off answer is one check, on every provider. `:max_tokens` covers the output cap and, on Anthropic, a full context window, so look at `with_max_output_tokens` first and the transcript second. Both knobs are yours now.
+Checking for a cut-off answer works the same way on every provider. `:max_tokens` covers the output cap and, on Anthropic, a full context window, so look at `with_max_output_tokens` first and the transcript second.
 
 Thanks to [@mnort9](https://github.com/mnort9) and [@marksweston](https://github.com/marksweston) for pushing on transcript control, [@fvaleye](https://github.com/fvaleye) for compaction, and [@trevorturk](https://github.com/trevorturk) and [@losingle](https://github.com/losingle) for finish reasons.
 

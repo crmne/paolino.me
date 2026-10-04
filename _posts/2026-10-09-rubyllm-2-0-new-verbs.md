@@ -10,9 +10,9 @@ tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 RubyLLM.animate("A red panda typing on a mechanical keyboard").save("panda.mp4")
 ```
 
-That's a video. One line, and the red panda is typing.
+That generates a video and saves it.
 
-RubyLLM has always named its methods after what you get back. `chat` gives you a conversation, `paint` gives you an image, `embed` gives you vectors. 2.0 adds five more verbs: `animate`, `ocr`, `rerank`, `tokenize`, and `count_tokens`. These are the jobs that used to send me shopping for a second SDK. Now they sit next to the chat code and look like it.
+I like APIs where the method tells you what you're about to get. `chat` gives you a conversation, `paint` gives you an image, `embed` gives you vectors. 2.0 adds five more verbs: `animate`, `ocr`, `rerank`, `tokenize`, and `count_tokens`. These are the jobs that used to send me looking for another SDK. Now they sit next to the chat code and follow the same conventions.
 
 ## Animate
 
@@ -32,9 +32,9 @@ class PandaTrailerJob < ApplicationJob
 end
 ```
 
-`save` and `to_blob` work the same on images, speech, video, and downloaded files. I got tired of every media type having its own way to get bytes out.
+`save` and `to_blob` work the same on images, speech, video, and downloaded files, so every media type gives you its bytes the same way.
 
-Give it a still image through `with:`, the same keyword chats use for attachments, and the image starts moving:
+To animate a still image, pass it through `with:`, the same keyword chats use for attachments:
 
 ```ruby
 video = RubyLLM.animate(
@@ -45,7 +45,7 @@ video = RubyLLM.animate(
 )
 ```
 
-Liked the clip and want more of it? `extend:` continues a video you generated:
+`extend:` continues a video you generated:
 
 ```ruby
 longer = RubyLLM.animate(
@@ -80,7 +80,7 @@ ocr.pages.each do |page|
 end
 ```
 
-You get clean markdown per page, plus the images and tables the provider found and its raw page data. That's a document pipeline before a chat model has even been asked anything. Mistral Document AI reads PDFs, office documents, and images; Cohere Parse reads one image per request.
+You get markdown per page, plus the images and tables the provider found and its raw page data, without involving a chat model. Mistral Document AI reads PDFs, office documents, and images; Cohere Parse reads one image per request.
 
 `pages:` takes zero-based page indexes. Everything Mistral-specific goes in `provider_options:`, in Mistral's own vocabulary:
 
@@ -92,11 +92,11 @@ ocr = RubyLLM.ocr(
 )
 ```
 
-Page selection is a keyword because every OCR API has the concept. Table formats aren't, so they stay in the provider's words.
+Page selection is a keyword because every OCR API has the concept. Table formats differ between providers, so they stay in the provider's words.
 
 ## Rerank
 
-Embeddings are great at finding fifty documents that might answer a question. They're worse at deciding which five actually do. A reranker reads the query against each candidate and sorts them:
+Embeddings are good at finding fifty documents that might answer a question. They're worse at deciding which five actually do. A reranker reads the query against each candidate and sorts them:
 
 ```ruby
 rerank = RubyLLM.rerank(
@@ -152,10 +152,10 @@ chat.count_tokens("Summarize this contract.") # => Integer
 
 That counts history, instructions, function tools, schema, thinking settings, and supported attachments through the provider's own counting endpoint. The question you pass is counted, not added to the conversation. For a lone prompt, `RubyLLM.count_tokens(text, model:)` does the same without a chat.
 
-One caveat, said once: counting endpoints don't receive provider tools, `provider_options`, compaction, or `before_request` edits, so a chat using those can send something slightly different from what you counted. And neither count predicts the output. After generation, `response.tokens` is the truth.
+Counting endpoints don't receive provider tools, `provider_options`, compaction, or `before_request` edits, so a chat using those can send something slightly different from what you counted. And neither count predicts the output. After generation, `response.tokens` has the actual counts.
 
 Anthropic, OpenAI, Gemini, Vertex AI, and Bedrock count requests; the [provider coverage matrix](https://rubyllm.com/provider-coverage/) has the full picture, and anything unsupported raises `RubyLLM::Error` instead of guessing.
 
 ## Read More
 
-The guides go deeper: [video generation](https://rubyllm.com/video-generation/), [OCR](https://rubyllm.com/ocr/), [reranking](https://rubyllm.com/rerank/), and [tokenization](https://rubyllm.com/tokenization/). Start with the panda.
+The guides go deeper: [video generation](https://rubyllm.com/video-generation/), [OCR](https://rubyllm.com/ocr/), [reranking](https://rubyllm.com/rerank/), and [tokenization](https://rubyllm.com/tokenization/).

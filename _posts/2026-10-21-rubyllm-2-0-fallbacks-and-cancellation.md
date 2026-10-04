@@ -5,7 +5,7 @@ date: 2026-10-21
 description: "Fall back to another model when a provider fails, stop a Rails background stream from a button, and keep error policy on the agent in RubyLLM 2.0."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
-Providers go down. Not often, but always at the worst time, and "switch the model and redeploy" is not an incident response. In RubyLLM 2.0 the backup plan lives on the chat:
+Providers go down, and switching the model and redeploying is a slow way to respond. In RubyLLM 2.0 you declare backup models on the chat:
 
 ```ruby
 chat = RubyLLM.chat(model: "claude-sonnet-5")
@@ -14,9 +14,7 @@ chat = RubyLLM.chat(model: "claude-sonnet-5")
 response = chat.ask "Summarize this incident report."
 ```
 
-If Claude fails with a rate limit, a server error, an overload, a timeout, or a dropped connection, RubyLLM retries the same request on GPT, then Gemini. Same conversation, same tools, same schema, same settings. Once that generation is done, the chat goes back to Claude.
-
-Three providers, one line, no redeploy.
+If Claude fails with a rate limit, a server error, an overload, a timeout, or a dropped connection, RubyLLM retries the same request on GPT, then Gemini, with the same conversation, tools, schema, and settings. Once that generation is done, the chat goes back to Claude.
 
 ## Which Failures Fall Back
 
@@ -60,13 +58,13 @@ chat.after_fallback do |fallback|
 end
 ```
 
-The trickiest case is streaming. The first model may have streamed half a sentence to the user before it died. RubyLLM can't take those chunks back, so the fallback starts a fresh assistant message, and `fallback.chunks_yielded?` tells you the user already saw something. Clear or mark the partial answer in your UI, or you'll append Gemini's answer to the middle of Claude's sentence. Collaborative, but not what anyone wanted.
+The trickiest case is streaming. The first model may have streamed half a sentence to the user before it died. RubyLLM can't take those chunks back, so the fallback starts a fresh assistant message, and `fallback.chunks_yielded?` tells you the user already saw something. Clear or mark the partial answer in your UI, or Gemini's answer will be appended to the middle of Claude's sentence.
 
-Failed attempts aren't free, either. Every attempt lands in the usage ledger, so `chat.cost` includes the half-answer you threw away.
+Failed attempts also cost money. Every attempt lands in the usage ledger, so `chat.cost` includes the half-answer you threw away.
 
 ## Stopping a Stream from Another Process
 
-The basics of `chat.cancel` are in the [agentic loop post](/rubyllm-2-0-agentic-loop/): call it from anywhere, and the run raises `RubyLLM::CancelledError` at its next checkpoint. Here's the part I care about most: the stop button in a Rails app, where the stream runs in a job and the button lives in a different process.
+The basics of `chat.cancel` are in the [agentic loop post](/rubyllm-2-0-agentic-loop/): call it from anywhere, and the run raises `RubyLLM::CancelledError` at its next checkpoint. The harder case is the stop button in a Rails app, where the stream runs in a job and the button lives in a different process.
 
 ```ruby
 class ChatsController < ApplicationController
@@ -88,11 +86,11 @@ class ChatStreamJob < ApplicationJob
 end
 ```
 
-`acts_as_chat` writes the request to the chat's `cancelled` column. The streaming job checks that column between chunks, at most once a second and outside the query cache, so it sees a write from another process without hammering your database. When it sees it, it clears the flag, raises, and cleans up after itself: the empty assistant row the stream created is removed, so the transcript doesn't end in a ghost message. The tokens the provider already produced still go into the usage ledger as a cancelled attempt.
+`acts_as_chat` writes the request to the chat's `cancelled` column. The streaming job checks that column between chunks, at most once a second and outside the query cache, so it sees a write from another process without hammering your database. When it sees it, it clears the flag, raises, and cleans up after itself: the empty assistant row the stream created is removed, so the transcript doesn't end in an empty message. The tokens the provider already produced still go into the usage ledger as a cancelled attempt.
 
-Your stop button and your job share nothing but a chat record you already had. No Redis key, no pub/sub channel, no cancellation service with its own README.
+The stop button and the job only share the chat record you already have, so you don't need a Redis key, a pub/sub channel, or a separate cancellation service.
 
-It's cooperative. A tool in the middle of arbitrary Ruby code finishes before the next checkpoint notices, and closing a browser tab doesn't call `cancel` for you. Wire the button to it.
+It's cooperative. A tool in the middle of arbitrary Ruby code finishes before the next checkpoint notices, and closing a browser tab doesn't call `cancel` for you, so wire your stop button to it.
 
 ## Rescue by Class
 
@@ -110,11 +108,11 @@ rescue RubyLLM::Error => error
 end
 ```
 
-`RubyLLM::Error` covers anything that went wrong talking to a provider, and `error.response` keeps the HTTP response when there was one. Mistakes on your side, like `ConfigurationError`, `ModelNotFoundError`, or `PendingToolCallsError`, inherit straight from `StandardError`, and so does `CancelledError`. A user pressing stop is not a provider failure, and your error tracker shouldn't page anyone about it.
+`RubyLLM::Error` covers anything that went wrong talking to a provider, and `error.response` keeps the HTTP response when there was one. Mistakes on your side, like `ConfigurationError`, `ModelNotFoundError`, or `PendingToolCallsError`, inherit straight from `StandardError`, and so does `CancelledError`, so `rescue RubyLLM::Error` won't treat a user pressing stop as a provider failure.
 
 ## Error Policy Belongs on the Agent
 
-Rescue blocks around every call site get copied, then drift. Agents declare their policy once with `rescue_from`, the way Rails controllers do:
+Rescue blocks around every call site get copied and drift apart. Agents declare their policy once with `rescue_from`, the way Rails controllers do:
 
 ```ruby
 class ApplicationAgent < RubyLLM::Agent
@@ -141,4 +139,4 @@ One thing to know: handlers wrap agent instances. `SupportAgent.new.ask` goes th
 
 Thanks to [@kieranklaassen](https://github.com/kieranklaassen) for asking for fallbacks ([#621](https://github.com/crmne/ruby_llm/issues/621)), [@sh1nj1](https://github.com/sh1nj1) for cancellable streams ([#607](https://github.com/crmne/ruby_llm/issues/607)), and [@skovy](https://github.com/skovy) for `rescue_from` ([#708](https://github.com/crmne/ruby_llm/issues/708)).
 
-The [error handling guide](https://rubyllm.com/error-handling/) covers fallbacks and the error hierarchy, [Rails streaming](https://rubyllm.com/rails-streaming/#cancelling-a-background-stream) covers the stop button, and the [agents guide](https://rubyllm.com/agents/#handling-errors-with-rescue_from) covers handlers. I've written these rescue blocks around chat calls since 1.0. I'm glad they're in the API now.
+The [error handling guide](https://rubyllm.com/error-handling/) covers fallbacks and the error hierarchy, [Rails streaming](https://rubyllm.com/rails-streaming/#cancelling-a-background-stream) covers the stop button, and the [agents guide](https://rubyllm.com/agents/#handling-errors-with-rescue_from) covers handlers.

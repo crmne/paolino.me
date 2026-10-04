@@ -6,7 +6,7 @@ description: "RubyLLM 2.0 renders ERB prompts from app/prompts anywhere, lets ag
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM]
 ---
 
-A two-page prompt inside a Ruby heredoc is nobody's idea of a good time. The prompt changes every week, the class around it never does, and every diff is paragraphs of English wedged between `def` and `end`.
+A two-page prompt inside a Ruby heredoc is hard to work with. The prompt changes often, the class around it rarely does, and every diff is paragraphs of English between `def` and `end`.
 
 RubyLLM 2.0 adds `RubyLLM.render_prompt`:
 
@@ -29,9 +29,9 @@ RubyLLM.chat
   .ask("How do I update my invoice email?")
 ```
 
-It reads an ERB file, renders it with your locals, and returns a String. No model call, no chat, no magic. Use the string as instructions, as a user message, as the input to `RubyLLM.embed`, anywhere you need text.
+It reads an ERB file, renders it with your locals, and returns a String. It doesn't call a model or create a chat. Use the string as instructions, as a user message, as the input to `RubyLLM.embed`, anywhere you need text.
 
-Rails gave views a home in `app/views` twenty years ago. Prompts are the templates of AI apps, so they get `app/prompts`.
+Prompts are templates, so they get a directory the way views do: `app/prompts`, next to `app/views`.
 
 ## How Lookup Works
 
@@ -39,7 +39,7 @@ Rails gave views a home in `app/views` twenty years ago. Prompts are the templat
 
 Every keyword argument becomes a local. Reference a local you didn't pass and ERB raises. Ask for a file that doesn't exist and you get `RubyLLM::PromptNotFoundError`. Since rendering is just a method that returns a String, you can test every prompt without an API key.
 
-One rule: prompt files are code. ERB runs Ruby, so keep prompt names in your code and pass user input only as locals, never as the name.
+Prompt files are code. ERB runs Ruby, so keep prompt names in your code and pass user input only as locals, never as the name.
 
 ## Agents Find Their Own Instructions
 
@@ -78,13 +78,13 @@ class WorkAssistant < RubyLLM::Agent
 end
 ```
 
-That second declaration is new in 2.0 too. Instructions can stack, and `persist: false` keeps the date out of the saved transcript, so tomorrow's run doesn't inherit yesterday's "today".
+That second declaration is new in 2.0 too. Instructions can stack, and `persist: false` keeps the date out of the saved transcript, so a chat loaded on a later day gets the current date instead of a stale one.
 
 If you upgraded from 1.x: a bare `instructions` call used to mean "require my conventional prompt". In 2.0 it's just the reader. Use `instructions { prompt("instructions") }` when you want the old strictness.
 
 ## Changing a Prompt Under Existing Chats
 
-A Rails-backed agent saves its instructions when `create!` makes the chat. `WorkAssistant.find(id)` applies the current configuration for that run without rewriting what's saved. That's deliberate: your prompts evolve faster than your data, and loading a chat shouldn't quietly rewrite its history.
+A Rails-backed agent saves its instructions when `create!` makes the chat. `WorkAssistant.find(id)` applies the current configuration for that run without rewriting what's saved. That's deliberate: loading a chat shouldn't rewrite its saved history.
 
 When you do want old conversations to pick up the new wording:
 
@@ -108,8 +108,8 @@ module MyEngine
 end
 ```
 
-An agent the engine ships finds `my_engine/chat_agent/instructions.txt.erb` in the engine. The host app overrides it by creating `app/prompts/my_engine/chat_agent/instructions.txt.erb`. Same move you'd use to override an engine's view.
+An agent the engine ships finds `my_engine/chat_agent/instructions.txt.erb` in the engine. The host app overrides it by creating `app/prompts/my_engine/chat_agent/instructions.txt.erb`, the same way you'd override an engine's view.
 
-Thanks to [@kryzhovnik](https://github.com/kryzhovnik), who extracted the renderer out of Agent's private methods and made all of this possible. Partials in 2.1 come from the same hands: `<%= render "tone", display_name: display_name %>` inside a prompt pulls in `_tone.txt.erb`, the way it would in a view.
+Thanks to [@kryzhovnik](https://github.com/kryzhovnik), who extracted the renderer out of Agent's private methods, which made this possible. Partials in 2.1 are also @kryzhovnik's work: `<%= render "tone", display_name: display_name %>` inside a prompt pulls in `_tone.txt.erb`, the way it would in a view.
 
-Put the file where you'd expect it and it works. That's the Rails deal, and now prompts get it too. The [prompt rendering guide](https://rubyllm.com/prompt-rendering/) has the details, and the [agents guide](https://rubyllm.com/agents/) covers the class-based conventions.
+The [prompt rendering guide](https://rubyllm.com/prompt-rendering/) has the details, and the [agents guide](https://rubyllm.com/agents/) covers the class-based conventions.

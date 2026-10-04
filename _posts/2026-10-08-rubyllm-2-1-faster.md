@@ -2,14 +2,14 @@
 layout: post
 title: "RubyLLM 2.1 Is Faster: Where the Time Went"
 date: 2026-10-08 14:40:00 +0530
-description: "RubyLLM 2.1 streams, remembers, and connects with far less overhead. Here's what was slow in 2.0, why, and how to measure it yourself."
+description: "RubyLLM 2.1 streams, remembers, and connects with far less overhead. What was slow in 2.0, why, and how to measure it yourself."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Performance]
 ---
-RubyLLM 2.0 took 116 milliseconds to stream a single 2 MB event. RubyLLM 2.1 takes two.
+RubyLLM 2.1 is out, and it streams a single 2 MB event in 2 milliseconds. RubyLLM 2.0 took 116.
 
-The usual answer to "is my LLM library fast?" is "who cares, the model takes three seconds." It's wrong in three ways. Streaming code runs once per chunk, so a little waste per chunk is a lot of waste per reply. Memory a chat keeps for each turn adds up across a forty-turn conversation and a few hundred conversations per process. And anything quadratic hides happily behind small test inputs until a real user sends a real image.
+A common view is that an LLM library's speed doesn't matter, because the model takes seconds to answer. That view misses three things. Streaming code runs once per chunk, so a little waste per chunk is a lot of waste per reply. Memory a chat keeps for each turn adds up across a forty-turn conversation and a few hundred conversations per process. And anything quadratic stays hidden behind small test inputs until a user sends a large image.
 
-So for 2.1 I took the providers out of the picture and measured what RubyLLM itself costs. Here's what changed, 2.0.0 against 2.1, same machine:
+For 2.1 I took the providers out of the picture and measured what RubyLLM itself costs. These are the results, 2.0.0 against 2.1 on the same machine:
 
 | Workload | 2.0 | 2.1 |
 | --- | --- | --- |
@@ -27,7 +27,7 @@ So for 2.1 I took the providers out of the picture and measured what RubyLLM its
 
 Providers answer from canned responses, so these times are RubyLLM's own work and nothing else. They're medians from an AMD Ryzen 9 9900X on Ruby 4.0.7.
 
-None of this needs a code change. Here are the stories behind the best ones.
+None of this needs a code change. The sections below explain the larger improvements.
 
 ## The 2 MB Event That Took 116 ms
 
@@ -43,9 +43,9 @@ Before it replaced the gem, it had to produce the same events on all 192 stream 
 
 The parser wasn't the only thing doing too much per chunk. Anthropic streaming rebuilds each content block so it can be replayed in the next request, and it grew the block's text with `text + delta`. That allocates a new string and copies everything received so far, on every delta. Bedrock's reasoning and OpenRouter's reasoning details did the same with `+=`. A long response paid for itself many times over.
 
-The fix is the difference every Rubyist knows and nobody remembers in the moment: append in place with `<<`.
+The fix is to append in place with `<<`.
 
-The other per-chunk waste was the bill. The usage tracker refreshed the attempt's token counts on every chunk, and recomputed its cost each time, a cost nobody read before the stream ended. Cost is now computed when someone asks for it.
+The other per-chunk waste was cost tracking. The usage tracker refreshed the attempt's token counts on every chunk, and recomputed its cost each time, a cost nobody read before the stream ended. Cost is now computed when someone asks for it.
 
 All together, streaming 500 text deltas from Anthropic went from 9.8 ms to 4.1 ms.
 
@@ -56,8 +56,6 @@ Perplexity sends the full citation list on every chunk. RubyLLM deduplicated the
 2.1 keeps a hash of the citations it has already seen and reads each incoming one once. 137 ms became 17 ms.
 
 ## Replies That Kept Their Requests
-
-This one is my favorite, because it was invisible.
 
 `message.raw` gives you the provider's raw response, which is a Faraday response. A Faraday response remembers its request, including the request body. For a chat, the request body is the whole serialized conversation up to that point.
 
@@ -124,15 +122,15 @@ The last Rails win needs the 2.1 upgrade (`bin/rails generate ruby_llm:upgrade`)
 
 ## Check My Numbers
 
-Don't take my table's word for it. The benchmarks live in the repo and need no API keys and no network: providers answer from a canned adapter, a loopback HTTPS server that counts handshakes, or a fake token endpoint. Clone RubyLLM and compare any version with your checkout:
+The benchmarks live in the repo and need no API keys and no network: providers answer from a canned adapter, a loopback HTTPS server that counts handshakes, or a fake token endpoint. Clone RubyLLM and compare any version with your checkout:
 
 ```sh
 bundle exec rake "benchmark:compare[v2.0.0]"
 bundle exec rake "benchmark:compare[v2.0.0,streaming]"
 ```
 
-It runs the same scripts against both versions, alternating between them so a noisy machine affects both. Your times will differ from mine. The counts (queries, downloads, uploads, handshakes) won't.
+It runs the same scripts against both versions, alternating between them so a noisy machine affects both. Your times will differ from mine, but the counts (queries, downloads, uploads, handshakes) should match.
 
-They're also how I'll keep this from regressing. Every number in this post can be measured again, which is more than I could say about the one-off scripts I started with.
+They also guard against regressions, since every number in this post can be measured again.
 
 The [connection guide](https://rubyllm.com/configuration-connection/#connection-reuse) covers adapters in detail, and [What's New in 2.1](https://rubyllm.com/whats-new-in-2-1/) has everything else in the release.
