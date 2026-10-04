@@ -189,7 +189,7 @@ RubyLLM.models.refresh
 
 `refresh` fetches the latest main registry and persists it. New models, prices, context windows, and capabilities can reach your application without waiting for the next gem release.
 
-Provider gems can ship their own `models.json` too. RubyLLM loads it as a read-only fallback behind the main registry, so installing a provider gem is enough to use its models normally:
+Provider gems can ship their own `models.json` too. RubyLLM loads it as a read-only fallback behind the main registry, so installing a provider gem is enough to use its models normally.
 
 The provider gem's models appear in `RubyLLM.models` and can be selected with the normal `model:` and `provider:` keywords.
 
@@ -199,4 +199,4 @@ The important part is that none of this makes the public API more complicated. `
 
 That is the first piece of RubyLLM 2.0. Next up: the agentic loop, and how 2.0 lets you stop it, resume it, and run it one step at a time.
 
-The full guide to writing providers and protocols is at [rubyllm.com/next/custom-providers](https://rubyllm.com/next/custom-providers/).
+The full guide to writing providers and protocols is at [rubyllm.com/custom-providers](https://rubyllm.com/custom-providers/).

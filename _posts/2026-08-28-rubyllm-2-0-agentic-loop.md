@@ -88,4 +88,4 @@ end
 
 If what you want is one tool call per model response rather than a condition, `chat.with_tool_options(calls: :one)` does that. For a total round budget, count `step` or `generate` calls in the loop you control.
 
-The full guide, including the workflow patterns built on these verbs, is at https://rubyllm.com/next/agentic-workflows/.
+The full guide, including the workflow patterns built on these verbs, is at https://rubyllm.com/agentic-workflows/.
