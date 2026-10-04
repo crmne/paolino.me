@@ -5,6 +5,7 @@ date: 2026-10-04
 description: "kamal-backup 1.1 adds a dump command that pulls one database dump out of your Kamal backups over SSH, and fixes restoring a specific snapshot."
 tags: [Ruby, Rails, Kamal, Backups, Open Source]
 image: /images/kamal-backup.png
+sendfox_campaign_id: 3055093
 ---
 [kamal-backup](https://kamal-backup.dev) 1.1 adds `dump`, which downloads one database dump from your backups without running a restore:
 
