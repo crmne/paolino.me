@@ -2,6 +2,22 @@
 
 [Go to it](https://paolino.me)
 
+## Scheduled publishing
+
+The Pages workflow builds on pushes to `main` and at minute 17 of every hour
+(UTC). Jekyll excludes future-dated posts until their front-matter date and time
+have passed. Use an explicit UTC offset when a post needs a specific publication
+time. The next successful build publishes it.
+
+Hourly builds give publishing another chance when GitHub delays or drops a
+scheduled run, and avoid the busy start of the hour. GitHub Actions schedules
+are best-effort, so publication at an exact time is not guaranteed. To publish
+an eligible post immediately, run:
+
+```bash
+gh workflow run jekyll.yml --repo crmne/paolino.me --ref main
+```
+
 ## SendFox campaigns
 
 This site includes a post-build integration that syncs published posts to SendFox draft campaigns.
