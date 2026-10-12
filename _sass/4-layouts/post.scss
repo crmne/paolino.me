@@ -122,6 +122,17 @@
   border: 0;
 }
 
+.post-image--captioned {
+  margin-bottom: 8px;
+}
+
+.post-video__caption {
+  margin-bottom: 30px;
+  font-size: 15px;
+  font-style: italic;
+  color: $gray-blue;
+}
+
 .post__content iframe,
 .page__content iframe {
   max-width: 100%;
