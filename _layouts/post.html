@@ -52,6 +52,11 @@ layout: default
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin" loading="lazy" allowfullscreen></iframe>
+        {% elsif page.video_controls %}
+        <video class="post-image post-video" controls preload="metadata" playsinline{% if page.image %} poster="{{ page.image | relative_url }}"{% endif %}>
+          <source src="{% if video_url contains '://' %}{{video_url}}{% else %}{{site.baseurl}}{{video_url}}{% endif %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
         {% else %}
         <video class="post-image" autoplay muted loop playsinline>
           <source src="{% if video_url contains '://' %}{{video_url}}{% else %}{{site.baseurl}}{{video_url}}{% endif %}" type="video/mp4">
