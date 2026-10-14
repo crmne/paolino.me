@@ -3,7 +3,7 @@
 title: &name Carmine Paolino
 alternate_title: paolino.me
 logo: # You can add own logo. For example '/images/logo.png'.
-description: &description I build AI products, frameworks, developer tools, and native apps. Creator of RubyLLM, Berlin.rb organizer, and founder of the Floppy Disco music collective.
+description: &description I build AI products, frameworks, developer tools, and native apps at Plenty. Creator of RubyLLM, Berlin.rb organizer, and founder of the Floppy Disco music collective.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://paolino.me" # the base hostname & protocol for your site, e.g. http://example.com
 lang: en-US
@@ -26,7 +26,7 @@ author:
   company_url: "https://chatwithwork.com"
   company_logo: "https://chatwithwork.com/logotype.svg"
   description: >-
-    I build AI frameworks, products, native apps, and developer tools:
+    At <a href="https://plenty.is">Plenty</a>, I build AI frameworks, products, native apps, and developer tools:
     <a href="https://rubyllm.com">RubyLLM</a>, <a href="https://chatwithwork.com">Chat with Work</a>,
     <a href="https://spotifast.rocks">Spotifast</a>, <a href="https://zapfast.rocks">ZapFast</a>,
     <a href="https://archspecrb.dev">ArchSpec</a>, <a href="https://kamal-backup.dev">Kamal Backup</a>,
