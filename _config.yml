@@ -51,7 +51,7 @@ contact:
 projects:
 - name: Chat with Work
   link: https://chatwithwork.com
-  image: {path: /assets/images/projects/chat-with-work-5572a2145d38.webp, width: 800, height: 420, alt: "Chat with Work: AI that works for you, not on your laptop, beside a globe centered on Europe", style: screenshot}
+  image: {path: /assets/images/projects/chat-with-work-d16505a2c15f.webp, width: 1200, height: 630, alt: "Chat with Work: AI that works for you, not on your laptop. Hosted in the EU, beside a globe with Europe lit", style: screenshot}
   category: Apps
   description: An AI assistant for your work, hosted in Europe. Connect your tools, pick up any chat on any device, and approve every change before it happens. Nothing to install.
   featured: true

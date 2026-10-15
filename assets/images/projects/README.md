@@ -2,7 +2,8 @@
 
 Project card artwork refreshed from the public sources below on 2026-10-15.
 Raster assets are resized to at most 800 pixels wide and encoded as WebP
-(quality 82, metadata stripped). SVG artwork stays vector.
+(quality 82, metadata stripped), except Chat with Work, kept at 1200 pixels
+wide with lossless WebP compression for crisp lettering. SVG artwork stays vector.
 
 Frames share a 16:9 aspect ratio. Screenshots, share images, plugin previews,
 and theme previews fill the frame edge to edge with `object-fit: cover`.
@@ -15,7 +16,7 @@ commands because they have no dedicated share artwork.
 
 | Asset | Source |
 | --- | --- |
-| Chat with Work | [Current staging social image](https://staging.chatwithwork.com/social-banners/og-default@2x.png), using the staging host explicitly because its metadata still points to the older production artwork. The local filename includes a content hash to refresh cached cards. |
+| Chat with Work | Rendered from the staging homepage with `script/social_banners/render.mjs` in the Chat with Work repository (`og-default` preset). The headline uses two large lines and the supporting text says “Hosted in the EU.” The local filename includes a content hash to refresh cached cards. |
 | Solco | [Published social image](https://getsolco.com/og.png?v=3) from [Solco](https://getsolco.com) |
 | Spotifast | [Published social image](https://spotifast.rocks/screenshot.png) from [Spotifast](https://spotifast.rocks) |
 | ZapFast | [Published social image](https://zapfast.rocks/screenshot.png) from [ZapFast](https://zapfast.rocks) |
