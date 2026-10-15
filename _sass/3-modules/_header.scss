@@ -291,7 +291,17 @@
 }
 
 .header {
-  background-color: var(--paper-veil);
-  -webkit-backdrop-filter: saturate(160%) blur(10px);
-  backdrop-filter: saturate(160%) blur(10px);
+  background-color: transparent;
+
+  // The blur lives on a pseudo-element: a backdrop-filter on .header itself
+  // would make it the containing block for the fixed full-screen mobile menu.
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--paper-veil);
+    -webkit-backdrop-filter: saturate(160%) blur(10px);
+    backdrop-filter: saturate(160%) blur(10px);
+  }
 }
