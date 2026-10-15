@@ -53,7 +53,7 @@
 .about__desc {
   font-size: 16px;
   line-height: 24px;
-  color: rgba($dark, .8);
+  color: var(--ink-soft);
 
   a {
     text-decoration: underline;
@@ -75,10 +75,10 @@
     padding: 0 15px;
     font-size: 12px;
     border-radius: 3px;
-    color: $white;
-    background-color: $dark;
+    color: var(--chip-ink);
+    background-color: var(--chip-bg);
     &:hover {
-      color: $dark;
+      color: $on-accent;
       background-color: $brand-color;
     }
   }
@@ -168,8 +168,8 @@
   line-height: 20px;
   text-align: center;
   border-radius: 50%;
-  color: $white;
-  background-color: $dark;
+  color: var(--chip-ink);
+  background-color: var(--chip-bg);
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   transition: all .3s;
 }
@@ -210,7 +210,7 @@
     transition: border-color .2s ease-in-out;
 
     &:focus {
-      border-color: color.adjust($brand-color, $lightness: -25%);
+      border-color: var(--accent-strong);
     }
   }
 
@@ -228,8 +228,9 @@
     transition: all .3s;
 
     &:hover {
-      background-color: color.adjust($brand-color, $lightness: -5%);
-      border-color: color.adjust($brand-color, $lightness: -5%);
+      color: $on-accent;
+      background-color: var(--accent-strong);
+      border-color: var(--accent-strong);
     }
   }
 }
@@ -255,7 +256,8 @@
 .footer {
   position: relative;
   margin-top: 40px;
-  background-color: $dark;
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--footer-line);
 
   .footer__inner {
     padding: 50px 0 40px;
@@ -291,7 +293,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: $white;
+    color: var(--footer-ink);
   }
 
   .projects__list {
@@ -301,7 +303,7 @@
 
     a {
       font-size: 14px;
-      color: $gray;
+      color: var(--footer-quiet);
       transition: all .25s;
 
       &:hover {
@@ -316,12 +318,23 @@
   margin-top: 20px;
   font-size: 13px;
   text-align: center;
-  color: $gray;
+  color: var(--footer-quiet);
 
   a {
-    color: $white;
+    color: var(--footer-ink);
     &:hover {
       color: $brand-color;
     }
+  }
+}
+
+/* Footer social icons sit directly on the footer surface in both themes */
+.footer .contact__link {
+  color: var(--footer-ink);
+  background-color: transparent;
+
+  &:hover {
+    color: var(--on-accent);
+    background-color: var(--accent);
   }
 }

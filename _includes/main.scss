@@ -32,6 +32,7 @@
 @import '0-settings/variables';
 @import '0-settings/mixins';
 @import '0-settings/helpers';
+@import '0-settings/theme';
 
 
 /* =======================
@@ -79,6 +80,8 @@
 @import '3-modules/buttons';
 /* >>>>>>>>>>>>>> :: 3.8-Author <<<<<<<<<<<<<<< */
 @import '3-modules/author';
+/* >>>>>>>>>>>>>> :: 3.9-Labels <<<<<<<<<<<<<<< */
+@import '3-modules/labels';
 
 
 /* =======================

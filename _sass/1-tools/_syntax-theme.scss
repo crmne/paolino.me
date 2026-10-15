@@ -1,32 +1,32 @@
 /*
-  Rouge syntax theme – GitHub Light (with italic comments & strings)
-  To swap themes: bundle exec rougify style <theme> > _sass/1-tools/_syntax-theme.scss
-  then re-add font-style: italic to comments (.c) and strings (.s) if desired.
+  Rouge syntax theme, driven by the --syn-* tokens in 0-settings/_theme.scss
+  so code follows the light and dark themes. Comments and strings stay italic.
 */
 
 .highlight {
-  &, .w { color: #24292f; background-color: #f6f8fa }
-  .err  { color: #f6f8fa; background-color: #82071e }
-  .c, .ch, .cd, .cm, .cp, .cpf, .c1, .cs { color: #59636f; font-style: italic }
-  .gl, .gt { color: #59636f }
-  .k, .kd, .kn, .kp, .kr, .kt, .kv { color: #cf222e }
-  .kc   { color: #0550ae }
-  .nb, .nc, .no, .nn { color: #953800 }
-  .sr, .na, .nt { color: #116329 }
-  .gi   { color: #116329; background-color: #dafbe1 }
-  .gd   { color: #82071e; background-color: #ffebe9 }
-  .gh, .gu { color: #0550ae; font-weight: bold }
+  &, .w { color: var(--syn-text); background-color: var(--code-bg) }
+  .err  { color: #fff8ef; background-color: var(--syn-error-bg) }
+  .c, .ch, .cd, .cm, .cp, .cpf, .c1, .cs { color: var(--syn-comment); font-style: italic }
+  .gl, .gt { color: var(--syn-comment) }
+  .k, .kd, .kn, .kp, .kr, .kt, .kv { color: var(--syn-keyword) }
+  .kc   { color: var(--syn-constant) }
+  .nb, .nc, .no, .nn { color: var(--syn-class) }
+  .sr, .na, .nt { color: var(--syn-tag) }
+  .gi   { color: var(--syn-tag); background-color: var(--syn-inserted-bg) }
+  .gd   { color: var(--syn-keyword); background-color: var(--syn-deleted-bg) }
+  .gh, .gu { color: var(--syn-constant); font-weight: bold }
   .ge   { font-style: italic }
   .ges  { font-weight: bold; font-style: italic }
   .gs   { font-weight: bold }
-  .l, .ld, .m, .mb, .mf, .mh, .mi, .il, .mo, .mx { color: #0550ae }
-  .s, .sa, .sc, .dl, .sd, .s2, .se, .sh, .sx, .s1, .ss { color: #0a3069; font-style: italic }
-  .sb, .si { color: #24292f }
-  .nd   { color: #8250df }
-  .nf, .fm { color: #8250df }
-  .nl, .py, .ne { color: #0550ae }
-  .nv, .vc, .vg, .vi, .vm { color: #0550ae }
-  .o, .ow { color: #0550ae }
-  .ni   { color: #24292f }
-  .bp   { color: #0550ae }
+  .l, .ld, .m, .mb, .mf, .mh, .mi, .il, .mo, .mx { color: var(--syn-constant) }
+  .s, .sa, .sc, .dl, .sd, .s2, .se, .sh, .sx, .s1 { color: var(--syn-string); font-style: italic }
+  .ss   { color: var(--syn-symbol); font-style: italic }
+  .sb, .si { color: var(--syn-text) }
+  .nd   { color: var(--syn-function) }
+  .nf, .fm { color: var(--syn-function) }
+  .nl, .py, .ne { color: var(--syn-constant) }
+  .nv, .vc, .vg, .vi, .vm { color: var(--syn-constant) }
+  .o, .ow { color: var(--syn-constant) }
+  .ni   { color: var(--syn-text) }
+  .bp   { color: var(--syn-constant) }
 }

@@ -1,0 +1,108 @@
+// *****************
+// Theme tokens
+// *****************
+// A personal sibling of plenty.is: the same paper and ink family, with this
+// site's own yellow marker as the accent (Plenty keeps vermilion).
+// Light is the default. Dark follows prefers-color-scheme unless the reader
+// picked a theme with the toggle, which sets data-theme on <html>.
+
+@mixin theme-light {
+  --paper: #f4f0e6;
+  --paper-raised: #fbf8f1;
+  --paper-veil: rgb(244 240 230 / .9);
+  --tile: #e8e2d4;
+  --ink: #17150f;
+  --ink-soft: #2f2b23;
+  --ink-quiet: #5a5448;
+  --ink-faint: #7b7466;
+  --line: #ddd5c4;
+  --line-strong: #c2b9a6;
+  --accent: #e9bc2c;
+  --accent-strong: #cf9f0c;
+  --accent-wash: rgb(233 188 44 / .28);
+  --on-accent: #17150f;
+  --shadow-color: rgb(23 21 15 / .05);
+  --footer-bg: #17150f;
+  --footer-line: #17150f;
+  --footer-ink: #f2ede2;
+  --footer-quiet: #a59d8e;
+  --code-bg: #fbf8f1;
+  --code-inline-bg: #e9e3d5;
+  --media-backdrop: #ffffff;
+  --chip-bg: #17150f;
+  --chip-ink: #f4f0e6;
+  --accent-panel: rgb(233 188 44 / .2);
+
+  // Syntax colours, tuned for the warm paper background
+  --syn-text: #24211b;
+  --syn-comment: #7b7466;
+  --syn-keyword: #b3261e;
+  --syn-constant: #0b5394;
+  --syn-class: #8a4b08;
+  --syn-string: #2f5a1e;
+  --syn-symbol: #0b5394;
+  --syn-function: #6f42c1;
+  --syn-tag: #1f6b3a;
+  --syn-inserted-bg: #dcefd4;
+  --syn-deleted-bg: #f6dcd6;
+  --syn-error-bg: #8f1d14;
+
+  color-scheme: light;
+}
+
+@mixin theme-dark {
+  --paper: #121110;
+  --paper-raised: #1b1a17;
+  --paper-veil: rgb(18 17 16 / .9);
+  --tile: #23211d;
+  --ink: #f2ede2;
+  --ink-soft: #ddd6c8;
+  --ink-quiet: #a59d8e;
+  --ink-faint: #8a8273;
+  --line: #302d27;
+  --line-strong: #4a463d;
+  --accent: #f2c94c;
+  --accent-strong: #ffd866;
+  --accent-wash: rgb(242 201 76 / .2);
+  --on-accent: #17150f;
+  --shadow-color: rgb(0 0 0 / .3);
+  --footer-bg: #0c0b0a;
+  --footer-line: #302d27;
+  --footer-ink: #f2ede2;
+  --footer-quiet: #a59d8e;
+  --code-bg: #1b1a17;
+  --code-inline-bg: #26241f;
+  --media-backdrop: #1b1a17;
+  --chip-bg: #2a2723;
+  --chip-ink: #f2ede2;
+  --accent-panel: #1f1c15;
+
+  --syn-text: #e8e2d6;
+  --syn-comment: #8f8778;
+  --syn-keyword: #ff8a73;
+  --syn-constant: #8ec5ff;
+  --syn-class: #f2c94c;
+  --syn-string: #a8d68f;
+  --syn-symbol: #8ec5ff;
+  --syn-function: #d2a8ff;
+  --syn-tag: #7ee0a1;
+  --syn-inserted-bg: #1f3a24;
+  --syn-deleted-bg: #4a1f1a;
+  --syn-error-bg: #8f1d14;
+
+  color-scheme: dark;
+}
+
+:root {
+  @include theme-light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include theme-dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  @include theme-dark;
+}

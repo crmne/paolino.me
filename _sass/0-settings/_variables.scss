@@ -15,33 +15,35 @@ $global-transition: all .35s;
 // *****************
 // Color Variables
 // *****************
-$brand-color: #ffe66a;
-$dark: #17181e;
-$gray: #bbb;
-$gray-blue: #4a4b51;
-$light-gray: #e6e6e6;
-$white: #fff;
+// Colours are CSS custom properties (defined in 0-settings/_theme.scss) so the
+// light and dark themes can switch at runtime. These Sass names stay as aliases.
+$brand-color: var(--accent);
+$dark: var(--ink);
+$gray: var(--ink-faint);
+$gray-blue: var(--ink-quiet);
+$light-gray: var(--line);
+$white: var(--paper);
+$on-accent: var(--on-accent);
 
 // Background Colors
-$background-color: $white;
+$background-color: var(--paper);
 
 // Body Color
-$text-color: $dark;
+$text-color: var(--ink);
 
 // Headings
-$heading-font-color: $dark;
+$heading-font-color: var(--ink);
 
 // Links
-$link-color: $dark;
-$link-color-hover: color.adjust($brand-color, $lightness: -15%);
-$link-text-shadow: rgba(255, 193, 117, 0.8);
+$link-color: var(--ink);
+$link-color-hover: var(--accent-strong);
 
 // Button
-$button-color: $white;
-$button-background-color: $brand-color;
+$button-color: var(--paper);
+$button-background-color: var(--accent);
 
 // Border
-$border-color: $light-gray;
+$border-color: var(--line);
 
 
 // *****************

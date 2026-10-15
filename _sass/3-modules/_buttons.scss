@@ -16,7 +16,7 @@
   transition: all 0.35s ease;
   cursor: pointer;
   &:hover {
-    color: $dark;
+    color: $on-accent;
   }
 
   &--primary {
@@ -27,7 +27,7 @@
     line-height: 50px;
     background-color: $dark;
     &:hover {
-      background-color: color.adjust($brand-color, $lightness: -5%);
+      background-color: var(--accent-strong);
     }
   }
 
@@ -44,7 +44,7 @@
     background-color: $dark;
 
     &:hover {
-      background-color: color.adjust($dark, $lightness: -1%);
+      background-color: var(--ink);
     }
   }
 

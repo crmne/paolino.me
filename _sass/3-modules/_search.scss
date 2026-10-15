@@ -17,7 +17,7 @@
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     -webkit-backdrop-filter: saturate(180%) blur(10px);
     backdrop-filter: saturate(180%) blur(10px);
-    background-color: rgba($white, .9);
+    background-color: var(--paper-veil);
   }
 }
 
@@ -118,7 +118,7 @@
     transition: background-color .15s ease;
     &:hover,
     &:focus-within {
-      background-color: rgba($brand-color, .45);
+      background-color: var(--accent-wash);
 
       .search-results__link {
         color: $text-color;

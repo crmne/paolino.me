@@ -14,8 +14,8 @@
   padding: 0;
   border: 0;
   border-radius: 3px;
-	background-color: $dark;
-	color: $white;
+	background-color: var(--chip-bg);
+	color: var(--chip-ink);
 	cursor: pointer;
 	transition: all .25s ease;
 
@@ -25,7 +25,7 @@
   }
 
   &:hover {
-    color: $dark;
+    color: $on-accent;
     background-color: $brand-color;
   }
 

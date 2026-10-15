@@ -95,12 +95,12 @@ body.is-locked {
 }
 
 ::placeholder {
-  color: #666;
+  color: var(--ink-faint);
 }
 
 *::selection {
   color: $dark;
-  background-color: rgba($brand-color, 0.4);
+  background-color: var(--accent-wash);
 }
 
 h1,
@@ -182,9 +182,13 @@ pre {
   margin-bottom: 0;
   font-size: $monospace-font-size;
   line-height: $monospace-line-height;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-all;
+  // Keep code lines intact: scroll sideways instead of breaking words mid-identifier.
+  white-space: pre;
+  word-wrap: normal;
+  word-break: normal;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  tab-size: 2;
 }
 
 code,
@@ -192,6 +196,20 @@ kbd,
 samp {
   font-family: $monospace-font-family;
   font-size: $monospace-font-size;
+}
+
+// Code inside a block takes the block's size instead of shrinking twice.
+pre code {
+  font-size: inherit;
+}
+
+// Inline code in running text gets a quiet chip so identifiers stand out from prose.
+:not(pre) > code {
+  padding: .1em .35em;
+  font-size: .84em;
+  border-radius: 4px;
+  background-color: var(--code-inline-bg);
+  overflow-wrap: anywhere;
 }
 
 img,
@@ -219,7 +237,7 @@ a {
   box-shadow: 0 -1px 0 0 $brand-color inset;
 
   &:hover {
-    color: color.adjust($link-color, $lightness: -15%);
+    color: var(--ink);
     box-shadow: 0 -2px 0 0 $brand-color inset;
   }
 }
@@ -261,39 +279,37 @@ hr {
 }
 
 table {
-  font-size: 12px;
-  color: $dark;
   width: 100%;
-  border-width: 1px;
-  border-color: $dark;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $dark;
   border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
 }
 
 table th {
-  padding: 10px;
-  font-size: 16px;
+  padding: 10px 14px 10px 0;
+  font-size: 14px;
+  font-weight: 600;
   text-align: left;
-  border: 1px solid $dark;
-  color: $white;
-  font-weight: 500;
-  background-color: $dark;
-}
-
-table tr {
-  background-color: $light-gray;
-  transition: all .3s ease;
-
-  &:nth-child(even) {
-    background-color: transparent;
-  }
+  vertical-align: bottom;
+  color: $dark;
+  border-bottom: 2px solid $dark;
 }
 
 table td {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid $dark;
+  padding: 10px 14px 10px 0;
+  vertical-align: top;
+  border-bottom: 1px solid $border-color;
 }
 
-table tr:hover {
-  background-color: $brand-color;
+table th:last-child,
+table td:last-child {
+  padding-right: 0;
+}
+
+@media only screen and (max-width: $mobile) {
+  table {
+    font-size: 14px;
+  }
 }

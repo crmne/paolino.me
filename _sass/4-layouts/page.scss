@@ -79,7 +79,7 @@
     overflow: hidden;
     border: 1px solid $border-color;
     border-radius: 8px;
-    background: var(--project-image-background, #f5f5f7);
+    background: var(--project-image-background, var(--tile));
 
     img {
       position: absolute;
@@ -97,9 +97,10 @@
     object-fit: contain;
   }
 
+  // Artwork made for a dark backdrop keeps it in both themes.
   .project__media--dark {
-    background: $dark;
-    border-color: $dark;
+    background: #17150f;
+    border-color: #17150f;
   }
 
   .project__name {
@@ -182,7 +183,7 @@
   .services-product {
     margin-top: 44px;
     padding: 28px 30px;
-    background: color.change($brand-color, $alpha: 0.18);
+    background: var(--accent-panel);
     border-radius: 8px;
 
     p {

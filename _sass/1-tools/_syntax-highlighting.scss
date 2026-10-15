@@ -5,19 +5,53 @@
 
 .highlight {
   margin-bottom: 2em;
-  border-radius: 20px;
+  border-radius: 8px;
   position: relative;
+}
 
-  pre {
-    padding-right: 90px;
+// Rouge renders div.highlight > pre.highlight; style the frame on the div only.
+div.highlight {
+  border: 1px solid var(--line);
+  overflow: hidden;
+
+  > pre {
+    margin: 0;
+    padding: 18px 20px;
+    padding-right: 76px;
+    font-size: 15px;
+    line-height: 1.65;
+    border-radius: 0;
   }
 
+  // 576px is $mobile, which _grid.scss defines after this file is imported.
+  @media only screen and (max-width: 576px) {
+    // Bleed to the screen edges on phones so more of each line fits.
+    margin-left: -20px;
+    margin-right: -20px;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+
+    // The copy button sits in a strip above the code instead of covering it.
+    > pre {
+      padding: 44px 20px 16px;
+      font-size: 13.5px;
+    }
+
+    .code-copy-button {
+      top: 8px;
+      right: 8px;
+    }
+  }
+}
+
+.highlight {
   .code-copy-button {
     position: absolute !important;
     top: 12px;
     right: 12px;
     z-index: 2;
-    border: 1px solid rgba($dark, 0.2);
+    border: 1px solid var(--line-strong);
     border-radius: 999px;
     padding: 6px 10px;
     background: $white;
@@ -31,20 +65,20 @@
     transition: $global-transition;
 
     &:hover {
-      color: $dark;
+      color: $on-accent;
       background: $brand-color;
-      border-color: rgba($dark, 0.4);
+      border-color: var(--line-strong);
     }
 
     &:focus-visible {
-      outline: 2px solid rgba($dark, 0.35);
+      outline: 2px solid var(--line-strong);
       outline-offset: 1px;
     }
 
     &.is-copied {
-      color: $dark;
+      color: $on-accent;
       background: $brand-color;
-      border-color: rgba($dark, 0.4);
+      border-color: var(--line-strong);
     }
   }
 }

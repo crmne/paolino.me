@@ -46,7 +46,7 @@
 
 .article__content {
   padding: 20px 0;
-  background: white;
+  background: transparent;
 }
 
 .article__title {
@@ -103,7 +103,7 @@
 
     &:hover {
       color: $dark;
-      background-color: color.adjust($brand-color, $lightness: -10%);
+      background-color: var(--accent-strong);
     }
 
     @media only screen and (max-width: $mobile) {
@@ -126,7 +126,7 @@
     width: 3px;
     margin: 0 .5rem 0 .5rem;
     border-radius: 50%;
-    background-color: rgba($text-color, .8);
+    background-color: var(--ink-soft);
   }
 
   @media only screen and (max-width: $mobile) {

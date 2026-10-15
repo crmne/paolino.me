@@ -18,7 +18,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwr7Iw.woff2" as="font" type="font/woff2" crossorigin>
-  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f0e6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)">
+  <script>
+    // Apply a saved theme before first paint so there is no flash.
+    // Without a saved choice the CSS follows prefers-color-scheme.
+    (function () {
+      var theme = null;
+      try { theme = window.localStorage.getItem('theme'); } catch (error) {}
+      if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
+    }());
+  </script>
   <title>{{ meta_title | escape }}</title>
   <meta name="description" content="{{ meta_description | escape }}">
   <meta name="robots" content="{{ page.robots | default: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' }}">

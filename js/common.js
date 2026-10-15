@@ -195,6 +195,43 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Theme toggle: flips between light and dark and remembers the choice.
+  // With no saved choice, the page follows the system setting.
+  var themeToggle = document.querySelector('.nav__icon-theme');
+  var darkQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function currentTheme() {
+    var explicit = document.documentElement.getAttribute('data-theme');
+    if (explicit === 'light' || explicit === 'dark') return explicit;
+    return darkQuery && darkQuery.matches ? 'dark' : 'light';
+  }
+
+  function syncThemeControls() {
+    var theme = currentTheme();
+    if (themeToggle) {
+      var next = theme === 'dark' ? 'light' : 'dark';
+      themeToggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+      themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    }
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function(meta) {
+      meta.setAttribute('content', theme === 'dark' ? '#121110' : '#f4f0e6');
+    });
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { window.localStorage.setItem('theme', next); } catch (error) {}
+      syncThemeControls();
+    });
+  }
+
+  if (darkQuery && darkQuery.addEventListener) {
+    darkQuery.addEventListener('change', syncThemeControls);
+  }
+  syncThemeControls();
+
   var home = document.querySelector('.home');
   if (home && !home.querySelector('section.author')) {
     var inner = home.querySelector('.container__inner');

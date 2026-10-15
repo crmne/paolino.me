@@ -7,8 +7,8 @@
   width: 100%;
   height: auto;
   transition: $global-transition;
-  border-bottom: 1px solid #efefef;
-  box-shadow: 0 2px 9px -1px rgba(0,0,0,.04);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 9px -1px var(--shadow-color);
   background-color: $white;
   &.is-hide {
     top: -80px;
@@ -96,7 +96,7 @@
       border-radius: 3px;
       text-transform: uppercase;
       &:hover {
-        color: $dark;
+        color: $on-accent;
         background-color: $brand-color;
       }
     }
@@ -109,16 +109,26 @@
   margin-left: auto;
   font-size: 21px;
 
+  gap: 15px;
+
   .nav__icon {
+    display: flex;
+    align-items: center;
     padding: 0;
     border: 0;
     font: inherit;
     color: inherit;
     background: transparent;
     cursor: pointer;
-    &:first-child {
-      margin-right: 15px;
-    }
+  }
+
+  // Shows the moon in light mode and the sun in dark mode.
+  .theme-icon {
+    display: block;
+  }
+
+  .theme-icon--sun {
+    display: none;
   }
 
   .nav__icon-menu {
@@ -129,7 +139,7 @@
     margin-left: auto;
 
     .nav__icon-menu {
-      display: block;
+      display: flex;
     }
   }
 }
@@ -173,7 +183,7 @@
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     -webkit-backdrop-filter: saturate(180%) blur(10px);
     backdrop-filter: saturate(180%) blur(10px);
-    background-color: rgba($white, .9);
+    background-color: var(--paper-veil);
   }
   &.is-visible {
     opacity: 1;
@@ -250,4 +260,38 @@
   @media only screen and (max-width: $tablet) {
     margin-bottom: 30px;
   }
+}
+
+/* Phones: a smaller wordmark keeps the fixed header from crowding the page */
+@media only screen and (max-width: $mobile) {
+  .header__inner {
+    height: 60px;
+  }
+
+  .logo__link {
+    font-size: 23px;
+    line-height: 30px;
+  }
+}
+
+// Theme toggle icon follows the active theme (system or saved choice).
+@mixin theme-toggle-dark {
+  .nav-buttons .theme-icon--moon { display: none; }
+  .nav-buttons .theme-icon--sun { display: block; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include theme-toggle-dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  @include theme-toggle-dark;
+}
+
+.header {
+  background-color: var(--paper-veil);
+  -webkit-backdrop-filter: saturate(160%) blur(10px);
+  backdrop-filter: saturate(160%) blur(10px);
 }
