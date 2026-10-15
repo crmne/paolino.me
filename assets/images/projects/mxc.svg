@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">MXC for Ruby</title>
+  <desc id="desc">Run untrusted commands in an OS sandbox, with readable paths, writable paths, and a timeout.</desc>
+  <rect width="800" height="450" fill="#0b2025"/>
+  <path d="M52 44h40v40H52z" fill="none" stroke="#5eead4" stroke-width="3"/>
+  <path d="m62 64 8 8 13-17" fill="none" stroke="#5eead4" stroke-width="3"/>
+  <g font-family="Inter, Arial, sans-serif">
+    <text x="112" y="75" fill="#f0fdfa" font-size="36" font-weight="700">MXC for Ruby</text>
+    <text x="52" y="126" fill="#b4d4d4" font-size="23">Run untrusted commands in an OS sandbox.</text>
+  </g>
+  <rect x="36" y="164" width="728" height="250" rx="12" fill="#102b31" stroke="#24515a"/>
+  <g font-family="JetBrains Mono, monospace" font-size="24">
+    <text x="60" y="213" fill="#f0fdfa">MXC.run(<tspan fill="#99f6e4">"python3 build.py"</tspan>,</text>
+    <text x="60" y="256" fill="#b4d4d4">  readable: <tspan fill="#99f6e4">"app/skills"</tspan>,</text>
+    <text x="60" y="299" fill="#b4d4d4">  writable: <tspan fill="#99f6e4">"tmp/out"</tspan>,</text>
+    <text x="60" y="342" fill="#b4d4d4">  timeout: <tspan fill="#7dd3fc">30</tspan></text>
+    <text x="60" y="385" fill="#f0fdfa">)</text>
+  </g>
+</svg>

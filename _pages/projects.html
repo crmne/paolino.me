@@ -16,6 +16,8 @@ page_class: page--projects
   <h2 id="projects-{{ group.name | slugify }}">{{ group.name | escape }}</h2>
   {% if group.name == 'Omarchy plugins' %}
   <p>Plugins for the desktop I use every day. Find them on the <a href="https://plugins.omarchy.org/index.html?author=crmne">Omarchy plugin marketplace</a>.</p>
+  {% elsif group.name == 'Omarchy tools & themes' %}
+  <p>A rescue USB for recovering an Omarchy system, plus light and dark desktop themes drawn from Plenty, RubyLLM, Chat with Work, and Solco.</p>
   {% endif %}
   <ul class="project-list list-reset" role="list">
     {% for project in group.items %}

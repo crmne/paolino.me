@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-labelledby="title desc">
+  <title id="title">devhost</title>
+  <desc id="desc">Stable HTTPS localhost URLs for Rails and Jekyll apps. Start either app with devhost run.</desc>
+  <rect width="800" height="450" fill="#17150f"/>
+  <g font-family="Inter, Arial, sans-serif">
+    <text x="48" y="83" fill="#f4f0e6" font-size="48" font-weight="700">devhost<tspan fill="#ff6a48">.</tspan></text>
+    <text x="48" y="133" fill="#c9c0af" font-size="23">A stable HTTPS URL for every local app.</text>
+  </g>
+  <rect x="36" y="172" width="728" height="228" rx="12" fill="#23211d" stroke="#4c463b"/>
+  <g font-family="JetBrains Mono, monospace" font-size="23">
+    <text x="60" y="218" fill="#a59d8e"># Rails</text>
+    <text x="60" y="256" fill="#f4f0e6"><tspan fill="#ff9e81">$</tspan> devhost run -- bin/dev</text>
+    <text x="60" y="320" fill="#a59d8e"># Jekyll</text>
+    <text x="60" y="358" fill="#f4f0e6"><tspan fill="#ff9e81">$</tspan> devhost run -- bundle exec jekyll serve</text>
+  </g>
+</svg>

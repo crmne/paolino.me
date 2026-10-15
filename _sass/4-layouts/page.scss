@@ -98,6 +98,10 @@
     object-fit: contain;
   }
 
+  .project__media--social img {
+    object-fit: contain;
+  }
+
   // Artwork made for a dark backdrop keeps it in both themes.
   .project__media--dark {
     background: #17150f;
