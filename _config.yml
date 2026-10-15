@@ -447,6 +447,7 @@ include:
 exclude:
   # Source-only artwork notes.
   - assets/images/projects/README.md
+  - tools/
 
 # Tags
 tag_page_dir:         tag

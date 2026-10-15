@@ -27,6 +27,29 @@ This site includes a post-build integration that syncs published posts to SendFo
 - Sent campaigns are never modified.
 - The plugin never auto-sends campaigns.
 
+### Mermaid diagrams
+
+The SendFox workflow installs Mermaid CLI from `tools/mermaid/package-lock.json`
+with `npm ci`, and caches npm downloads using the lockfile. The manifest pins
+the CLI version, and the lockfile pins its transitive dependencies. Renovate's
+npm manager discovers this manifest automatically.
+
+The renderer stays on CLI 11 because the SendFox plugin uses `-w` and `-H`,
+which CLI 12 removed. CI checks these options before syncing drafts.
+
+To install the same renderer locally:
+
+```bash
+npm ci --prefix tools/mermaid
+export PATH="$PWD/tools/mermaid/node_modules/.bin:$PATH"
+mmdc --version
+```
+
+Use the Node.js version pinned in `.github/workflows/jekyll.yml`. Puppeteer
+downloads its matching headless browser during installation. Existing diagram
+PNGs in `images/sendfox-mermaid/` are reused; new diagrams require the renderer.
+The tooling directory is excluded from the published site.
+
 ### Environment variables
 
 - `SENDFOX_API_TOKEN`

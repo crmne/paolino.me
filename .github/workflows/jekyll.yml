@@ -154,14 +154,24 @@ jobs:
           fi
 
           sudo fc-cache -fv
+      - name: Setup Node for Mermaid CLI
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          # renovate: datasource=node-version depName=node
+          node-version: "24.21.0"
+          cache: npm
+          cache-dependency-path: tools/mermaid/package-lock.json
       - name: Install Mermaid CLI
         run: |
-          if command -v mmdc >/dev/null 2>&1; then
-            echo "Mermaid CLI already available: $(mmdc --version)"
-          else
-            npm install -g @mermaid-js/mermaid-cli
-            echo "Installed Mermaid CLI: $(mmdc --version)"
-          fi
+          npm ci --prefix tools/mermaid
+          echo "$GITHUB_WORKSPACE/tools/mermaid/node_modules/.bin" >> "$GITHUB_PATH"
+      - name: Check Mermaid CLI compatibility
+        run: |
+          mmdc --version
+          # The SendFox plugin uses these options, which CLI 12 removed.
+          mermaid_help="$(mmdc --help)"
+          grep -q -- '-w, --width' <<< "$mermaid_help"
+          grep -q -- '-H, --height' <<< "$mermaid_help"
       - name: Sync draft campaigns to SendFox
         run: bundle exec ruby scripts/sendfox_campaigns_cli.rb publish
         env:
