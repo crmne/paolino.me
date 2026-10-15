@@ -51,13 +51,13 @@ contact:
 projects:
 - name: Chat with Work
   link: https://chatwithwork.com
-  image: {path: /assets/images/projects/chat-with-work.webp, width: 800, height: 420, alt: "Private AI search across your work, from Chat with Work", style: social}
+  image: {path: /assets/images/projects/chat-with-work-5572a2145d38.webp, width: 800, height: 420, alt: "Chat with Work: AI that works for you, not on your laptop, beside a globe centered on Europe", style: screenshot}
   category: Apps
-  description: Private AI search for your work. Ask one question across your connected tools and get answers with sources, hosted in the EU and without a company index.
+  description: An AI assistant for your work, hosted in Europe. Connect your tools, pick up any chat on any device, and approve every change before it happens. Nothing to install.
   featured: true
 - name: Solco
   link: https://getsolco.com
-  image: {path: /assets/images/projects/solco.webp, width: 800, height: 420, alt: "Solco: Stop preparing your tracks, above an audio waveform", style: social}
+  image: {path: /assets/images/projects/solco.webp, width: 800, height: 420, alt: "Solco: Stop preparing your tracks, above an audio waveform", style: screenshot}
   category: Apps
   description: The DJ library app. Stop preparing your tracks. Solco grids, keys, sorts, and tags every download, then writes the USB your CDJs read. In private alpha.
 - name: Spotifast
@@ -73,7 +73,7 @@ projects:
   description: A native WhatsApp client for Linux, macOS, and Windows, with chats, voice messages, attachments, and notifications.
 - name: TonePush
   link: https://tonepush.rocks
-  image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 420, alt: "TonePush: Find the tone. Play it on your pedal, above a chain of effect blocks", style: social}
+  image: {path: /assets/images/projects/tonepush.webp, width: 800, height: 420, alt: "TonePush: Find the tone. Play it on your pedal, above a chain of effect blocks", style: screenshot}
   category: Apps
   description: Guitar tones for your pedal. A catalog website to find presets by artist, song, or original sound and see their signal chains, plus a free, open-source desktop editor that loads them onto your HX Stomp.
 - name: Cluster Headache Tracker
@@ -83,23 +83,23 @@ projects:
   description: A free, open-source app for logging cluster headaches, spotting patterns, and sharing records with your doctor.
 - name: RubyLLM
   link: https://rubyllm.com
-  image: {path: /assets/images/projects/rubyllm.webp, width: 800, height: 420, alt: "RubyLLM: Build AI features the Ruby way", style: social}
+  image: {path: /assets/images/projects/rubyllm.webp, width: 800, height: 420, alt: "RubyLLM: Build AI features the Ruby way", style: screenshot}
   category: Libraries & developer tools
   description: A Ruby framework for AI applications, with a consistent interface to major providers. Build agents, chat, structured outputs, and multimodal applications.
   featured: true
 - name: MXC for Ruby
   link: https://crmne.github.io/mxc/
-  image: {path: /assets/images/projects/mxc.svg, width: 800, height: 450, alt: "MXC for Ruby code setting readable and writable paths and a timeout for a sandboxed command", style: social}
+  image: {path: /assets/images/projects/mxc.svg, width: 800, height: 450, alt: "MXC for Ruby code setting readable and writable paths and a timeout for a sandboxed command", style: screenshot}
   category: Libraries & developer tools
   description: Run untrusted commands in an OS sandbox from Ruby, with policies for files, network access, and timeouts. An unofficial Ruby binding to Microsoft's MXC.
 - name: devhost
   link: https://github.com/crmne/devhost
-  image: {path: /assets/images/projects/devhost.svg, width: 800, height: 450, alt: "devhost commands for running Rails and Jekyll with stable HTTPS localhost URLs", style: social}
+  image: {path: /assets/images/projects/devhost.svg, width: 800, height: 450, alt: "devhost commands for running Rails and Jekyll with stable HTTPS localhost URLs", style: screenshot}
   category: Libraries & developer tools
   description: Stable HTTPS localhost URLs for Rails, Jekyll, and other local servers on Linux. Each repository and worktree gets its own address, with Caddy handling HTTPS.
 - name: ArchSpec
   link: https://archspecrb.dev
-  image: {path: /assets/images/projects/archspec.webp, width: 800, height: 420, alt: "ArchSpec: Executable architecture specifications for Ruby and Rails", style: social}
+  image: {path: /assets/images/projects/archspec.webp, width: 800, height: 420, alt: "ArchSpec: Executable architecture specifications for Ruby and Rails", style: screenshot}
   category: Libraries & developer tools
   description: Executable architecture rules for Ruby and Rails. Check boundaries, dependencies, and conventions on every change.
   featured: true
@@ -128,7 +128,7 @@ projects:
   description: A documentation theme that brings VitePress-style navigation, search, and polish to Jekyll.
 - name: native-packages
   link: https://native-packages.dev
-  image: {path: /assets/images/projects/native-packages.webp, width: 800, height: 450, alt: "native-packages: One config. Every package.", style: social}
+  image: {path: /assets/images/projects/native-packages.webp, width: 800, height: 450, alt: "native-packages: One config. Every package.", style: screenshot}
   category: Libraries & developer tools
   description: Turn your built application into Linux packages, macOS disk images, and Windows installers, then publish releases.
 - name: fastframe
@@ -144,97 +144,97 @@ projects:
   featured: true
 - name: OmaCal
   link: https://github.com/crmne/omacal
-  image: {path: /assets/images/projects/omacal.webp, width: 800, height: 500, alt: "OmaCal month and day views with example events and a Quick Add form", style: social}
+  image: {path: /assets/images/projects/omacal.webp, width: 800, height: 500, alt: "OmaCal month and day views with example events and a Quick Add form", style: screenshot}
   category: Omarchy plugins
   description: Your calendar in the Omarchy bar, with events on the month grid, a day view, Quick Add, reminders, and time tracking. HEY is the first supported calendar.
 - name: Files for Omarchy
   link: https://github.com/crmne/omarchy-files
-  image: {path: /assets/images/projects/omarchy-files.webp, width: 800, height: 500, alt: "Files for Omarchy showing example search results and the actions panel", style: social}
+  image: {path: /assets/images/projects/omarchy-files.webp, width: 800, height: 500, alt: "Files for Omarchy showing example search results and the actions panel", style: screenshot}
   category: Omarchy plugins
   description: Find files and folders as you type, browse into directories, then open, copy, share, or trash a result from its actions panel.
 - name: MOZA for Omarchy
   link: https://github.com/crmne/omarchy-moza
-  image: {path: /assets/images/projects/omarchy-moza.webp, width: 800, height: 500, alt: "MOZA wheelbase settings and rev lights with simulated RPM and pedal inputs", style: social}
+  image: {path: /assets/images/projects/omarchy-moza.webp, width: 800, height: 500, alt: "MOZA wheelbase settings and rev lights with simulated RPM and pedal inputs", style: screenshot}
   category: Omarchy plugins
   description: Native controls for MOZA racing hardware, with wheelbase and pedal settings, presets, live inputs, and rev lights powered by Boxflat and moza-rev.
 - name: OmaStats
   link: https://plugins.omarchy.org/plugin.html?id=crmne.omastats
-  image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats bar readouts with CPU and memory panels showing demo graphs and processes", style: social}
+  image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats bar readouts with CPU and memory panels showing demo graphs and processes", style: screenshot}
   category: Omarchy plugins
   description: System monitoring in the bar, with live graphs for CPU, memory, disks, network, temperatures, and battery.
 - name: OmaTasks for Todoist
   link: https://github.com/crmne/omatasks
-  image: {path: /assets/images/projects/omatasks.webp, width: 800, height: 450, alt: "OmaTasks Today panel and Quick Add with example tasks", style: social}
+  image: {path: /assets/images/projects/omatasks.webp, width: 800, height: 450, alt: "OmaTasks Today panel and Quick Add with example tasks", style: screenshot}
   category: Omarchy plugins
   description: Todoist in the bar, with Today, Inbox, and Upcoming views, Quick Add, task editing, and drag-to-reorder that syncs across your devices.
 - name: Ultimate Guitar Tabs
   link: https://plugins.omarchy.org/plugin.html?id=crmne.ultimate-guitar
-  image: {path: /assets/images/projects/omarchy-ultimate-guitar.webp, width: 800, height: 500, alt: "The expanded tab reader and compact reader with its instrument picker", style: social}
+  image: {path: /assets/images/projects/omarchy-ultimate-guitar.webp, width: 800, height: 500, alt: "The expanded tab reader and compact reader with its instrument picker", style: screenshot}
   category: Omarchy plugins
   description: The tab for whatever you're playing, right in the bar. Switch instruments and versions, and auto-scroll while you play.
 - name: Lyrics Synced with Music
   link: https://plugins.omarchy.org/plugin.html?id=crmne.lyrics
-  image: {path: /assets/images/projects/omarchy-lyrics.webp, width: 800, height: 500, alt: "Compact and expanded lyric readers showing an example song", style: social}
+  image: {path: /assets/images/projects/omarchy-lyrics.webp, width: 800, height: 500, alt: "Compact and expanded lyric readers showing an example song", style: screenshot}
   category: Omarchy plugins
   description: Lyrics that follow your music line by line, with click-to-seek, timing adjustments, and a resizable reader.
 - name: hyprmoncfg for Omarchy
   link: https://plugins.omarchy.org/plugin.html?id=crmne.hyprmoncfg
-  image: {path: /assets/images/projects/omarchy-hyprmoncfg.webp, width: 800, height: 500, alt: "The hyprmoncfg monitor layout editor and display settings in Omarchy", style: social}
+  image: {path: /assets/images/projects/omarchy-hyprmoncfg.webp, width: 800, height: 500, alt: "The hyprmoncfg monitor layout editor and display settings in Omarchy", style: screenshot}
   category: Omarchy plugins
   description: The desktop panel for hyprmoncfg, with a visual layout editor, per-display brightness, and profiles that follow your connected monitors.
 - name: Active Window + Icon
   link: https://plugins.omarchy.org/plugin.html?id=crmne.active-window
-  image: {path: /assets/images/projects/omarchy-active-window.webp, width: 800, height: 500, alt: "Active Window bar widgets with title and icon-only layouts beside appearance settings", style: social}
+  image: {path: /assets/images/projects/omarchy-active-window.webp, width: 800, height: 500, alt: "Active Window bar widgets with title and icon-only layouts beside appearance settings", style: screenshot}
   category: Omarchy plugins
   description: The focused application's title and real desktop icon in the bar, with adjustable sizing, saturation, and an icon-only mode.
 - name: Media Controls + Album Art
   link: https://plugins.omarchy.org/plugin.html?id=crmne.mpris
-  image: {path: /assets/images/projects/omarchy-mpris.webp, width: 800, height: 500, alt: "Media controls in full and compact bar layouts beside appearance settings", style: social}
+  image: {path: /assets/images/projects/omarchy-mpris.webp, width: 800, height: 500, alt: "Media controls in full and compact bar layouts beside appearance settings", style: screenshot}
   category: Omarchy plugins
   description: Playback controls, live album art, and track details for Spotify and other desktop players, adapting to the space in your bar.
 - name: Omarchy Rescue
   link: https://github.com/crmne/omarchy-rescue
-  image: {path: /assets/images/projects/omarchy-rescue.webp, width: 800, height: 500, alt: "The Omarchy Rescue live console welcome screen with recovery commands", style: social}
+  image: {path: /assets/images/projects/omarchy-rescue.webp, width: 800, height: 500, alt: "The Omarchy Rescue live console welcome screen with recovery commands", style: screenshot}
   category: Omarchy tools & themes
   description: A bootable rescue USB for Omarchy, with recovery tools and Claude Code, Codex, and OpenCode to help diagnose and repair a machine that will not boot.
 - name: Plenty Dark
   link: https://github.com/crmne/omarchy-plenty-dark-theme
-  image: {path: /assets/images/projects/omarchy-plenty-dark-theme.webp, width: 800, height: 500, alt: "Plenty Dark for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-plenty-dark-theme.webp, width: 800, height: 500, alt: "Plenty Dark for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Ink-black surfaces, warm text, and a vermilion accent, with wallpapers and a boot unlock logo from Plenty.
 - name: Plenty Light
   link: https://github.com/crmne/omarchy-plenty-light-theme
-  image: {path: /assets/images/projects/omarchy-plenty-light-theme.webp, width: 800, height: 500, alt: "Plenty Light for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-plenty-light-theme.webp, width: 800, height: 500, alt: "Plenty Light for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Paper, ink, and a vermilion accent, with wallpapers and a boot unlock logo from Plenty.
 - name: RubyLLM Dark
   link: https://github.com/crmne/omarchy-ruby-llm-dark-theme
-  image: {path: /assets/images/projects/omarchy-ruby-llm-dark-theme.webp, width: 800, height: 500, alt: "RubyLLM Dark for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-ruby-llm-dark-theme.webp, width: 800, height: 500, alt: "RubyLLM Dark for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Near-black surfaces, ruby-red accents, and Gruvbox code colors, with RubyLLM wallpapers and a boot unlock logo.
 - name: RubyLLM Light
   link: https://github.com/crmne/omarchy-ruby-llm-light-theme
-  image: {path: /assets/images/projects/omarchy-ruby-llm-light-theme.webp, width: 800, height: 500, alt: "RubyLLM Light for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-ruby-llm-light-theme.webp, width: 800, height: 500, alt: "RubyLLM Light for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Warm paper tones, ruby-red accents, and Gruvbox code colors, with RubyLLM wallpapers and a boot unlock logo.
 - name: Chat with Work Dark
   link: https://github.com/crmne/omarchy-chat-with-work-dark-theme
-  image: {path: /assets/images/projects/omarchy-chat-with-work-dark-theme.webp, width: 800, height: 500, alt: "Chat with Work Dark for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-chat-with-work-dark-theme.webp, width: 800, height: 500, alt: "Chat with Work Dark for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Deep blue surfaces with violet and rainbow accents, Chat with Work wallpapers, and a matching boot unlock logo.
 - name: Chat with Work Light
   link: https://github.com/crmne/omarchy-chat-with-work-light-theme
-  image: {path: /assets/images/projects/omarchy-chat-with-work-light-theme.webp, width: 800, height: 500, alt: "Chat with Work Light for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-chat-with-work-light-theme.webp, width: 800, height: 500, alt: "Chat with Work Light for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Cool, light surfaces with violet and rainbow accents, Chat with Work wallpapers, and a matching boot unlock logo.
 - name: Solco Dark
   link: https://github.com/crmne/omarchy-solco-dark-theme
-  image: {path: /assets/images/projects/omarchy-solco-dark-theme.webp, width: 800, height: 500, alt: "Solco Dark for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-solco-dark-theme.webp, width: 800, height: 500, alt: "Solco Dark for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Dark surfaces with violet accents and a blue-to-orange glow, Solco wallpapers, and a matching boot unlock logo.
 - name: Solco Light
   link: https://github.com/crmne/omarchy-solco-light-theme
-  image: {path: /assets/images/projects/omarchy-solco-light-theme.webp, width: 800, height: 500, alt: "Solco Light for Omarchy, showing the editor, terminal, and desktop palette", style: social}
+  image: {path: /assets/images/projects/omarchy-solco-light-theme.webp, width: 800, height: 500, alt: "Solco Light for Omarchy, showing the editor, terminal, and desktop palette", style: screenshot}
   category: Omarchy tools & themes
   description: Soft paper-white surfaces with violet accents, Solco wallpapers, and a matching boot unlock logo.
 - name: Berlin.rb
