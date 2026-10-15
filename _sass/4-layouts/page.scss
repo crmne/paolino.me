@@ -26,12 +26,13 @@
 
 .page-image {
   display: block;
-  width: 100%;
+  // Size the box to the photo so the rounded corners land on the photo itself.
+  width: auto;
+  max-width: 100%;
   height: auto;
   max-height: 720px;
-  margin-bottom: 30px;
+  margin: 0 auto 30px;
   border-radius: 8px;
-  object-fit: contain;
 }
 
 /* Projects page */
