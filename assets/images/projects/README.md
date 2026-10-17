@@ -1,6 +1,6 @@
 # Project artwork
 
-Project card artwork refreshed from the public sources below on 2026-10-15.
+Project card artwork refreshed from the public sources below on 2026-10-15; the Omarchy plugin previews on 2026-10-17.
 Raster assets are resized to at most 800 pixels wide and encoded as WebP
 (quality 82, metadata stripped), except Chat with Work, kept at 1200 pixels
 wide with lossless WebP compression for crisp lettering. SVG artwork stays vector.

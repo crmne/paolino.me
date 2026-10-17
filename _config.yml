@@ -144,9 +144,9 @@ projects:
   featured: true
 - name: OmaCal
   link: https://github.com/crmne/omacal
-  image: {path: /assets/images/projects/omacal.webp, width: 800, height: 500, alt: "OmaCal month and day views with example events and a Quick Add form", style: screenshot}
+  image: {path: /assets/images/projects/omacal.webp, width: 800, height: 500, alt: "OmaCal month view and a new-event form with example HEY and Google calendars", style: screenshot}
   category: Omarchy plugins
-  description: Your calendar in the Omarchy bar, with events on the month grid, a day view, Quick Add, reminders, and time tracking. HEY is the first supported calendar.
+  description: Your calendar in the Omarchy bar, with events on the month grid, a day view, Quick Add, reminders, and HEY time tracking. Shows HEY, Google Calendar, and any calendar feed together.
 - name: Files for Omarchy
   link: https://github.com/crmne/omarchy-files
   image: {path: /assets/images/projects/omarchy-files.webp, width: 800, height: 500, alt: "Files for Omarchy showing example search results and the actions panel", style: screenshot}
@@ -159,7 +159,7 @@ projects:
   description: Native controls for MOZA racing hardware, with wheelbase and pedal settings, presets, live inputs, and rev lights powered by Boxflat and moza-rev.
 - name: OmaStats
   link: https://plugins.omarchy.org/plugin.html?id=crmne.omastats
-  image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats bar readouts with CPU and memory panels showing demo graphs and processes", style: screenshot}
+  image: {path: /assets/images/projects/omastats.webp, width: 800, height: 450, alt: "OmaStats memory and CPU panels with demo graphs", style: screenshot}
   category: Omarchy plugins
   description: System monitoring in the bar, with live graphs for CPU, memory, disks, network, temperatures, and battery.
 - name: OmaTasks for Todoist
@@ -174,7 +174,7 @@ projects:
   description: The tab for whatever you're playing, right in the bar. Switch instruments and versions, and auto-scroll while you play.
 - name: Lyrics Synced with Music
   link: https://plugins.omarchy.org/plugin.html?id=crmne.lyrics
-  image: {path: /assets/images/projects/omarchy-lyrics.webp, width: 800, height: 500, alt: "Compact and expanded lyric readers showing an example song", style: screenshot}
+  image: {path: /assets/images/projects/omarchy-lyrics.webp, width: 800, height: 500, alt: "The compact lyric reader following an example song, with the sung line highlighted", style: screenshot}
   category: Omarchy plugins
   description: Lyrics that follow your music line by line, with click-to-seek, timing adjustments, and a resizable reader.
 - name: hyprmoncfg for Omarchy
@@ -189,7 +189,7 @@ projects:
   description: The focused application's title and real desktop icon in the bar, with adjustable sizing, saturation, and an icon-only mode.
 - name: Media Controls + Album Art
   link: https://plugins.omarchy.org/plugin.html?id=crmne.mpris
-  image: {path: /assets/images/projects/omarchy-mpris.webp, width: 800, height: 500, alt: "Media controls in full and compact bar layouts beside appearance settings", style: screenshot}
+  image: {path: /assets/images/projects/omarchy-mpris.webp, width: 800, height: 500, alt: "Media controls with album art in the bar, above their appearance settings", style: screenshot}
   category: Omarchy plugins
   description: Playback controls, live album art, and track details for Spotify and other desktop players, adapting to the space in your bar.
 - name: Omarchy Rescue
