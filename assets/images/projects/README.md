@@ -38,7 +38,7 @@ commands because they have no dedicated share artwork.
 | Media Controls + Album Art | [Published preview](https://raw.githubusercontent.com/crmne/omarchy-mpris/main/preview.png) from [Media Controls + Album Art](https://github.com/crmne/omarchy-mpris) |
 | MXC for Ruby | Original SVG using the commands in the [MXC for Ruby README](https://github.com/crmne/mxc#readme) |
 | devhost | Original SVG using the commands in the [devhost README](https://github.com/crmne/devhost#readme) |
-| OmaCal | [Published preview](https://raw.githubusercontent.com/crmne/omacal/main/preview.png) from [OmaCal](https://github.com/crmne/omacal) |
+| Calendar for Omarchy | [Published preview](https://raw.githubusercontent.com/crmne/omarchy-calendar/main/preview.png) from [Calendar for Omarchy](https://github.com/crmne/omarchy-calendar) |
 | Files for Omarchy | [Published preview](https://raw.githubusercontent.com/crmne/omarchy-files/main/preview.png) from [Files for Omarchy](https://github.com/crmne/omarchy-files) |
 | MOZA for Omarchy | [Published preview](https://raw.githubusercontent.com/crmne/omarchy-moza/main/preview.png) from [MOZA for Omarchy](https://github.com/crmne/omarchy-moza) |
 | Omarchy Rescue | [Welcome screen](https://raw.githubusercontent.com/crmne/omarchy-rescue/main/docs/screenshots/welcome.png) from [Omarchy Rescue](https://github.com/crmne/omarchy-rescue) |

@@ -142,11 +142,11 @@ projects:
   category: Libraries & developer tools
   description: A GitHub Action that uses Copilot to label issues and discussions, ask for missing details, and answer questions from your project's documentation. Built with a small Ruby script and cached replies.
   featured: true
-- name: OmaCal
-  link: https://github.com/crmne/omacal
-  image: {path: /assets/images/projects/omacal.webp, width: 800, height: 500, alt: "OmaCal month view and a new-event form with example HEY and Google calendars", style: screenshot}
+- name: Calendar for Omarchy
+  link: https://github.com/crmne/omarchy-calendar
+  image: {path: /assets/images/projects/omarchy-calendar.webp, width: 800, height: 500, alt: "Calendar for Omarchy month view and a new-event form with example HEY and Google calendars", style: screenshot}
   category: Omarchy plugins
-  description: Your calendar in the Omarchy bar, with events on the month grid, a day view, Quick Add, reminders, and HEY time tracking. Shows HEY, Google Calendar, and any calendar feed together.
+  description: Your calendar in the Omarchy bar, with events on the month grid, a day view, Quick Add, reminders, and HEY time tracking. Shows HEY, Google Calendar, and any calendar feed together. Formerly OmaCal.
 - name: Files for Omarchy
   link: https://github.com/crmne/omarchy-files
   image: {path: /assets/images/projects/omarchy-files.webp, width: 800, height: 500, alt: "Files for Omarchy showing example search results and the actions panel", style: screenshot}
@@ -351,7 +351,7 @@ structured_data:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
-        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, MXC for Ruby, devhost, hyprmoncfg, Kamal Backup, ZapFast, Solco, TonePush, Cluster Headache Tracker, Jekyll VitePress, native-packages, fastframe, Omarchy plugins (OmaCal, Files for Omarchy, MOZA for Omarchy, OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Omarchy Rescue, Omarchy themes (Plenty, RubyLLM, Chat with Work, and Solco, each in light and dark), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
+        content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, MXC for Ruby, devhost, hyprmoncfg, Kamal Backup, ZapFast, Solco, TonePush, Cluster Headache Tracker, Jekyll VitePress, native-packages, fastframe, Omarchy plugins (Calendar for Omarchy, Files for Omarchy, MOZA for Omarchy, OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Omarchy Rescue, Omarchy themes (Plenty, RubyLLM, Chat with Work, and Solco, each in light and dark), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
   crawlers:
     - GPTBot
     - PerplexityBot
