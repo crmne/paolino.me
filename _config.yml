@@ -301,12 +301,9 @@ plugins:
   - jekyll-feed
   - jekyll-twitter-plugin
   - jekyll-og-image
-  - jekyll-ai-visible-content
 
-ai_visible_content:
-  enabled: true
+structured_data:
   entity:
-    type: Person
     id_slug: carmine-paolino
     name: *name
     alternate_names:
@@ -339,9 +336,6 @@ ai_visible_content:
       - https://www.instagram.com/crmne/
       - https://soundcloud.com/crimsonlakemusic
       - https://crimsonlake.live
-    author_aliases:
-      - paolino
-      - crmne
     works_for:
       type: Organization
       name: Plenty
@@ -349,157 +343,21 @@ ai_visible_content:
     occupation:
       name: Software engineer and open-source maintainer
       skills: Ruby, Rails, AI applications, LLM APIs, open-source software, native desktop applications, developer tooling, Linux, Jekyll, PostgreSQL, asynchronous Ruby
-  json_ld:
-    auto_inject: false
-    include_website_schema: true
-    include_breadcrumbs: true
-    include_blog_posting: true
-    include_faq: true
-    include_how_to: true
-    article_body: excerpt
-    compact: false
-  crawlers:
-    allow_gptbot: true
-    allow_perplexitybot: true
-    allow_claudebot: true
-    allow_googlebot: true
-    allow_bingbot: true
-    custom_rules: []
-    generate_robots_txt: true
   llms_txt:
     enabled: true
     title: Carmine Paolino
     description: *description
-    include_full_text: true
     sections:
       - heading: Core Topics
         content: Ruby, Rails, Jekyll, AI applications, LLM APIs, open source, async Ruby, developer tooling, native desktop applications, Linux, product engineering, startups, music, and communities.
       - heading: Primary Projects
         content: RubyLLM, Chat with Work, Spotifast, ArchSpec, Schematist, MXC for Ruby, devhost, hyprmoncfg, Kamal Backup, ZapFast, Solco, TonePush, Cluster Headache Tracker, Jekyll VitePress, native-packages, fastframe, Omarchy plugins (OmaCal, Files for Omarchy, MOZA for Omarchy, OmaStats, OmaTasks for Todoist, Ultimate Guitar Tabs, Lyrics Synced with Music, hyprmoncfg for Omarchy, Active Window + Icon, and Media Controls + Album Art), Omarchy Rescue, Omarchy themes (Plenty, RubyLLM, Chat with Work, and Solco, each in light and dark), Berlin.rb, Crimson Lake, Floppy Disco, and Mindscape Productions. Explore the directory at https://paolino.me/projects/.
-  linking:
-    enable_entity_links: true
-    apply_to_metadata: false
-    max_links_per_entity_per_post: 1
-    enable_related_posts: true
-    related_posts_limit: 3
-    entity_definitions:
-      rubyllm:
-        name: RubyLLM
-        url: https://rubyllm.com
-        description: Ruby framework for building AI applications across model providers.
-      ruby:
-        name: Ruby
-        url: https://www.ruby-lang.org/en/
-        description: Programming language used across Carmine Paolino's open-source and product work.
-      chat-with-work:
-        name: Chat with Work
-        url: https://chatwithwork.com
-        description: AI tool for querying work data.
-      freshflow:
-        name: Freshflow
-        url: https://freshflow.ai
-        description: AI demand forecasting for fresh grocery retail.
-      floppy-disco:
-        name: Floppy Disco
-        url: https://floppydisco.live
-        description: Berlin house and disco collective.
-      crimson-lake:
-        name: Crimson Lake
-        url: https://crimsonlake.live
-        description: Carmine Paolino's music project.
-      cluster-headache-tracker:
-        name: Cluster Headache Tracker
-        url: https://clusterheadachetracker.com
-        description: Open-source app for tracking cluster headaches.
-      ruby-on-rails:
-        name: Ruby on Rails
-        url: https://rubyonrails.org
-        description: Web application framework for Ruby.
-      rails:
-        name: Rails
-        url: https://rubyonrails.org
-        description: Web application framework for Ruby.
-      jekyll:
-        name: Jekyll
-        url: https://jekyllrb.com
-        description: Static site generator used for this website.
-      jekyll-vitepress-theme:
-        name: Jekyll VitePress Theme
-        url: https://jekyll-vitepress.dev
-        description: Jekyll documentation theme inspired by VitePress.
-      ai-applications:
-        name: AI applications
-        url: /tag/ai/
-        description: Software products and tools built around AI systems.
-      large-language-models:
-        name: Large language models
-        url: /tag/llm/
-        description: LLMs and their use in software products.
-      llm-apis:
-        name: LLM APIs
-        url: /tag/llm/
-        description: Provider APIs and abstractions for large language models.
-      open-source-software:
-        name: Open source software
-        url: /tag/open-source/
-        description: Public software projects and libraries.
-      async-ruby:
-        name: Async Ruby
-        url: /tag/async/
-        description: Concurrent and asynchronous Ruby application architecture.
-      developer-tooling:
-        name: Developer tooling
-        url: /tag/developer-experience/
-        description: Tools that improve software development workflows.
-      native-desktop-applications:
-        name: Native desktop applications
-        url: /projects/#projects-apps
-        description: Native desktop software, including Spotifast and ZapFast.
-      linux:
-        name: Linux
-        url: /tag/linux/
-        description: Linux desktop tools, configuration, and native applications.
-      product-engineering:
-        name: Product engineering
-        url: /tag/product-strategy/
-        description: Building and operating software products.
-      startups:
-        name: Startups
-        url: /tag/startups/
-        description: Company building, product strategy, and bootstrapping.
-      music-technology:
-        name: Music technology
-        url: https://crimsonlake.live
-        description: Carmine Paolino's work around music and technology.
-      house-music:
-        name: House music
-        url: https://crimsonlake.live
-        description: Carmine Paolino's house and disco music work.
-  ai_resources:
-    enabled: true
-    formats:
-      - json
-      - yaml
-      - markdown
-    max_links_per_page: 5
-    auto_inject: true
-    inject_instruction_block: false
-    base_path: /ai
-  validation:
-    warn_name_inconsistency: true
-    warn_missing_same_as: true
-    warn_missing_dates: true
-    warn_orphan_pages: true
-    warn_missing_descriptions: true
-    fail_build_on_error: false
-    content_only: true
-    exclude_paths:
-      - /thank-you/
-      - /404.html
-      - /tag/*
-      - /page/*
-    verbose: false
-    max_examples: 5
+  crawlers:
+    - GPTBot
+    - PerplexityBot
+    - ClaudeBot
+    - Googlebot
+    - Bingbot
 
 paginate: 9
 paginate_path: "/page/:num/"

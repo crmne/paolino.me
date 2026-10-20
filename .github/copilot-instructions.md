@@ -35,10 +35,10 @@ anything becomes public or reaches subscribers.
   `search.json` form the reader-facing site. Preserve semantic HTML,
   responsive behavior, keyboard access, readable contrast, and progressive
   enhancement when JavaScript is absent.
-- `_plugins/post_metadata_defaults.rb`, `seo_structured_data.rb`,
-  `jekyll_ai_visible_content_compatibility.rb`, and `tag_generator.rb` keep
-  metadata, JSON-LD, AI resources, tag pages, canonical URLs, robots behavior,
-  and sitemap inclusion consistent.
+- `_plugins/post_metadata_defaults.rb`, `structured_data.rb`, and
+  `tag_generator.rb` keep metadata, JSON-LD, related posts, llms.txt,
+  robots.txt, tag pages, canonical URLs, and sitemap inclusion consistent.
+  `structured_data.rb` reads `structured_data:` in `_config.yml`.
 - `_plugins/og_image_enhancements.rb` preserves original post media metadata
   and generates intrinsic dimensions plus WebP/AVIF responsive derivatives.
   Keep generated widths and source-image mtimes deterministic. Never expose
