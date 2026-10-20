@@ -16,7 +16,7 @@ commands because they have no dedicated share artwork.
 
 | Asset | Source |
 | --- | --- |
-| Chat with Work | Rendered from the staging homepage with `script/social_banners/render.mjs` in the Chat with Work repository (`og-default` preset). The headline uses two large lines and the supporting text says “Hosted in the EU.” Both use the same Unbounded display font, weight, and tracking. The local filename includes a content hash to refresh cached cards. |
+| Chat with Work | Rendered from the staging homepage with `script/social_banners/render.mjs` in the Chat with Work repository (`og-default` preset). The headline reads “Your work agent. Not on your laptop.” in two large lines and the supporting text says “Hosted in the EU.” Copied from `public/social-banners/og-default.png` on 2026-10-20. Both use the same Unbounded display font, weight, and tracking. The local filename includes a content hash to refresh cached cards. |
 | Solco | [Published social image](https://getsolco.com/og.png?v=3) from [Solco](https://getsolco.com) |
 | Spotifast | [Published social image](https://spotifast.rocks/screenshot.png) from [Spotifast](https://spotifast.rocks) |
 | ZapFast | [Published social image](https://zapfast.rocks/screenshot.png) from [ZapFast](https://zapfast.rocks) |

@@ -51,9 +51,9 @@ contact:
 projects:
 - name: Chat with Work
   link: https://chatwithwork.com
-  image: {path: /assets/images/projects/chat-with-work-00402fcb5e21.webp, width: 1200, height: 630, alt: "Chat with Work: AI that works for you, not on your laptop. Hosted in the EU, beside a globe with Europe lit", style: screenshot}
+  image: {path: /assets/images/projects/chat-with-work-f7ae3fcbcef5.webp, width: 1200, height: 630, alt: "Chat with Work: Your work agent. Not on your laptop. Hosted in the EU, beside a globe with Europe lit", style: screenshot}
   category: Apps
-  description: An AI assistant for your work, hosted in Europe. Connect your tools, pick up any chat on any device, and approve every change before it happens. Nothing to install.
+  description: Your work agent, hosted in the EU, not on your laptop. It searches, writes, and codes across every tool your team uses, works on a schedule, and asks before it changes anything in your tools.
   featured: true
 - name: Solco
   link: https://getsolco.com
