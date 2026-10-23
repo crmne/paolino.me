@@ -7,6 +7,7 @@ date: 2026-10-23
 tags: [Ruby, RubyLLM, AI, Agents, GitHub, Open Source, Copilot Triage]
 image: /images/copilot-triage.png
 video: https://talks.paolino.me/blog/copilot-triage.mp4
+sendfox_campaign_id: 3082110
 ---
 When your open source project gets popular, the real work starts.
 
