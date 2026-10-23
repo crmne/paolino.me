@@ -128,7 +128,11 @@ You can also skip Copilot and set `engine: rubyllm` to run the same agent on any
 
 ## Building bots like this in Chat with Work
 
-I also make [Chat with Work](https://chatwithwork.com), an AI agent for work, and you can build bots like this one there without writing code. A Chat with Work bot can start when an issue or pull request is opened, commented on, or labeled, and keep one conversation going per issue. Once an admin installs its [GitHub App](https://chatwithwork.com/integrations/github) on your repositories, it reads the issue and the repository's code, then labels, comments, or closes. You decide which of those it does on its own and which wait for your approval. The [issue triage recipe](https://chatwithwork.com/recipes/github-issue-triage) sets it up: labels on their own, replies as drafts you approve, and closing only after you say yes. It can also open draft pull requests with fixes, and the same bots can run on schedules, emails, Slack messages, and more.
+I also make [Chat with Work](https://chatwithwork.com), an AI agent for work, and you can build bots like this one there without writing code. A Chat with Work bot can start when an issue or pull request is opened, commented on, or labeled, and keep one conversation going per issue. Once an admin installs its [GitHub App](https://chatwithwork.com/integrations/github) on your repositories, it reads the issue and the repository's code, then labels, comments, or closes. You decide which of those it does on its own and which wait for your approval. The [issue triage recipe](https://chatwithwork.com/recipes/github-issue-triage) sets it up in a few clicks. It can also open draft pull requests with fixes, and the same bots can run on schedules, emails, Slack messages, and more.
+
+Here's the triage bot on an example issue, set to ask first for everything: it read the issue, checked the labels, searched for duplicates, and is waiting for me to approve the labels and its reply.
+
+<img src="/images/chat-with-work-triage-bot.png" alt="A Chat with Work triage bot on an example RubyLLM issue: it read the issue, listed labels, and searched issues, and two approval cards wait, one to label the issue bug and provider: gemini, one to send a reply pointing to the duplicate issue that is fixed on main." width="1600" height="2480" loading="lazy" decoding="async" style="max-width: 640px; width: 100%; height: auto; display: block; margin: 0 auto;">
 
 ## Try it
 
