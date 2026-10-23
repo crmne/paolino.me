@@ -22,9 +22,8 @@ author:
   avatar_width: 300
   avatar_height: 300
   picture: '/images/me-04_small.jpg'
-  company_name: "Chat with Work"
-  company_url: "https://chatwithwork.com"
-  company_logo: "https://chatwithwork.com/logotype.svg"
+  company_name: "Plenty"
+  company_url: "https://plenty.is"
   description: >-
     At <a href="https://plenty.is">Plenty</a>, I build AI frameworks, products, native apps, and developer tools:
     <a href="https://rubyllm.com">RubyLLM</a>, <a href="https://chatwithwork.com">Chat with Work</a>,
