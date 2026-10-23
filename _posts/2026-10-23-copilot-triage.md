@@ -51,19 +51,11 @@ It picks which tools to use and in what order, and then decides what would help.
 
 Discussions get answered from the docs, and a discussion that's really a bug report moves to an issue. For pull requests, it requests a [Copilot code review](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review) when a change deserves one, reads the verdict when it arrives, and checks the contribution guidelines, like opening an issue first or attaching screenshots for UI changes. Merging is always up to me.
 
-## It used to reply too much
-
-Before this release I went through everything triage did across my repositories in one week. Labels were right 95% of the time. Replies were much worse: only a third of them actually helped anyone. The rest were things like "Thanks for the report!", a second and third diagnostic question after the reporter had already answered the first, or a link to an issue that was already linked in the thread.
-
-Each of those replies is another notification, for the reporter and for me. A triage bot that adds noise defeats the point.
-
-So it now replies much less. A thank-you gets no answer. When a reporter answers its question, it doesn't ask another one unless the answer reveals something new. After I comment, it replies at most twice more, then stops and moves the card to Decide. A clear report gets labels and no comment.
-
 ## One agent instead of 2,035 lines of YAML
 
 My first attempt used [GitHub Agentic Workflows](https://github.com/github/gh-aw). For RubyLLM, the [compiled workflow](https://github.com/crmne/ruby_llm/blob/d04b4eeb341d76440bee9a029f150b7598e5cfcc/.github/workflows/issue-assessment.lock.yml) was 2,035 lines of YAML: tool gateways, agent jobs, a threat detector, safe-output jobs, and failure reporting. Then it started [opening issues about its own failures](https://github.com/crmne/ruby_llm/issues/922) and [commenting about its detector failing](https://github.com/crmne/ruby_llm/issues/913), which was more email, not less.
 
-Copilot Triage is a [RubyLLM](https://rubyllm.com) agent with a system prompt and the six tools above:
+The first versions of Copilot Triage went the other way: short, bounded prompts, separate routes for answering from files, looking things up, and comparing duplicates, and keyword ranking and regex rules guessing whether a follow-up mattered. Every new kind of report needed another route. In [0.6](https://github.com/crmne/copilot-triage/releases/tag/v0.6.0) I replaced all of that with one agent that chooses its own searches. Copilot Triage is now a [RubyLLM](https://rubyllm.com) agent with a system prompt and the six tools above:
 
 ```ruby
 class TriageAgent < RubyLLM::Agent
@@ -79,11 +71,28 @@ The agent picks what to search and reads what it finds, with a budget of 12 sear
 
 When something goes wrong, the error goes to the [GitHub Actions](https://github.com/features/actions) job summary. It doesn't open an issue about it.
 
-It still makes mistakes. A wrong label costs me a click to fix, but a wrong reply costs the reporter's time and some goodwill toward the project, which is why the latest release went into making it reply less.
+## It used to reply too much
 
-## Picking the model
+Before [0.18](https://github.com/crmne/copilot-triage/releases/tag/v0.18.0) I went through everything triage did across my repositories in one week. Labels were right 95% of the time. Replies were much worse: only a third of them actually helped anyone. The rest were things like "Thanks for the report!", a second and third diagnostic question after the reporter had already answered the first, or a link to an issue that was already linked in the thread.
 
-I didn't want to guess which model to recommend, so there's a [`RubyLLM::Evaluation`](https://rubyllm.com) built from real and synthetic reports. Each case says what should happen: a reply with specific content, or no reply at all for a thank-you, a stop request, or a question that was already answered. A case passes only with the right outcome within its call budget.
+Each of those replies is another notification, for the reporter and for me. A wrong label costs me a click to fix, but a wrong reply costs the reporter's time and some goodwill toward the project. A triage bot that adds noise defeats the point.
+
+So it now replies much less. A thank-you gets no answer. When a reporter answers its question, it doesn't ask another one unless the answer reveals something new. After I comment, it replies at most twice more, then stops and moves the card to Decide. A clear report gets labels and no comment.
+
+Changing a prompt to make a bot quieter is easy. Knowing it still answers when it should is the hard part, and for that I needed evaluations.
+
+## Evaluations
+
+The evaluation is a [`RubyLLM::Evaluation`](https://rubyllm.com) with 32 cases. Most are modeled on real reports from my repositories, and each one says what should happen:
+
+- **Silence**: a reporter asking the bot to stop ([ZapFast #20](https://github.com/crmne/zapfast/issues/20)), a thank-you, repeated measurements, a question that was already answered, a clear feature request.
+- **Help**: an answer that's in the docs, a fix that already shipped, a missing error message that's essential, a recap of a long report.
+- **Duplicates**: a real one, and a look-alike that isn't ([Spotifast #821](https://github.com/crmne/spotifast/issues/821)).
+- **Traps**: a feature that's documented on the main branch but not released yet ([ZapFast #508](https://github.com/crmne/zapfast/issues/508)). The reply has to say it's coming, not that it already exists.
+
+A case passes only with the expected action, the text the reply must contain (and none it must not), at least the evidence reads it needs, and no more model calls than its budget.
+
+It runs in two modes. Offline, it replays recorded tool calls and decisions through the real tools and publisher against fixture GitHub data. That costs nothing, runs on every change, and catches plumbing bugs, but it can't tell me whether a model behaves. Live, the real model investigates the same fixtures, with publishing switched to dry run. I run that before every release and before changing the default model. Because the evaluation also shows up in the RSpec suite, each case fails like an ordinary test.
 
 The last full comparison ran each case twice:
 
@@ -94,11 +103,22 @@ The last full comparison ran each case twice:
 | Claude Haiku 4.5 | 19/30 | 1 | 10 | $0.0228 |
 | GPT-5 mini | 8/30 | 9 | 0 | $0.0087 |
 
-GPT-5 mini replies to almost everything. Claude Haiku stays quiet even when the docs have the answer. GPT-6 Luna is cheaper but misses more and replies more when it shouldn't. You can run the same evaluation against any model:
+GPT-5 mini replies to almost everything. Claude Haiku stays quiet even when the docs have the answer. GPT-6 Luna is newer and cheaper, but misses more and replies more when it shouldn't, so newer isn't automatically better for a job like this. Gemini 3.6 Flash never finished a case within Copilot's 90-second limit, and small local models failed most cases even with the same tools. You can run it against any model:
 
 ```sh
 EVAL_LIVE=true TRIAGE_MODEL=gpt-5.6-luna bundle exec rake ruby_llm:eval
 ```
+
+## 33 releases in five weeks
+
+I released [33 versions](https://github.com/crmne/copilot-triage/releases) between September 15 and October 17, almost all of them tuning. Running it on busy repositories found problems no evaluation had, and many of those reports became evaluation cases. Some of what I learned:
+
+- **Docs on the main branch aren't what users have.** It read the docs from the default branch, so it told people a feature already existed when it was only on `main`. Now every file it reads says how many commits it is past the last release.
+- **Review bots catch different things.** I classified 693 findings from Copilot and CodeRabbit across 196 pull requests. The two found different problems, and Copilot found little that mattered on small changes, so triage now asks Copilot for a review only on changes where it pays off.
+- **"Reviewed" needs checking.** CodeRabbit silently stopped reviewing after hitting its limit, and dozens of pull requests ended up in Sign off without anyone having read them. Now a pull request only reaches Sign off once something reviewed its latest commit.
+- **Agent sessions sometimes end without doing anything.** About one in five Copilot sessions finished without a single tool call, mostly when many pull requests opened at once. Those runs now retry.
+- **Fallbacks have to do the whole job.** When the Copilot allowance ran out, the fallback model placed cards but posted nothing, so every report filed after that went unanswered.
+- **Your platform can change under you.** GitHub made the Actions cache read-only for issue and comment events, so for a while the bot forgot muted threads and its own earlier replies.
 
 ## Cost
 
