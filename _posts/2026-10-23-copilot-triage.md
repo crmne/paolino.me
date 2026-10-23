@@ -106,6 +106,10 @@ By default it runs on your Copilot allowance, at about a cent or less per report
 
 You can also skip Copilot and set `engine: rubyllm` to run the same agent on any provider RubyLLM supports: your company's [OpenAI](https://platform.openai.com) or [Anthropic](https://www.anthropic.com/api) key, [OpenRouter](https://openrouter.ai), [Amazon Bedrock](https://aws.amazon.com/bedrock/), [Azure](https://azure.microsoft.com/en-us/products/ai-foundry), or a local model on [Ollama](https://ollama.com).
 
+## Building bots like this in Chat with Work
+
+I also make [Chat with Work](https://chatwithwork.com), an AI agent for work, and you can build bots like this one there without writing code. A Chat with Work bot can start when an issue or pull request is opened, commented on, or labeled, and keep one conversation going per issue. Once an admin installs its [GitHub App](https://chatwithwork.com/integrations/github) on your repositories, it reads the issue and the repository's code, then labels, comments, or closes. You decide which of those it does on its own and which wait for your approval. The [issue triage recipe](https://chatwithwork.com/recipes/github-issue-triage) sets it up: labels on their own, replies as drafts you approve, and closing only after you say yes. It can also open draft pull requests with fixes, and the same bots can run on schedules, emails, Slack messages, and more.
+
 ## Try it
 
 It's a [GitHub Action](https://github.com/marketplace/actions/copilot-triage). You need a token, a `triage.yml` file with your labels and project rules, and a short workflow file. It runs on all my repositories, from [RubyLLM](https://github.com/crmne/ruby_llm) to [Spotifast](https://github.com/crmne/spotifast).
