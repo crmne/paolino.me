@@ -11,7 +11,7 @@ image_alt: Portrait of Carmine Paolino
 
 I'm Carmine Paolino, a software engineer, founder, and musician in Berlin. I build products, frameworks, and open-source tools across AI, Ruby, and native desktop software. I run [Plenty][plenty], the company behind this work.
 
-I created [RubyLLM][rubyllm], a framework for building AI applications in Ruby, and build [Chat with Work][chatwithwork], an AI assistant that connects to your work tools. My developer tools include [ArchSpec][archspec] for executable architecture rules, [Schematist][schematist] for JSON Schema, and [Kamal Backup][kamalbackup] for database and file backups.
+I created [RubyLLM][rubyllm], a framework for building AI applications in Ruby, and build [Chat with Work][chatwithwork], AI bots in Europe that work across your team's tools while you decide. My developer tools include [ArchSpec][archspec] for executable architecture rules, [Schematist][schematist] for JSON Schema, and [Kamal Backup][kamalbackup] for database and file backups.
 
 I also build native desktop apps: [Spotifast][spotifast], a Spotify client, and [ZapFast][zapfast], a WhatsApp client. On Linux, I work on [hyprmoncfg][hyprmoncfg] and [Omarchy plugins][omarchyplugins]. My [project directory][projects] collects what I build and maintain.
 
