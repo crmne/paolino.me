@@ -34,7 +34,7 @@ I don't want you to take my word for it, so I measured Solco against rekordbox 7
 - **The USB stick.** I timed both apps putting the same 493 tracks on the same USB stick for the first time. Solco took 12 minutes. rekordbox took three and a half hours. Solco writes as fast as copying the files; rekordbox spends its time updating its database on the stick one row at a time. (A Mac mini M4 and a 250 GB SanDisk stick on FAT32, median of three runs. I haven't measured Windows or other sticks.)
 - **Beat grids.** On the 998 excerpts of [GTZAN](https://github.com/TempoBeatDownbeat/gtzan_tempo_beat), ten genres with human beat annotations, Solco's grids matched the beats more closely than rekordbox 7's: beat F-measure 0.86 against 0.77. It found the downbeat far more often: 0.74 against 0.53. (rekordbox 7.2.6 in Auto mode, on a public set researchers annotated by hand.)
 
-What I can't claim: Solco doesn't analyse faster than rekordbox; it's slower on the same Mac. Updating a stick isn't faster either: for 97 unchanged tracks, rekordbox finished first. And the grid test uses 30-second excerpts, not a full DJ library. My own library of 9,000-odd tracks is where Solco grew up, and I'm curious what yours will find.
+What I can't claim: Solco doesn't analyse faster than rekordbox; it's slower on the same Mac. And the grid test uses 30-second excerpts, not a full DJ library. My own library of 9,000-odd tracks is where Solco grew up, and I'm curious what yours will find.
 
 ## A private alpha, with a key for each person
 
