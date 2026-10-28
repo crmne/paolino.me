@@ -1,4 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>crmne/github-automation//renovate/default"]
+  "extends": ["github>crmne/github-automation//renovate/default"],
+  "packageRules": [
+    {
+      "description": "The SendFox Mermaid renderer passes -w and -H, which Mermaid CLI 12 removed",
+      "matchPackageNames": ["@mermaid-js/mermaid-cli"],
+      "allowedVersions": "<12"
+    }
+  ]
 }
