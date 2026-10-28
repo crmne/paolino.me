@@ -7,6 +7,7 @@ description: "Solco grids, keys and characterises your whole DJ library on your 
 tags: [Solco, DJing, AI, Rust]
 image: /images/solco.jpg
 video: https://getsolco.com/media/solco-launch.mp4
+video_sound: true
 sendfox_campaign_id: 3089155
 ---
 Some of you may not know this, but I'm a DJ in my free time. I founded [Floppy Disco](https://floppydisco.live), a music collective to bring the magic of Disco and House to Berlin, and I've played clubs all over here and in other places in Europe. I love DJing, and my favourite part is finding new music and playing it for people.
