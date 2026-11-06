@@ -167,7 +167,7 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           # renovate: datasource=node-version depName=node
-          node-version: "24.22.2"
+          node-version: "26.13.0"
           cache: npm
           cache-dependency-path: tools/mermaid/package-lock.json
       - name: Install Mermaid CLI
