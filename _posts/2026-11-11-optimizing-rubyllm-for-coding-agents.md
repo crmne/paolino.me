@@ -5,9 +5,8 @@ date: 2026-11-11 16:00:00 -0800
 description: "My own framework lost to no framework at first: the coding agent couldn't see how to use it. What I changed, what worked, and how I measured it."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Benchmark]
 image: /images/rubyllm-agent-benchmark-lines.png
+sendfox_campaign_id: 3112647
 ---
-
-
 You've heard it this year. Maybe you've said it yourself: "You don't need frameworks anymore. Just let the agent write it. Why would you depend on somebody else's gem?"
 
 And it's spreading. My friend [Andrzej Krzywda](https://x.com/andrzejkrzywda/status/2112865294075265072) goes to every Ruby conference and talks to everybody, and a few weeks ago he wrote that 40% of the devs he meets are trying to reinvent [RubyLLM](https://rubyllm.com), my AI framework. One person's impression, sure. But you can feel it in the air.
