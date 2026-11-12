@@ -2,7 +2,7 @@
 layout: post
 title: "How I Optimized RubyLLM for Coding Agents"
 date: 2026-11-11 16:00:00 -0800
-description: "My own framework lost to no framework at first, because the coding agent couldn't see how to use it. What I changed, what actually worked, and how I measured it against LangChain, the Vercel AI SDK and plain code."
+description: "My own framework lost to no framework at first: the coding agent couldn't see how to use it. What I changed, what worked, and how I measured it."
 tags: [Ruby, AI, LLM, Rails, Open Source, RubyLLM, Benchmark]
 image: /images/rubyllm-agent-benchmark-lines.png
 ---
@@ -96,7 +96,7 @@ Here's the code the agent wrote by hand and still owned after the eleven steps, 
 | LangChain | 962 |
 | No framework | 1,070 |
 
-![Hand-written app code at the end: no framework 1,070 lines, LangChain 962, Vercel AI SDK 748, RubyLLM on Rails 246](/images/rubyllm-agent-benchmark-lines.png)
+<img src="/images/rubyllm-agent-benchmark-lines.png" alt="Hand-written app code at the end: no framework 1,070 lines, LangChain 962, Vercel AI SDK 748, RubyLLM on Rails 246" width="2400" height="1350" loading="lazy" decoding="async">
 
 And the code that speaks each provider's own format: zero lines with RubyLLM, for every provider, and up to 97 per provider without a framework.
 
