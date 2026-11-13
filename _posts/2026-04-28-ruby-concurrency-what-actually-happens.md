@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Ruby Concurrency: What Actually Happens"
+seo_title: "Ruby Concurrency: Threads, Fibers, and What Actually Happens"
 date: 2026-04-28
 description: "A visual guide to Ruby processes, Ractors, threads, fibers, schedulers, blocking I/O, database connections, and concurrency trade-offs."
 tags: [Ruby, Concurrency, Async, Fibers, Performance]

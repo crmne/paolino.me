@@ -9,7 +9,7 @@ sendfox_campaign_id: 2750876
 ---
 *Update: The Parsera API has been sunsetted. RubyLLM now uses [models.dev](https://models.dev) for model capabilities and pricing.*
 
-The [LLM Capabilities API](/standard-api-llm-capabilities-pricing) I announced last month is live. [Browse the models](https://llmspecs.parsera.org/) or [hit the API directly](http://api.parsera.org/v1/llm-specs).
+The [LLM Capabilities API](/standard-api-llm-capabilities-pricing/) I announced last month is live. [Browse the models](https://llmspecs.parsera.org/) or [hit the API directly](http://api.parsera.org/v1/llm-specs).
 
 ```yaml
 id: gpt-4o-mini
@@ -59,5 +59,5 @@ The API is open to everyone: any language, any framework. Found a missing model?
 Providers should expose this data themselves. Until they do, this works.
 
 [rubyllm]: https://rubyllm.com
-[rubyllm-release]: /rubyllm-1-3
+[rubyllm-release]: /rubyllm-1-3/
 [parsera]: https://parsera.org

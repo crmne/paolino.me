@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Making the Rails Default Job Queue Fiber-Based"
+seo_title: "Making Solid Queue, the Rails Default Job Queue, Fiber-Based"
 date: 2026-04-21
 last_modified_at: 2026-07-31
 description: "I patched Solid Queue to run jobs as fibers. Now it ships in 1.6.0, making the Rails default ready for highly concurrent, cooperative I/O-bound jobs."

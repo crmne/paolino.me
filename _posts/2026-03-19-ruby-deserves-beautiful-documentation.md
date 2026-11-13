@@ -60,7 +60,7 @@ That's it. Your docs site now looks like VitePress. Customize the nav, sidebar, 
 
 ## Why This Matters
 
-When I came back to Ruby in 2024, I kept finding things that could be better. There wasn't a great LLM library, so I built [RubyLLM](https://rubyllm.com). Async deserved more attention, so I [blogged about it](/async-ruby-is-the-future). And our documentation sites? They didn't look the part.
+When I came back to Ruby in 2024, I kept finding things that could be better. There wasn't a great LLM library, so I built [RubyLLM](https://rubyllm.com). Async deserved more attention, so I [blogged about it](/async-ruby-is-the-future/). And our documentation sites? They didn't look the part.
 
 In open source, looks matter. A beautiful docs site tells potential users: this project is serious, maintained, and worth your time. It lowers the barrier to adoption. It makes people want to try your library.
 

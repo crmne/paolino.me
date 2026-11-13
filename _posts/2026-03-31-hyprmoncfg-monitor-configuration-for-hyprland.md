@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "I Built a Monitor Configuration Tool for Hyprland"
+seo_title: "hyprmoncfg: Configure Hyprland Monitors in a TUI Editor"
 date: 2026-03-31
 description: "A spatial TUI editor with drag-and-drop, safe apply with revert, workspace planning, and a hotplug daemon. All in two zero-dependency Go binaries."
 tags: [Hyprland, Open Source, Go, Linux, TUI]

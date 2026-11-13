@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Ruby Is the Best Language for Building AI Apps"
+seo_title: "Ruby Is the Best Language for AI Apps, with Rails and RubyLLM"
 date: 2026-02-20
 description: "A pragmatic, code-first argument for Ruby as the best language to ship AI products in 2026."
 tags: [Ruby, Rails, AI, LLM, RubyLLM, Async, Developer Experience]
@@ -228,7 +229,7 @@ Wrong.
 
 LLM workloads are mostly network-bound and streaming-bound. That's exactly where Ruby's [Async](https://socketry.github.io/async/) ecosystem shines. Fibers let you handle high concurrency without thread explosion and resource waste. No need to plaster the code with `async`/`await` keywords. [RubyLLM][] became concurrent with 0 code changes.
 
-I wrote a deep dive here: [Async Ruby is the Future of AI Apps (And It's Already Here)](/async-ruby-is-the-future)
+I wrote a deep dive here: [Async Ruby is the Future of AI Apps (And It's Already Here)](/async-ruby-is-the-future/)
 
 ## Don't Take My Word for It
 
