@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Ruby Deserves Beautiful Documentation"
+seo_title: "Jekyll VitePress Theme: Beautiful Docs for Ruby Projects"
 date: 2026-03-19
 description: "The Ruby community doesn't have a great documentation theme. So I made one. Jekyll VitePress Theme brings VitePress's docs UX to Jekyll."
 tags: [Ruby, Jekyll, Documentation, Open Source, VitePress]

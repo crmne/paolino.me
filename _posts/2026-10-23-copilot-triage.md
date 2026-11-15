@@ -2,7 +2,7 @@
 layout: post
 title: "I Get 215 GitHub Notifications a Day, So I Built a Bot to Triage Them"
 seo_title: "Copilot Triage: AI Issue and Pull Request Triage for GitHub"
-description: "My repositories send me about 215 GitHub notifications a day. Copilot Triage reads them, answers reporters when it can help, and sorts everything that needs me into one board."
+description: "My repositories send me about 215 GitHub notifications a day. Copilot Triage reads them, answers reporters when it can, and sorts what needs me into one board."
 date: 2026-10-23
 tags: [Ruby, RubyLLM, AI, Agents, GitHub, Open Source, Copilot Triage]
 image: /images/copilot-triage.png

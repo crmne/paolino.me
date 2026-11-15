@@ -1,10 +1,10 @@
 ---
 layout: page
 title: Work with me
-seo_title: Work with Carmine Paolino
+seo_title: "Ruby on Rails and AI Consulting with Carmine Paolino"
 permalink: /work-with-me/
 redirect_from: /services/
-description: I build with a relentless focus on simplicity. A few times a year I take on AI and Ruby consulting and founder coaching.
+description: "Ruby on Rails and AI consulting, RubyLLM workshops, and founder coaching from the creator of RubyLLM. A few times a year I take on outside work."
 page_class: page--services
 ---
 
@@ -16,7 +16,7 @@ That is why I created [Plenty](https://plenty.is), the company behind it all. So
 
 <div class="service" markdown="1">
 
-## AI and Ruby consulting
+## AI and Ruby on Rails consulting
 
 I created [RubyLLM](https://rubyllm.com), the open-source framework for building AI applications in Ruby. If you are building on it, or adding AI to a Rails app, I can help you ship it cleanly: the fewest moving parts that survive production.
 

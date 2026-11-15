@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Dictation Is the New Prompt (Voxtype on Omarchy)"
+seo_title: "Dictation Is the New Prompt: Voxtype Speech to Text on Omarchy"
 date: 2026-01-07
 description: "Stop typing every prompt. Speak it instead, with a fast Rust stack and a clean Omarchy setup."
 tags: [AI, Voice, Linux, Omarchy, Rust, Productivity]

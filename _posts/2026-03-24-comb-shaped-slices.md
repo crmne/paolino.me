@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Comb Shaped Slices"
+seo_title: "Comb-Shaped Slices: You Don't Need to Pick a Vertical"
 date: 2026-03-24
 description: "You don't need to pick a vertical. Build for yourself, listen to your customers, and the shape that emerges is yours."
 tags: [Startups, Product Strategy, SaaS, Bootstrapping, Indie]
