@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Founding a Company in Germany: €11,800 and 7 Months to Get a VAT ID"
-seo_title: "Founding a Company in Germany: €11,800 and 7 Months"
+seo_title: "Starting a Company in Germany: €11,800 and 7 Months to a VAT ID"
 date: 2026-06-24
-description: "A timeline of founding a company in Germany: €11,800 spent, two companies registered, 203 days to a VAT ID, and a registration nobody mentioned."
+description: "A timeline of starting a company in Germany: €11,800 spent, 203 days to a VAT ID, a registration nobody mentioned, and why a UG and Co. KG, not a GmbH."
 tags: [Germany, Startups, Bureaucracy, Plenty]
 sendfox_campaign_id: 2916820
 last_modified_at: 2026-09-24

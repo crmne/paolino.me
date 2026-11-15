@@ -1,8 +1,9 @@
 ---
 layout: post
 title: "Nano Banana with RubyLLM"
+seo_title: "Nano Banana API in Ruby with RubyLLM"
 date: 2025-10-23
-description: "Nano Banana hides behind Google's chat endpoint. Here's the straight line to ship it with RubyLLM."
+description: "Nano Banana hides behind Google's chat endpoint, not the image API. Here's the straight line to call it from Ruby with RubyLLM."
 tags: [Ruby, AI, RubyLLM, Google, Gemini]
 image: /images/nano-banana.png
 sendfox_campaign_id: 2750880

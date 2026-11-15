@@ -3,7 +3,7 @@ layout: post
 title: "Solco: Stop Preparing Your Tracks, Start Preparing Your Gigs"
 seo_title: "Solco private beta: a DJ library app that writes your CDJ USB"
 date: 2026-10-28 15:30:00 +0100
-description: "Solco grids, keys and characterises your whole DJ library on your computer and writes the USB your CDJs read. It's in private beta: join the waitlist for a personal licence key."
+description: "Solco grids, keys and characterises your DJ library on your computer and writes the USB your CDJs read. In private beta: join the waitlist for a licence key."
 tags: [Solco, DJing, AI, Rust]
 image: /images/solco.jpg
 video: https://getsolco.com/media/solco-launch.mp4
