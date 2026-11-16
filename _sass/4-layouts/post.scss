@@ -158,6 +158,22 @@
   width: 100%;
 }
 
+/* The line after every post about what I'm building */
+.post__building {
+  margin: 40px 0 0;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--ink-quiet);
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: $brand-color;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+}
+
 /* Share */
 .post__share {
   display: flex;
@@ -368,6 +384,7 @@
 
 /* Reading column: about 70 characters per line, with headings tied to the text they introduce */
 .post__content,
+.post .post__building,
 .post .widget-subscribe,
 .post .post__share,
 .post nav[aria-label="Related posts"] {

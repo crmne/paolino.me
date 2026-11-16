@@ -18,6 +18,9 @@
             {% if site.author.description %}
             <p class="author__desc">{{site.author.description}}</p>
             {% endif %}
+            {% if site.author.building %}
+            <p class="author__desc">{{site.author.building}}</p>
+            {% endif %}
             {% include contact-links.html %}
           </div>
         </div>
