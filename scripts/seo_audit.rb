@@ -6,8 +6,6 @@ require "json"
 require "set"
 require "uri"
 
-CHAT_WITH_WORK_LINK = "https://chatwithwork.com/?utm_source=paolino.me"
-
 site_dir = File.expand_path(ARGV.fetch(0, "_site"), Dir.pwd)
 abort "Build directory not found: #{site_dir}" unless Dir.exist?(site_dir)
 
@@ -123,9 +121,6 @@ html_files.each do |file|
     end
     errors << "#{relative}: BlogPosting author missing name" if article.dig("author", "name").to_s.empty?
     errors << "#{relative}: BlogPosting author missing profile URL" if article.dig("author", "url").to_s.empty?
-    building = html.scan(%r{<p class="post__building">(.*?)</p>}m)
-    errors << "#{relative}: expected one line about what I'm building after the post" unless building.size == 1
-    errors << "#{relative}: building line missing its Chat with Work link" unless building.first.to_s.include?(CHAT_WITH_WORK_LINK)
   end
 
   next if noindex
@@ -172,7 +167,6 @@ website = homepage_nodes.find { |node| node["@type"] == "WebSite" }
 errors << "index.html: missing WebSite structured data" unless website
 errors << "index.html: WebSite missing alternateName" if website && website["alternateName"].to_s.empty?
 errors << "index.html: advertises a nonexistent search action" if website&.key?("potentialAction")
-errors << "index.html: introduction missing the line about what I'm building" unless homepage.scan(%r{<p class="author__desc">[^<]*<a href="#{Regexp.escape(CHAT_WITH_WORK_LINK)}">}).size == 1
 
 about_nodes = json_ld_nodes(File.read(File.join(site_dir, "about", "index.html")), "about/index.html", errors)
 profile = about_nodes.find { |node| node["@type"] == "ProfilePage" }
