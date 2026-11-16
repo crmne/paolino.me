@@ -6,7 +6,7 @@ date: 2026-06-24
 description: "A timeline of starting a company in Germany: €11,800 spent, 203 days to a VAT ID, a registration nobody mentioned, and why a UG and Co. KG, not a GmbH."
 tags: [Germany, Startups, Bureaucracy, Plenty]
 sendfox_campaign_id: 2916820
-last_modified_at: 2026-09-24
+last_modified_at: 2026-11-15
 ---
 > **Update, September 24, 2026:** The VAT ID arrived: 203 days after I started, 11 weeks after I asked for it. The tax firm's real bill came too, and the total is now €11,800. The invoices finally went out. Then I found out about a registration nobody had mentioned. [Read the update](#update-september-24-2026).
 
@@ -131,6 +131,31 @@ It is taxed the sane way, too. The partnership's profit is taxed once, as my inc
 Why a UG and not the famous GmbH? A GmbH wants 25,000 euros sitting in a bank account before it is allowed to exist. The UG lets you start with almost nothing, on one condition: lock away a quarter of every year's profit until the reserve reaches 25,000, then convert to a GmbH. The 25,000 does not go away. Germany just takes it in instalments.
 
 Which leaves the only real question. Why 25,000 at all? It is my company and my risk. If I want to start with nothing, that is my call, not a toll the state collects before it will let me try. And the cheap door has a price of its own: to some clients, "UG" reads as "not serious," and they would rather deal with a GmbH. The structure built to let me in quietly marks me for using it.
+
+## UG vs GmbH: which one should you start?
+
+A UG is a GmbH. Same limited liability, same notary, same commercial register, same accounting, same corporate tax. The law gives it one paragraph of its own, [§5a of the GmbH Act](https://www.gesetze-im-internet.de/gmbhg/__5a.html), and that paragraph is the whole difference:
+
+| | UG (haftungsbeschränkt) | GmbH |
+|---|---|---|
+| Minimum capital | €1 | €25,000 |
+| Paid in before registration | All of it, in cash | At least €12,500 |
+| Profit you must keep | A quarter of every year's | None |
+| On every invoice | "UG (haftungsbeschränkt)" | "GmbH" |
+
+One euro is legal. It is not sensible: the company's first bill is bigger than the company.
+
+The quarter is not a fee. It stays your company's money, but it can only cover losses or become capital. There is no deadline to become a GmbH, and no ceiling on the reserve. It keeps growing until the capital reaches 25,000 euros, and you can get there by turning the reserve itself into capital.
+
+The rest costs the same. Unless you use the official template (three shareholders at most, one director, no rules of your own), the notary has to price your UG's articles as if it had 30,000 euros of capital. The same floor a GmbH pays.
+
+Here is what I paid for two companies, the UG and the KG: €1,575.24 to the notary, €560 to the register court, €4,462.50 to the law firm. As a GmbH & Co. KG, the bills would have looked the same. What would have changed is the money locked away: at least 12,500 euros up front instead of my 2,000.
+
+So I chose the UG. The 10,500 euros are better spent on the business than parked in an account to reassure strangers. In my setup the UG only carries the liability while the KG does the work, so the quarter it must keep is a quarter of very little.
+
+The price is the suffix. "Haftungsbeschränkt" means "limited liability," and to some clients it reads as "might have one euro." A GmbH tells them at least 12,500 euros were there on day one. Neither tells them whether you pay your bills.
+
+If you have 25,000 euros you don't need and your clients care about the suffix, start a GmbH. Otherwise, start a UG and grow into a GmbH. And if you're one person who wants to be taxed once, look at the UG & Co. KG above.
 
 <div style="margin:44px 0 0;padding:26px 28px;background:rgba(255,230,106,.18);border-radius:8px;">
 <p style="margin:0;">This is also why <a href="https://chatwithwork.com">Chat with Work</a>, my fully private Work AI, is still free: I cannot invoice you yet! Try it before that changes.</p>
